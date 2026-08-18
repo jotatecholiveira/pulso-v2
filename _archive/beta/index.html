@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financo — Controle Financeiro Familiar</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+  <script src="https://kit.fontawesome.com/7747098184.js" crossorigin="anonymous" defer></script>
+</head>
+<body>
+  <!-- APP PRINCIPAL -->
+  <div class="app-container" id="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand-icon">
+            <i class="fa-solid fa-wallet"></i>
+          </div>
+          <div class="sidebar-brand-text">
+            <h1>Financo</h1>
+            <p>Família</p>
+          </div>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <button class="nav-link active" data-tab="dashboard" onclick="switchTab('dashboard')">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-link" data-tab="entrada" onclick="switchTab('entrada')">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            <span>Lançamentos</span>
+          </button>
+          <button class="nav-link" data-tab="parcelas" onclick="switchTab('parcelas')">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Parcelas</span>
+          </button>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Análises</div>
+          <button class="nav-link" data-tab="relatorios" onclick="switchTab('relatorios')">
+            <i class="fa-solid fa-chart-bar"></i>
+            <span>Relatórios</span>
+          </button>
+          <button class="nav-link" data-tab="anual" onclick="switchTab('anual')">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Visão Anual</span>
+          </button>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Sistema</div>
+          <button class="nav-link" data-tab="banco" onclick="switchTab('banco')">
+            <i class="fa-solid fa-database"></i>
+            <span>Backup / Importar</span>
+          </button>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="user-avatar">JP</div>
+          <div class="user-details">
+            <div class="user-name" id="user-name">Usuário</div>
+            <div class="user-email" id="user-email">email@email.com</div>
+          </div>
+        </div>
+        <button class="nav-link" onclick="logout()" style="margin-top: 0.5rem; color: var(--negative);">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Sair</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div class="topbar-left">
+          <h1 id="page-title">Dashboard</h1>
+          <p id="page-subtitle">Visão geral do mês</p>
+        </div>
+        <div class="topbar-right">
+          <span class="status-chip" id="connection-status">Conectando...</span>
+          <button class="btn btn-primary" onclick="switchTab('entrada')">
+            <i class="fa-solid fa-plus"></i>
+            Novo Lançamento
+          </button>
+        </div>
+      </div>
+
+      <!-- NAVEGAÇÃO POR MÊS -->
+      <div class="month-nav">
+        <button class="month-nav-btn" id="prev-month" onclick="changeMonth(-1)">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <span class="month-nav-label" id="current-month-label">Janeiro 2025</span>
+        <button class="month-nav-btn" id="next-month" onclick="changeMonth(1)">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- ABA: DASHBOARD -->
+      <section id="dashboard" class="tab-content active">
+        <!-- Card Hero - Resumo do Mês -->
+        <div class="hero-card">
+          <h2>Resumo do Mês</h2>
+          <p id="hero-subtitle">Acompanhe suas finanças</p>
+          <div class="hero-balance">
+            <div class="hero-balance-item">
+              <div class="hero-balance-label">Receitas</div>
+              <div class="hero-balance-value positive" id="hero-income">R$ 0,00</div>
+            </div>
+            <div class="hero-balance-item">
+              <div class="hero-balance-label">Despesas</div>
+              <div class="hero-balance-value negative" id="hero-expense">R$ 0,00</div>
+            </div>
+            <div class="hero-balance-item">
+              <div class="hero-balance-label">Saldo</div>
+              <div class="hero-balance-value" id="hero-balance">R$ 0,00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerta de Orçamento -->
+        <div id="budget-alert" class="budget-alert success hidden">
+          <div class="budget-alert-icon">✓</div>
+          <div class="budget-alert-content">
+            <div class="budget-alert-title" id="budget-alert-title">Orçamento OK</div>
+            <div class="budget-alert-text" id="budget-alert-text">Você está dentro do planejado</div>
+          </div>
+        </div>
+
+        <!-- Cards de Estatísticas -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Receitas</div>
+            <div class="stat-value" id="dash-income">R$ 0,00</div>
+          </div>
+          <div class="stat-card negative">
+            <div class="stat-label">Total Despesas</div>
+            <div class="stat-value" id="dash-expense">R$ 0,00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Saldo Líquido</div>
+            <div class="stat-value" id="dash-balance">R$ 0,00</div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-label">Gastos do Mês</div>
+            <div class="stat-value" id="monthly-expense">R$ 0,00</div>
+          </div>
+        </div>
+
+        <!-- Gráfico de Barras Mensal -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Evolução Mensal</div>
+              <div class="card-subtitle">Receitas vs Despesas dos últimos 6 meses</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-bars" id="monthly-chart"></div>
+          </div>
+        </div>
+
+        <!-- Gráfico de Pizza por Categoria -->
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Despesas por Categoria</div>
+                <div class="card-subtitle">Distribuição do mês</div>
+              </div>
+            </div>
+            <div id="category-bars"></div>
+          </div>
+
+          <!-- Últimas Movimentações -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Últimas Movimentações</div>
+                <div class="card-subtitle">5 transações mais recentes</div>
+              </div>
+            </div>
+            <div class="transaction-list" id="movimentacoes-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: LANÇAMENTOS -->
+      <section id="entrada" class="tab-content">
+        <div class="grid-2">
+          <!-- Formulário de Novo Lançamento -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Novo Lançamento</div>
+            </div>
+            <form id="transactionForm" class="form-stack">
+              <div class="form-row">
+                <label for="t-type">Tipo</label>
+                <select id="t-type" class="form-control" required>
+                  <option value="saida">Despesa</option>
+                  <option value="entrada">Receita</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="t-desc">Descrição</label>
+                <input type="text" id="t-desc" class="form-control" placeholder="Ex: Supermercado, Salário..." required>
+              </div>
+              <div class="form-row">
+                <label for="t-val">Valor (R$)</label>
+                <input type="number" id="t-val" class="form-control" step="0.01" min="0.01" placeholder="0,00" required>
+              </div>
+              <div class="form-row">
+                <label for="t-cat">Categoria</label>
+                <select id="t-cat" class="form-control" required>
+                  <option value="Gastos Essenciais">Gastos Essenciais</option>
+                  <option value="Pessoais">Gastos Pessoais</option>
+                  <option value="Renda">Renda</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="t-user">Quem realizou?</label>
+                <select id="t-user" class="form-control" required>
+                  <option value="João">João</option>
+                  <option value="Vick">Vick</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="t-date">Data</label>
+                <input type="date" id="t-date" class="form-control" required>
+              </div>
+              
+              <!-- Campos de Parcela -->
+              <div class="form-row">
+                <label for="t-parceled">Parcelado?</label>
+                <select id="t-parceled" class="form-control" onchange="toggleParcelaFields()">
+                  <option value="no">Não</option>
+                  <option value="yes">Sim</option>
+                </select>
+              </div>
+              <div id="parcela-fields" class="hidden">
+                <div class="form-row">
+                  <label for="t-installments">Total de Parcelas</label>
+                  <input type="number" id="t-installments" class="form-control" min="2" max="60" placeholder="Ex: 12">
+                </div>
+                <div class="form-row">
+                  <label for="t-current-installment">Parcela Atual</label>
+                  <input type="number" id="t-current-installment" class="form-control" min="1" max="60" placeholder="Ex: 3">
+                </div>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-full">Salvar Lançamento</button>
+            </form>
+          </div>
+
+          <!-- Lista de Lançamentos do Mês -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Lançamentos do Mês</div>
+                <div class="card-subtitle" id="month-count">0 transações</div>
+              </div>
+            </div>
+            <div class="transaction-list" id="transaction-list-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: PARCELAS -->
+      <section id="parcelas" class="tab-content">
+        <div class="card mb-3">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Controle de Parcelas</div>
+              <div class="card-subtitle">Acompanhe suas parcelas pendentes</div>
+            </div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Total em Parcelas</div>
+              <div class="stat-value" id="installments-total">R$ 0,00</div>
+            </div>
+            <div class="stat-card warning">
+              <div class="stat-label">Parcelas Pendentes</div>
+              <div class="stat-value" id="installments-pending">0</div>
+            </div>
+            <div class="stat-card positive">
+              <div class="stat-label">Próxima Quitação</div>
+              <div class="stat-value" id="installments-next">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Parcelas Ativas</div>
+          </div>
+          <div class="installment-list" id="installments-list"></div>
+        </div>
+      </section>
+
+      <!-- ABA: RELATÓRIOS -->
+      <section id="relatorios" class="tab-content">
+        <div class="card mb-3">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Relatório Mensal</div>
+              <div class="card-subtitle">Análise detalhada do mês</div>
+            </div>
+          </div>
+          
+          <div class="grid-2">
+            <div>
+              <h3 style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Por Categoria</h3>
+              <div id="category-report"></div>
+            </div>
+            <div>
+              <h3 style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Por Pessoa</h3>
+              <div id="user-report"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: VISÃO ANUAL -->
+      <section id="anual" class="tab-content">
+        <div class="card mb-3">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Visão Anual</div>
+              <div class="card-subtitle" id="annual-year">2025</div>
+            </div>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-card positive">
+              <div class="stat-label">Total Receitas</div>
+              <div class="stat-value" id="annual-income">R$ 0,00</div>
+            </div>
+            <div class="stat-card negative">
+              <div class="stat-label">Total Despesas</div>
+              <div class="stat-value" id="annual-expenses">R$ 0,00</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Saldo Anual</div>
+              <div class="stat-value" id="annual-balance">R$ 0,00</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <div class="card-title">Evolução Mensal</div>
+          </div>
+          <div class="chart-container" style="height: 250px;">
+            <div class="chart-bars" id="annual-chart"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Parcelas que Terminam em 2025</div>
+          </div>
+          <div class="installment-list" id="annual-installments"></div>
+        </div>
+      </section>
+
+      <!-- ABA: BACKUP / IMPORTAR -->
+      <section id="banco" class="tab-content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Exportar Dados</div>
+                <div class="card-subtitle">Faça backup dos seus lançamentos</div>
+              </div>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+              Exporte todas as transações em um arquivo JSON para fazer backup.
+            </p>
+            <button type="button" class="btn btn-primary" onclick="exportData()">
+              <i class="fa-solid fa-download"></i>
+              Exportar Backup (.json)
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Importar Planilha Excel</div>
+                <div class="card-subtitle">Importe seus dados de uma planilha</div>
+              </div>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+              Selecione um arquivo .xlsx com uma aba por mês.
+            </p>
+            <div class="form-group mb-2">
+              <input type="file" id="excel-file-input" accept=".xlsx,.xls" class="form-control">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="importExcel()">
+              <i class="fa-solid fa-file-import"></i>
+              Importar Excel
+            </button>
+            <div id="import-log" style="margin-top: 1rem; padding: 1rem; background: var(--surface-hover); border-radius: var(--radius-md); font-size: 0.875rem; white-space: pre-line;"></div>
+          </div>
+        </div>
+
+        <div class="card mt-3" style="border: 1px solid var(--negative);">
+          <div class="card-header">
+            <div>
+              <div class="card-title" style="color: var(--negative);">Zona de Perigo</div>
+              <div class="card-subtitle">Limpar todos os dados</div>
+            </div>
+          </div>
+          <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+            Apaga permanentemente todas as transações. Esta ação não pode ser desfeita.
+          </p>
+          <button type="button" class="btn btn-danger" onclick="clearData()">
+            <i class="fa-solid fa-trash"></i>
+            Limpar Todos os Dados
+          </button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>
+
+  <!-- SCRIPTS -->
+  <script src="script.js"></script>
+  <script>
+    // Variáveis globais para o novo layout
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function() {
+      // Definir data atual no formulário
+      const dateInput = document.getElementById('t-date');
+      if (dateInput) {
+        dateInput.value = new Date().toISOString().split('T')[0];
+      }
+
+      // Atualizar label do mês
+      updateMonthLabel();
+
+      // Configurar formulário
+      const form = document.getElementById('transactionForm');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const newTransaction = {
+            id: Date.now(),
+            type: document.getElementById('t-type').value,
+            user: document.getElementById('t-user').value,
+            desc: document.getElementById('t-desc').value,
+            val: parseFloat(document.getElementById('t-val').value),
+            cat: document.getElementById('t-cat').value,
+            date: document.getElementById('t-date').value + 'T12:00:00',
+            parceled: document.getElementById('t-parceled').value === 'yes',
+            totalInstallments: parseInt(document.getElementById('t-installments')?.value) || 0,
+            currentInstallment: parseInt(document.getElementById('t-current-installment')?.value) || 0
+          };
+
+          addTransaction(newTransaction);
+          form.reset();
+          document.getElementById('parcela-fields').classList.add('hidden');
+          document.getElementById('t-date').value = new Date().toISOString().split('T')[0];
+          alert('Lançamento salvo com sucesso!');
+        });
+      }
+
+      // Atualizar UI do usuário
+      updateUserInfo();
+    });
+
+    // Função para trocar aba
+    function switchTab(tabId) {
+      // Atualizar links ativos
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.toggle('active', link.dataset.tab === tabId);
+      });
+
+      // Mostrar/esconder abas
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.toggle('active', tab.id === tabId);
+      });
+
+      // Atualizar título
+      const titles = {
+        dashboard: ['Dashboard', 'Visão geral do mês'],
+        entrada: ['Lançamentos', 'Gerencie suas transações'],
+        parcelas: ['Parcelas', 'Acompanhe suas parcelas'],
+        relatorios: ['Relatórios', 'Análise detalhada'],
+        anual: ['Visão Anual', 'Acompanhe o ano inteiro'],
+        banco: ['Backup / Importar', 'Proteja seus dados']
+      };
+
+      const [title, subtitle] = titles[tabId] || ['Financo', ''];
+      document.getElementById('page-title').textContent = title;
+      document.getElementById('page-subtitle').textContent = subtitle;
+
+      // Renderizar conteúdo
+      renderTabContent(tabId);
+    }
+
+    // Renderizar conteúdo da aba
+    function renderTabContent(tabId) {
+      switch (tabId) {
+        case 'dashboard':
+          updateUI();
+          renderMonthlyChart();
+          break;
+        case 'entrada':
+          renderTransactions();
+          break;
+        case 'parcelas':
+          renderInstallments();
+          break;
+        case 'relatorios':
+          renderReports();
+          break;
+        case 'anual':
+          renderAnnual();
+          break;
+      }
+    }
+
+    // Mudar mês
+    function changeMonth(delta) {
+      currentMonth += delta;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      } else if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      updateMonthLabel();
+      updateUI();
+      renderMonthlyChart();
+    }
+
+    // Atualizar label do mês
+    function updateMonthLabel() {
+      const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+      document.getElementById('current-month-label').textContent = `${months[currentMonth]} ${currentYear}`;
+    }
+
+    // Toggle campos de parcela
+    function toggleParcelaFields() {
+      const parceled = document.getElementById('t-parceled').value === 'yes';
+      const fields = document.getElementById('parcela-fields');
+      if (parceled) {
+        fields.classList.remove('hidden');
+      } else {
+        fields.classList.add('hidden');
+      }
+    }
+
+    // Atualizar UI do usuário
+    function updateUserInfo() {
+      if (typeof currentUser !== 'undefined' && currentUser) {
+        const name = currentUser.email ? currentUser.email.split('@')[0] : 'Usuário';
+        const initials = name.substring(0, 2).toUpperCase();
+        document.getElementById('user-name').textContent = name;
+        document.getElementById('user-email').textContent = currentUser.email || '';
+        document.getElementById('user-avatar').textContent = initials;
+      }
+    }
+
+    // Renderizar transações
+    function renderTransactions() {
+      const container = document.getElementById('transaction-list-container');
+      const countEl = document.getElementById('month-count');
+      if (!container) return;
+
+      const now = new Date();
+      const monthTrans = transactions.filter(t => {
+        const d = new Date(t.date);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+      });
+
+      countEl.textContent = `${monthTrans.length} transações`;
+
+      if (monthTrans.length === 0) {
+        container.innerHTML = '<p class="empty-state">Nenhum lançamento este mês</p>';
+        return;
+      }
+
+      container.innerHTML = monthTrans.map(t => {
+        const dateFormatted = new Date(t.date).toLocaleDateString('pt-BR');
+        const isEntrada = t.type === 'entrada';
+        const icon = isEntrada ? 'fa-arrow-down' : 'fa-arrow-up';
+        const color = isEntrada ? 'var(--positive)' : 'var(--negative)';
+        const sign = isEntrada ? '+' : '-';
+        
+        return `
+          <div class="transaction-item ${isEntrada ? 'income' : 'expense'}">
+            <div class="transaction-icon">
+              <i class="fa-solid ${icon}"></i>
+            </div>
+            <div class="transaction-info">
+              <div class="transaction-desc">${escapeHTML(t.desc)}</div>
+              <div class="transaction-meta">
+                ${escapeHTML(t.user)} · ${escapeHTML(t.cat)} · ${dateFormatted}
+                ${t.parceled ? ` · Parcela ${t.currentInstallment}/${t.totalInstallments}` : ''}
+              </div>
+            </div>
+            <div class="transaction-amount" style="color: ${color};">
+              ${sign} R$ ${t.val.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Renderizar parcelas
+    function renderInstallments() {
+      const container = document.getElementById('installments-list');
+      const totalEl = document.getElementById('installments-total');
+      const pendingEl = document.getElementById('installments-pending');
+      const nextEl = document.getElementById('installments-next');
+
+      const installmentTrans = transactions.filter(t => t.parceled && t.totalInstallments > t.currentInstallment);
+      
+      let totalValue = 0;
+      let pendingCount = 0;
+
+      installmentTrans.forEach(t => {
+        const remaining = t.totalInstallments - t.currentInstallment;
+        totalValue += t.val * remaining;
+        pendingCount += remaining;
+      });
+
+      totalEl.textContent = `R$ ${totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      pendingEl.textContent = pendingCount;
+
+      // Encontrar próxima quitação
+      if (installmentTrans.length > 0) {
+        const nextQuit = installmentTrans.reduce((earliest, t) => {
+          const monthsLeft = t.totalInstallments - t.currentInstallment;
+          const quitDate = new Date(t.date);
+          quitDate.setMonth(quitDate.getMonth() + monthsLeft);
+          return quitDate < earliest ? quitDate : earliest;
+        }, new Date('2099-12-31'));
+        
+        nextEl.textContent = nextQuit.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' });
+      } else {
+        nextEl.textContent = '—';
+      }
+
+      if (installmentTrans.length === 0) {
+        container.innerHTML = '<p class="empty-state">Nenhuma parcela ativa</p>';
+        return;
+      }
+
+      container.innerHTML = installmentTrans.map(t => {
+        const remaining = t.totalInstallments - t.currentInstallment;
+        const progress = (t.currentInstallment / t.totalInstallments) * 100;
+        
+        return `
+          <div class="installment-item">
+            <div class="installment-icon">
+              <i class="fa-solid fa-credit-card"></i>
+            </div>
+            <div class="installment-info">
+              <div class="installment-name">${escapeHTML(t.desc)}</div>
+              <div class="installment-progress">
+                <div class="installment-bar">
+                  <div class="installment-bar-fill" style="width: ${progress}%;"></div>
+                </div>
+                <span class="installment-count">${t.currentInstallment}/${t.totalInstallments} (${remaining} restantes)</span>
+              </div>
+            </div>
+            <div class="installment-value">R$ ${t.val.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Renderizar relatórios
+    function renderReports() {
+      const categoryContainer = document.getElementById('category-report');
+      const userContainer = document.getElementById('user-report');
+
+      const monthTrans = transactions.filter(t => {
+        const d = new Date(t.date);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear && t.type === 'saida';
+      });
+
+      const categories = {};
+      const users = {};
+
+      monthTrans.forEach(t => {
+        categories[t.cat] = (categories[t.cat] || 0) + t.val;
+        users[t.user] = (users[t.user] || 0) + t.val;
+      });
+
+      const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+
+      categoryContainer.innerHTML = Object.entries(categories)
+        .sort((a, b) => b[1] - a[1])
+        .map(([cat, value], index) => {
+          const maxVal = Math.max(...Object.values(categories), 1);
+          const percent = (value / maxVal) * 100;
+          const color = colors[index % colors.length];
+          return `
+            <div class="category-item">
+              <div class="category-icon" style="background: ${color}20; color: ${color};">
+                <i class="fa-solid fa-tag"></i>
+              </div>
+              <div class="category-info">
+                <div class="category-name">${cat}</div>
+                <div class="category-bar">
+                  <div class="category-bar-fill" style="width: ${percent}%; background: ${color};"></div>
+                </div>
+              </div>
+              <div>
+                <div class="category-value">R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      userContainer.innerHTML = Object.entries(users)
+        .sort((a, b) => b[1] - a[1])
+        .map(([user, value], index) => {
+          const maxVal = Math.max(...Object.values(users), 1);
+          const percent = (value / maxVal) * 100;
+          const color = colors[index % colors.length];
+          return `
+            <div class="category-item">
+              <div class="category-icon" style="background: ${color}20; color: ${color};">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <div class="category-info">
+                <div class="category-name">${user}</div>
+                <div class="category-bar">
+                  <div class="category-bar-fill" style="width: ${percent}%; background: ${color};"></div>
+                </div>
+              </div>
+              <div>
+                <div class="category-value">R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+    }
+
+    // Renderizar visão anual
+    function renderAnnual() {
+      const yearTrans = transactions.filter(t => new Date(t.date).getFullYear() === currentYear);
+      
+      let income = 0;
+      let expenses = 0;
+      
+      yearTrans.forEach(t => {
+        if (t.type === 'entrada') income += t.val;
+        else expenses += t.val;
+      });
+
+      document.getElementById('annual-year').textContent = currentYear;
+      document.getElementById('annual-income').textContent = `R$ ${income.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      document.getElementById('annual-expenses').textContent = `R$ ${expenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      
+      const balanceEl = document.getElementById('annual-balance');
+      balanceEl.textContent = `R$ ${(income - expenses).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      balanceEl.parentElement.className = `stat-card ${income - expenses >= 0 ? '' : 'negative'}`;
+
+      // Gráfico anual
+      renderAnnualChart();
+
+      // Parcelas que terminam no ano
+      renderAnnualInstallments();
+    }
+
+    // Renderizar gráfico anual
+    function renderAnnualChart() {
+      const container = document.getElementById('annual-chart');
+      container.innerHTML = '';
+
+      const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+      
+      let maxValue = 1;
+
+      const monthData = months.map((label, index) => {
+        const monthTrans = transactions.filter(t => {
+          const d = new Date(t.date);
+          return d.getMonth() === index && d.getFullYear() === currentYear;
+        });
+
+        let income = 0;
+        let expenses = 0;
+        monthTrans.forEach(t => {
+          if (t.type === 'entrada') income += t.val;
+          else expenses += t.val;
+        });
+
+        maxValue = Math.max(maxValue, income, expenses);
+
+        return { label, income, expenses };
+      });
+
+      monthData.forEach(data => {
+        const incomeHeight = (data.income / maxValue) * 100;
+        const expenseHeight = (data.expenses / maxValue) * 100;
+
+        container.innerHTML += `
+          <div class="chart-bar">
+            <div class="chart-bar-value">R$ ${data.income >= 1000 ? (data.income / 1000).toFixed(1) + 'k' : data.income.toFixed(0)}</div>
+            <div style="display: flex; gap: 4px; align-items: flex-end; height: 180px;">
+              <div class="chart-bar-fill" style="height: ${incomeHeight}%; background: var(--positive); width: 20px;"></div>
+              <div class="chart-bar-fill" style="height: ${expenseHeight}%; background: var(--negative); width: 20px;"></div>
+            </div>
+            <div class="chart-bar-label">${data.label}</div>
+          </div>
+        `;
+      });
+    }
+
+    // Renderizar parcelas anuais
+    function renderAnnualInstallments() {
+      const container = document.getElementById('annual-installments');
+      
+      const installmentTrans = transactions.filter(t => t.parceled);
+      
+      if (installmentTrans.length === 0) {
+        container.innerHTML = '<p class="empty-state">Nenhuma parcela encontrada</p>';
+        return;
+      }
+
+      container.innerHTML = installmentTrans.map(t => {
+        const remaining = t.totalInstallments - t.currentInstallment;
+        const quitDate = new Date(t.date);
+        quitDate.setMonth(quitDate.getMonth() + t.totalInstallments);
+        
+        const endsThisYear = quitDate.getFullYear() === currentYear;
+        
+        return `
+          <div class="installment-item" style="${endsThisYear ? 'border-left: 3px solid var(--positive);' : ''}">
+            <div class="installment-icon">
+              <i class="fa-solid fa-credit-card"></i>
+            </div>
+            <div class="installment-info">
+              <div class="installment-name">${escapeHTML(t.desc)}</div>
+              <div class="installment-count">
+                ${t.currentInstallment}/${t.totalInstallments} · 
+                ${remaining > 0 ? `${remaining} restantes` : 'Quitado'} · 
+                Termina: ${quitDate.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' })}
+              </div>
+            </div>
+            <div class="installment-value">R$ ${t.val.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Renderizar gráfico mensal
+    function renderMonthlyChart() {
+      const container = document.getElementById('monthly-chart');
+      container.innerHTML = '';
+
+      const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+      const monthData = [];
+
+      for (let i = 5; i >= 0; i--) {
+        let month = currentMonth - i;
+        let year = currentYear;
+        
+        if (month < 0) {
+          month += 12;
+          year--;
+        }
+
+        const monthTrans = transactions.filter(t => {
+          const d = new Date(t.date);
+          return d.getMonth() === month && d.getFullYear() === year;
+        });
+
+        let income = 0;
+        let expenses = 0;
+        monthTrans.forEach(t => {
+          if (t.type === 'entrada') income += t.val;
+          else expenses += t.val;
+        });
+
+        monthData.push({
+          label: months[month],
+          income,
+          expenses
+        });
+      }
+
+      const maxValue = Math.max(...monthData.map(m => Math.max(m.income, m.expenses)), 1);
+
+      monthData.forEach(data => {
+        const incomeHeight = (data.income / maxValue) * 100;
+        const expenseHeight = (data.expenses / maxValue) * 100;
+
+        container.innerHTML += `
+          <div class="chart-bar">
+            <div class="chart-bar-value">R$ ${data.income >= 1000 ? (data.income / 1000).toFixed(1) + 'k' : data.income.toFixed(0)}</div>
+            <div style="display: flex; gap: 4px; align-items: flex-end; height: 120px;">
+              <div class="chart-bar-fill" style="height: ${incomeHeight}%; background: var(--positive); width: 20px;"></div>
+              <div class="chart-bar-fill" style="height: ${expenseHeight}%; background: var(--negative); width: 20px;"></div>
+            </div>
+            <div class="chart-bar-label">${data.label}</div>
+          </div>
+        `;
+      });
+    }
+
+    // Sobrescrever updateUI para o novo layout
+    const originalUpdateUI = window.updateUI;
+    window.updateUI = function() {
+      // Chamar updateUI original se existir
+      if (typeof originalUpdateUI === 'function') {
+        originalUpdateUI();
+      }
+
+      // Atualizar cards do dashboard
+      const monthTrans = transactions.filter(t => {
+        const d = new Date(t.date);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+      });
+
+      let income = 0;
+      let expenses = 0;
+      const categories = {};
+
+      monthTrans.forEach(t => {
+        if (t.type === 'entrada') {
+          income += t.val;
+        } else {
+          expenses += t.val;
+          categories[t.cat] = (categories[t.cat] || 0) + t.val;
+        }
+      });
+
+      const formatCurrency = val => `R$ ${val.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+      // Atualizar hero card
+      document.getElementById('hero-income').textContent = formatCurrency(income);
+      document.getElementById('hero-expense').textContent = formatCurrency(expenses);
+      
+      const balanceEl = document.getElementById('hero-balance');
+      balanceEl.textContent = formatCurrency(income - expenses);
+      balanceEl.className = `hero-balance-value ${(income - expenses) >= 0 ? 'positive' : 'negative'}`;
+
+      // Atualizar stats
+      document.getElementById('dash-income').textContent = formatCurrency(income);
+      document.getElementById('dash-expense').textContent = formatCurrency(expenses);
+      
+      const balanceStat = document.getElementById('dash-balance');
+      balanceStat.textContent = formatCurrency(income - expenses);
+      balanceStat.parentElement.className = `stat-card ${(income - expenses) >= 0 ? '' : 'negative'}`;
+
+      document.getElementById('monthly-expense').textContent = formatCurrency(expenses);
+
+      // Atualizar alerta de orçamento
+      updateBudgetAlert(income, expenses);
+
+      // Atualizar categorias
+      renderCategoryBars(categories);
+
+      // Atualizar movimentações
+      renderMovimentacoes();
+
+      // Atualizar info do usuário
+      updateUserInfo();
+    };
+
+    // Atualizar alerta de orçamento
+    function updateBudgetAlert(income, expenses) {
+      const alertEl = document.getElementById('budget-alert');
+      const titleEl = document.getElementById('budget-alert-title');
+      const textEl = document.getElementById('budget-alert-text');
+      const iconEl = alertEl.querySelector('.budget-alert-icon');
+
+      if (income === 0) {
+        alertEl.className = 'budget-alert warning';
+        iconEl.textContent = '⚠';
+        titleEl.textContent = 'Sem receitas registradas';
+        textEl.textContent = 'Adicione suas receitas para controlar o orçamento';
+      } else {
+        const ratio = expenses / income;
+        
+        if (ratio <= 0.7) {
+          alertEl.className = 'budget-alert success';
+          iconEl.textContent = '✓';
+          titleEl.textContent = 'Orçamento saudável';
+          textEl.textContent = `Você utilizou ${(ratio * 100).toFixed(0)}% da sua receita`;
+        } else if (ratio <= 0.9) {
+          alertEl.className = 'budget-alert warning';
+          iconEl.textContent = '⚠';
+          titleEl.textContent = 'Atenção ao orçamento';
+          textEl.textContent = `Você utilizou ${(ratio * 100).toFixed(0)}% da sua receita`;
+        } else {
+          alertEl.className = 'budget-alert danger';
+          iconEl.textContent = '⚠';
+          titleEl.textContent = 'Orçamento no limite!';
+          textEl.textContent = `Você utilizou ${(ratio * 100).toFixed(0)}% da sua receita`;
+        }
+      }
+
+      alertEl.classList.remove('hidden');
+    }
+
+    // Renderizar barras de categorias
+    function renderCategoryBars(categories) {
+      const container = document.getElementById('category-bars');
+      if (!container) return;
+
+      const catKeys = Object.keys(categories);
+      if (catKeys.length === 0) {
+        container.innerHTML = '<p class="empty-state">Nenhuma despesa registrada</p>';
+        return;
+      }
+
+      const totalExpense = Object.values(categories).reduce((sum, val) => sum + val, 0);
+      const maxVal = Math.max(...Object.values(categories), 1);
+      const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+
+      container.innerHTML = catKeys.map((cat, index) => {
+        const val = categories[cat];
+        const percent = totalExpense > 0 ? (val / totalExpense) * 100 : 0;
+        const barWidth = (val / maxVal) * 100;
+        const color = colors[index % colors.length];
+        
+        return `
+          <div class="category-item">
+            <div class="category-icon" style="background: ${color}20; color: ${color};">
+              <i class="fa-solid fa-tag"></i>
+            </div>
+            <div class="category-info">
+              <div class="category-name">${cat}</div>
+              <div class="category-bar">
+                <div class="category-bar-fill" style="width: ${barWidth}%; background: ${color};"></div>
+              </div>
+            </div>
+            <div>
+              <div class="category-value">R$ ${val.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+              <div class="category-percent">${percent.toFixed(1)}%</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Renderizar movimentações recentes
+    function renderMovimentacoes() {
+      const container = document.getElementById('movimentacoes-list');
+      if (!container) return;
+
+      const recent = [...transactions]
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 5);
+
+      if (recent.length === 0) {
+        container.innerHTML = '<p class="empty-state">Nenhuma movimentação</p>';
+        return;
+      }
+
+      container.innerHTML = recent.map(t => {
+        const dateFormatted = new Date(t.date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+        const isEntrada = t.type === 'entrada';
+        const sign = isEntrada ? '+' : '-';
+        const color = isEntrada ? 'var(--positive)' : 'var(--negative)';
+        
+        return `
+          <div class="transaction-item ${isEntrada ? 'income' : 'expense'}">
+            <div class="transaction-icon">
+              <i class="fa-solid ${isEntrada ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+            </div>
+            <div class="transaction-info">
+              <div class="transaction-desc">${dateFormatted} - ${escapeHTML(t.desc)}</div>
+              <div class="transaction-meta">${escapeHTML(t.cat)} · ${escapeHTML(t.user)}</div>
+            </div>
+            <div class="transaction-amount" style="color: ${color};">
+              ${sign} R$ ${t.val.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  </script>
+j</body>
+</html>

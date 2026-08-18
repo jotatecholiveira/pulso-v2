@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financo — Orçamento Familiar Compartilhado</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style1.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="https://kit.fontawesome.com/7747098184.js" crossorigin="anonymous" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <div class="app-container">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-header">
+            <div class="profile-stack">
+              <div class="profile-avatar" id="sidebar-avatar" aria-label="Foto do usuário" title="Foto do usuário">
+                <i class="fa-solid fa-user" id="sidebar-avatar-icon"></i>
+              </div>
+              <div class="brand-text">
+                <p class="eyebrow">Finanças</p>
+                <span></span>
+              </div>
+            </div>
+          </div>
+
+          <nav class="nav-menu">
+            <button type="button" class="nav-link active" onclick="switchTab('dashboard')" data-tab="dashboard">
+              <i class="fa-regular fa-chart-bar"></i>
+              <span class="nav-label">Dashboard</span>
+            </button>
+            <button type="button" class="nav-link" onclick="switchTab('entrada')" data-tab="entrada">
+              <i class="fa-regular fa-paper-plane"></i>
+              <span class="nav-label">Lançamentos</span>
+            </button>
+            <button type="button" class="nav-link" onclick="switchTab('investimentos')" data-tab="investimentos">
+              <i class="fa-regular fa-chart-pie"></i>
+              <span class="nav-label">Investimentos</span>
+            </button>
+            <button type="button" class="nav-link" onclick="switchTab('historico')" data-tab="historico">
+              <i class="fa-regular fa-calendar"></i>
+              <span class="nav-label">Histórico</span>
+            </button>
+            <button type="button" class="nav-link" onclick="switchTab('banco')" data-tab="banco">
+              <i class="fa-regular fa-building"></i>
+              <span class="nav-label">Banco</span>
+            </button>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <div class="topbar">
+          <div>
+            <p class="eyebrow">Orçamento familiar</p>
+            <h1>Visão geral</h1>
+          </div>
+  <div class="header-controls">
+    <div class="user-menu" id="user-menu">
+      <div class="user-avatar-header" id="user-avatar-header" title="Perfil">
+        <i class="fa-solid fa-user" id="user-avatar-icon"></i>
+      </div>
+      <div class="user-dropdown" id="user-dropdown">
+        <div class="dropdown-header">
+          <div class="dropdown-name" id="dropdown-user-name">Usuário</div>
+          <div class="dropdown-email" id="dropdown-user-email">email@exemplo.com</div>
+        </div>
+        <button type="button" class="dropdown-item" onclick="openProfileModal()">
+          <i class="fa-solid fa-user-pen"></i> Minha Conta
+        </button>
+        <button type="button" class="dropdown-item danger" onclick="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Sair
+        </button>
+      </div>
+    </div>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro">🌙</button>
+  </div>
+        </div>
+
+        <!-- Saudação + Resumo + Acesso Rápido -->
+        <div class="dash-header">
+          <div class="dash-greeting">
+            <div class="greeting-text">
+              <h2 id="dash-greeting">Boa noite</h2>
+              <p class="greeting-user" id="dash-greeting-user">Usuário</p>
+            </div>
+            <div class="greeting-emoji" id="greeting-emoji">🌙</div>
+            <button type="button" class="global-eye-btn" id="globalEyeBtn" onclick="toggleAllValuesVisibility()" title="Mostrar/ocultar valores">
+              <i class="fa-solid fa-eye" id="global-eye-icon"></i>
+            </button>
+          </div>
+          <div class="dash-month-summary">
+            <div class="month-receitas">
+              <span class="month-label">Receitas no mês</span>
+              <span class="month-value positive" id="dash-receitas-mes">R$ 0,00</span>
+            </div>
+            <div class="month-despesas">
+              <span class="month-label">Despesas no mês</span>
+              <span class="month-value negative" id="dash-despesas-mes">R$ 0,00</span>
+            </div>
+            <button type="button" class="month-trend-btn" onclick="scrollToResumoMensal()" title="Ver resumo mensal">
+              <svg id="scroll-trend-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" style="transition: transform 0.3s ease;"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg>
+            </button>
+          </div>
+          <div class="dash-quick-access">
+            <h3>Acesso rápido</h3>
+            <div class="quick-buttons">
+              <button type="button" class="quick-btn quick-despesa" onclick="openModal('saida')" title="Nova despesa">
+                <i class="fa-solid fa-minus-circle"></i>
+                <span>Despesa</span>
+              </button>
+              <button type="button" class="quick-btn quick-receita" onclick="openModal('entrada')" title="Nova receita">
+                <i class="fa-solid fa-plus-circle"></i>
+                <span>Receita</span>
+              </button>
+              <button type="button" class="quick-btn quick-transf" onclick="showToast('Transferência em breve!', 'info')" title="Transferência">
+                <i class="fa-solid fa-right-left"></i>
+                <span>Transf.</span>
+              </button>
+              <button type="button" class="quick-btn quick-importar" onclick="switchTab('banco')" title="Importar dados">
+                <i class="fa-solid fa-file-import"></i>
+                <span>Importar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+ <!--  <section class="hero-monthly-summary" id="hero-monthly-summary"></section> --> 
+
+        <section id="entrada" class="tab-content">
+      </section>
+
+      <section id="dashboard" class="tab-content active">
+
+        <!-- SALDO GERAL + FATURAS -->
+        <div class="dash-two-col">
+          <div class="panel dash-saldo-panel">
+            <div class="saldo-header">
+              <span class="saldo-label">Saldo geral</span>
+            </div>
+            <div class="saldo-valor" id="dash-saldo-geral">R$ 0,00</div>
+
+            <h4 class="dash-section-title">Minhas contas</h4>
+            <div id="contas-list" class="contas-list">
+              <div class="empty-state-small">
+                <i class="fa-solid fa-building-columns"></i>
+                <p>Adicione sua primeira conta</p>
+              </div>
+            </div>
+            <button type="button" class="btn-manage" onclick="openContaModal()">Gerenciar contas</button>
+          </div>
+
+          <div class="panel dash-faturas-panel">
+            <div class="saldo-header">
+              <span class="saldo-label">Faturas de <span id="faturas-mes-atual">Agosto</span></span>
+              <span class="faturas-valor" id="dash-faturas-total">R$ 0,00</span>
+            </div>
+
+            <h4 class="dash-section-title">Meus cartões</h4>
+            <div id="cartoes-list" class="cartoes-list">
+              <div class="empty-state-small">
+                <i class="fa-solid fa-credit-card"></i>
+                <p>Adicione seu primeiro cartão</p>
+              </div>
+            </div>
+            <button type="button" class="btn-manage" onclick="openCartaoModal()">Gerenciar cartões</button>
+          </div>
+        </div>
+
+        <!-- CONTAS A PAGAR + CONTAS A RECEBER -->
+        <div class="dash-two-col">
+          <div class="panel">
+            <h4 class="dash-section-title">Contas a pagar</h4>
+            <div id="contas-pagar-list" class="bills-list">
+              <div class="empty-state-small">
+                <i class="fa-solid fa-calendar-check"></i>
+                <p>No momento você não possui contas a pagar</p>
+              </div>
+            </div>
+            <button type="button" class="btn-manage" onclick="openContaPagarModal()">+ Adicionar conta</button>
+          </div>
+
+          <div class="panel">
+            <h4 class="dash-section-title">Contas a receber</h4>
+            <div id="contas-receber-list" class="bills-list">
+              <div class="empty-state-small">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+                <p>No momento você não possui contas a receber</p>
+              </div>
+            </div>
+            <button type="button" class="btn-manage" onclick="openContaReceberModal()">+ Adicionar recebimento</button>
+          </div>
+        </div>
+
+        <!-- MAIORES GASTOS -->
+        <div class="panel">
+          <h4 class="dash-section-title">Maiores gastos do mês atual</h4>
+          <div id="maiores-gastos-list" class="maiores-gastos-list">
+            <div class="empty-state-small">
+              <i class="fa-solid fa-receipt"></i>
+              <p>Sem gastos no período</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEÇÕES EXTRAS (mantidas do dashboard original) -->
+        <div class="dash-two-col">
+          <div class="card">
+            <h2 class="card-title">Fundo de Emergência</h2>
+            <div class="dash-card-info">
+              <span id="emergencia-atual">R$ 0,00</span>
+              <span id="emergencia-pct">0%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="emergencia-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+            <p class="dash-card-subtitle">Meta: 6 meses de custos fixos (R$ <span id="emergencia-meta">0,00</span>)</p>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">Carteira de Investimentos</h2>
+            <div class="dash-card-value-lg" id="invest-total">R$ 0,00</div>
+            <p class="dash-card-sub">ETF: 15% da renda (Projeção: <span>+12% a.a.</span>)</p>
+            <svg class="mini-chart" id="invest-chart" viewBox="0 0 100 30"></svg>
+          </div>
+        </div>
+
+        <div class="dash-two-col">
+          <div class="panel chart-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Categorias</p>
+                <h3>Gastos por categoria</h3>
+              </div>
+            </div>
+            <div id="category-bars" class="category-bars-collapsed"></div>
+            <button type="button" class="category-toggle-btn" id="categoryToggle" onclick="toggleCategoryBars()" style="display: none;">
+              <span id="category-toggle-text">Ver todas</span>
+              <i class="fa-solid fa-chevron-down" id="category-toggle-icon"></i>
+            </button>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">Últimas Movimentações</h2>
+            <div class="movimentacoes-list" id="movimentacoes-list"></div>
+          </div>
+        </div>
+
+        <div class="dash-two-col">
+          <div class="card panel-top">
+            <h2 class="card-title">Divisão de Gastos</h2>
+            <div class="bar-chart-container" id="bar-chart-container"></div>
+          </div>
+
+          <div class="card panel-top">
+            <h2 class="card-title">Receitas por Categoria</h2>
+            <div class="receitas-chart-wrap">
+              <canvas id="receitas-chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIMITES DE GASTOS POR CATEGORIA -->
+        <div class="panel panel-top">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Orçamento</p>
+              <h3>Limites de gastos por categoria</h3>
+            </div>
+            <button type="button" class="btn-submit btn-sm" id="saveLimitesBtn" onclick="salvarLimitesGastos()">
+              <i class="fa-regular fa-floppy-disk"></i> Salvar
+            </button>
+          </div>
+          <p class="panel-text" style="margin-bottom: 12px;">Defina um limite mensal para cada categoria. Quando o gasto ultrapassar, aparece um alerta no dashboard.</p>
+          <div id="limites-categorias" class="limites-grid"></div>
+        </div>
+
+      </section>
+
+      <section id="investimentos" class="tab-content">
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <p class="eyebrow">Patrimônio</p>
+        <h3>Seus ativos e metas</h3>
+      </div>
+    </div>
+
+    <!-- PATRIMÔNIO ATUAL -->
+    <div class="invest-grid invest-grid-margin">
+      <h4 class="invest-grid-title">💰 Patrimônio Atual</h4>
+      
+      <div class="card card-gradient-success">
+        <div class="card-title">Carro</div>
+        <div class="card-value card-value-success">R$ 15.900,00</div>
+        <p class="card-subtitle">Renault (ativo)</p>
+      </div>
+
+      <div class="card card-gradient-info">
+        <div class="card-title">Reserva de Aluguel</div>
+        <div class="card-value card-value-info">R$ 1.800,00</div>
+        <p class="card-subtitle">Próximo mês (emergência)</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Patrimônio Líquido</div>
+        <div class="card-value">R$ 17.700,00</div>
+        <p class="card-subtitle">Total de ativos</p>
+      </div>
+    </div>
+
+    <!-- METAS -->
+    <div class="invest-grid">
+      <h4 class="invest-grid-title">🎯 Metas Financeiras</h4>
+
+      <!-- CURTO PRAZO -->
+      <div class="card">
+        <div class="card-title">Curto Prazo (6 meses)</div>
+        <div class="card-value card-value-sm" id="meta-curto-value">R$ 0,00 / R$ ?</div>
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="meta-curto-bar" style="width: 0%;"></div>
+          </div>
+          <div class="progress-info">
+            <span id="meta-curto-pct">Progresso: 0%</span>
+            <span id="meta-curto-falta">Falta: R$ 0,00</span>
+          </div>
+        </div>
+        <p class="card-hint">📌 Reserva de emergência (6 meses de gastos)</p>
+      </div>
+
+      <!-- MÉDIO PRAZO -->
+      <div class="card">
+        <div class="card-title">Médio Prazo (1 ano)</div>
+        <div class="card-value card-value-sm" id="meta-medio-value">R$ 15.900,00 / R$ ?</div>
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="meta-medio-bar" style="width: 0%;"></div>
+          </div>
+          <div class="progress-info">
+            <span id="meta-medio-pct">Progresso: 0%</span>
+            <span id="meta-medio-falta">Falta: R$ 0,00</span>
+          </div>
+        </div>
+        <p class="card-hint">📌 Carro novo + financiamento da casa</p>
+      </div>
+
+      <!-- LONGO PRAZO -->
+      <div class="card">
+        <div class="card-title">Longo Prazo (3 anos)</div>
+        <div class="card-value card-value-sm" id="meta-longo-value">R$ 15.900,00 / R$ ?</div>
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="meta-longo-bar" style="width: 0%;"></div>
+          </div>
+          <div class="progress-info">
+            <span id="meta-longo-pct">Progresso: 0%</span>
+            <span id="meta-longo-falta">Falta: R$ 0,00</span>
+          </div>
+        </div>
+        <p class="card-hint">📌 Casa quitada</p>
+      </div>
+    </div>
+
+    <!-- EDITOR DE METAS -->
+    <div class="panel panel-top">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Configurar</p>
+          <h3>Editar suas metas</h3>
+        </div>
+      </div>
+      
+      <form id="metasForm" class="form-stack">
+        <div class="metas-form-grid">
+          <div class="form-group">
+            <label for="meta-curto-val">Curto (6 meses) - R$</label>
+            <input type="number" id="meta-curto-val" class="form-control" step="100" min="0" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label for="meta-medio-val">Médio (1 ano) - R$</label>
+            <input type="number" id="meta-medio-val" class="form-control" step="100" min="0" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label for="meta-longo-val">Longo (3 anos) - R$</label>
+            <input type="number" id="meta-longo-val" class="form-control" step="100" min="0" placeholder="0">
+          </div>
+        </div>
+        <button type="submit" class="btn-submit">💾 Salvar Metas</button>
+      </form>
+    </div>
+
+    <!-- PORTFOLIO CHART -->
+    <div class="panel panel-top">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Carteira</p>
+          <h3>Alocação Recomendada</h3>
+        </div>
+      </div>
+      <div class="portfolio-chart-wrap">
+        <canvas id="portfolioChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <!-- SCREENING AÇÕES -->
+    <div class="panel panel-top">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Stock picking</p>
+          <h3>📈 Ações em Preço Bom</h3>
+        </div>
+      </div>
+      <div class="invest-table-wrap">
+        <table class="invest-table" id="acoesTable">
+          <thead>
+            <tr>
+              <th>Ação</th>
+              <th>Empresa</th>
+              <th>Preço</th>
+              <th>DY %</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="acoesBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SCREENING FIIs -->
+    <div class="panel panel-top">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Fundos imobiliários</p>
+          <h3>🏢 FIIs Interessantes</h3>
+        </div>
+      </div>
+      <div class="invest-table-wrap">
+        <table class="invest-table" id="fiisTable">
+          <thead>
+            <tr>
+              <th>FII</th>
+              <th>P/VP</th>
+              <th>Desconto</th>
+              <th>DY %</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="fiisBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SCREENING ETFs -->
+    <div class="panel panel-top">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">ETFs</p>
+          <h3>🌐 ETFs Selecionados</h3>
+        </div>
+      </div>
+      <div class="invest-table-wrap">
+        <table class="invest-table" id="etfsTable">
+          <thead>
+            <tr>
+              <th>ETF</th>
+              <th>Índice</th>
+              <th>Preço</th>
+              <th>DY %</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="etfsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+      <section id="historico" class="tab-content">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Histórico</p>
+              <h3>Últimos lançamentos</h3>
+            </div>
+          </div>
+          <div class="history-controls">
+            <div class="filter-group">
+              <button type="button" class="filter-btn active" id="filter-all" onclick="filterHistory('all')">Todos</button>
+              <button type="button" class="filter-btn" id="filter-mensal" onclick="filterHistory('mensal')">Mensal</button>
+              <button type="button" class="filter-btn" id="filter-anual" onclick="filterHistory('anual')">Anual</button>
+            </div>
+          </div>
+          <div class="transaction-list" id="transaction-list-container"></div>
+        </div>
+      </section>
+
+      <section id="banco" class="tab-content">
+        <div class="dashboard-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Backup</p>
+                <h3>Guardar seus dados</h3>
+              </div>
+            </div>
+            <p class="panel-text">Exporte todas as transações em um arquivo JSON para fazer backup ou reimportar depois.</p>
+            <button type="button" class="btn-submit" onclick="exportData()">📤 Exportar Backup (.json)</button>
+          </div>
+
+          <div class="panel danger-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Zona de risco</p>
+                <h3>Limpar tudo</h3>
+              </div>
+            </div>
+            <p class="panel-text">Apaga permanentemente todas as transações salvas neste navegador. Esta ação não pode ser desfeita.</p>
+            <button type="button" class="btn-submit" onclick="clearData()">🗑️ Limpar Todos os Dados</button>
+          </div>
+        </div>
+
+        <div class="panel panel-top">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Importar</p>
+              <h3>Planilha Excel</h3>
+            </div>
+          </div>
+          <p class="panel-text">Selecione um arquivo .xlsx com uma aba por mês. Cada aba vira automaticamente as transações daquele mês.</p>
+          <div class="upload-zone" id="upload-zone">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <p>Arraste o arquivo aqui ou <span class="upload-link">clique para selecionar</span></p>
+            <p class="upload-hint">Aceita .xlsx e .xls (máx. 5MB)</p>
+            <input type="file" id="excel-file-input" accept=".xlsx,.xls" style="display: none;" onchange="handleFileSelect(event)">
+          </div>
+          <div id="file-preview" class="file-preview" style="display: none;">
+            <i class="fa-solid fa-file-excel"></i>
+            <span id="file-name"></span>
+            <button type="button" class="file-remove" onclick="removeSelectedFile()" title="Remover">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <button type="button" class="btn-submit" id="import-btn" onclick="importExcel()" disabled>
+            <i class="fa-solid fa-file-import"></i> Importar Excel
+          </button>
+          <div id="import-log" class="import-log"></div>
+        </div>
+
+        <div class="panel panel-top">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Privacidade</p>
+              <h3>Seus dados, sua conta</h3>
+            </div>
+          </div>
+          <p class="panel-text">Tudo é salvo no seu login do Firebase — só você acessa. Nada é compartilhado com terceiros.</p>
+          <ul style="margin-top: 8px; padding-left: 18px; line-height: 1.7; font-size: 0.9rem; color: var(--text-secondary);">
+            <li>Autenticação por e-mail/senha ou Google (Firebase Auth)</li>
+            <li>Banco de dados protegido por regras de acesso por usuário</li>
+            <li>Modo offline usa cache local criptografado no navegador</li>
+          </ul>
+        </div>
+      </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL: Novo Lançamento -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <h3 id="modal-title">Nova despesa</h3>
+        <button type="button" class="modal-close" onclick="closeModal()" aria-label="Fechar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="modalTransactionForm" class="modal-form">
+        <input type="hidden" id="m-type" value="saida">
+
+        <div class="modal-field">
+          <label for="m-desc">Descrição</label>
+          <input type="text" class="modal-input" id="m-desc" placeholder="Ex: Supermercado, Salário..." required autofocus>
+        </div>
+
+        <div class="modal-row">
+          <div class="modal-field">
+            <label for="m-val">Valor</label>
+            <div class="modal-input-wrap">
+              <span class="modal-input-prefix">R$</span>
+              <input type="number" step="0.01" min="0.01" class="modal-input modal-input-currency" id="m-val" placeholder="0,00" required>
+            </div>
+          </div>
+          <div class="modal-field">
+            <label for="m-date">Data</label>
+            <input type="date" class="modal-input" id="m-date" required>
+          </div>
+        </div>
+
+        <div class="modal-row">
+          <div class="modal-field">
+            <label for="m-cat">Categoria</label>
+            <select class="modal-input" id="m-cat" required>
+              <optgroup label="Entradas">
+                <option value="Renda">Renda</option>
+              </optgroup>
+              <optgroup label="Saídas">
+                <option value="Gastos Essenciais">Gastos Essenciais</option>
+                <option value="Pessoais">Gastos Pessoais</option>
+                <option value="Investimento">Investimentos</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label for="m-pagamento">Pagamento</label>
+            <select class="modal-input" id="m-pagamento">
+              <option value="avista">À vista</option>
+              <option value="parcelado">Parcelado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-field" id="parcelas-group" style="display: none;">
+          <label for="m-parcelas">Parcelas</label>
+          <div class="modal-row">
+            <input type="number" min="2" max="60" class="modal-input" id="m-parcelas" placeholder="2" value="2">
+            <div class="parcela-info" id="parcela-info">de R$ 0,00</div>
+          </div>
+        </div>
+
+        <button type="submit" class="modal-submit" id="modal-submit-btn">
+          <i class="fa-solid fa-check"></i>
+          Salvar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Editar Perfil -->
+  <div class="form-modal-overlay" id="profile-modal-overlay" onclick="closeProfileModal()">
+    <div class="form-modal profile-modal-lg" onclick="event.stopPropagation()">
+      <h3>Editar perfil</h3>
+      <div class="profile-modal-content">
+        <div class="profile-avatar-upload" id="profile-avatar-upload">
+          <div class="avatar-preview avatar-preview-lg" id="avatar-preview">
+            <i class="fa-solid fa-user" id="avatar-preview-icon"></i>
+          </div>
+          <label class="avatar-edit-btn" for="avatar-file-input" title="Enviar foto">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+          <input type="file" id="avatar-file-input" accept="image/*" onchange="handleAvatarUpload(event)">
+        </div>
+
+        <!-- Character Selector -->
+        <div class="character-selector">
+          <p class="character-selector-label">Escolha seu personagem</p>
+
+          <div class="gender-toggle" id="gender-toggle">
+            <button type="button" class="gender-btn active" data-gender="all" onclick="filterAvatars('all')">Todos</button>
+            <button type="button" class="gender-btn" data-gender="masc" onclick="filterAvatars('masc')">
+              <i class="fa-solid fa-shield-halved"></i> Guerreiro
+            </button>
+            <button type="button" class="gender-btn" data-gender="fem" onclick="filterAvatars('fem')">
+              <i class="fa-solid fa-wand-sparkles"></i> Maga
+            </button>
+          </div>
+
+          <div class="avatar-grid" id="avatar-grid">
+            <!-- Guerreiros / Masc -->
+            <button type="button" class="avatar-option selected" data-icon="fa-user" data-gender="all" title="Padrão">
+              <i class="fa-solid fa-user"></i><span>Jogador</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-hat-wizard" data-gender="masc" title="Mago">
+              <i class="fa-solid fa-hat-wizard"></i><span>Mago</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-shield-halved" data-gender="masc" title="Guerreiro">
+              <i class="fa-solid fa-shield-halved"></i><span>Guerreiro</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-skull-crossbones" data-gender="masc" title="Pirata">
+              <i class="fa-solid fa-skull-crossbones"></i><span>Pirata</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-dragon" data-gender="masc" title="Dragão">
+              <i class="fa-solid fa-dragon"></i><span>Dragão</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-skull" data-gender="masc" title="Esqueleto">
+              <i class="fa-solid fa-skull"></i><span>Esqueleto</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-ghost" data-gender="masc" title="Fantasma">
+              <i class="fa-solid fa-ghost"></i><span>Fantasma</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-crown" data-gender="masc" title="Rei">
+              <i class="fa-solid fa-crown"></i><span>Rei</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-helmet-safety" data-gender="masc" title="Viking">
+              <i class="fa-solid fa-helmet-safety"></i><span>Viking</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-khanda" data-gender="masc" title="Samurai">
+              <i class="fa-solid fa-khanda"></i><span>Samurai</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-bullseye" data-gender="masc" title="Arqueiro">
+              <i class="fa-solid fa-bullseye"></i><span>Arqueiro</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-hammer" data-gender="masc" title="Ferreiro">
+              <i class="fa-solid fa-hammer"></i><span>Ferreiro</span>
+            </button>
+
+            <!-- Magas / Fem -->
+            <button type="button" class="avatar-option" data-icon="fa-wand-sparkles" data-gender="fem" title="Feiticeira">
+              <i class="fa-solid fa-wand-sparkles"></i><span>Feiticeira</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-cat" data-gender="fem" title="Gata">
+              <i class="fa-solid fa-cat"></i><span>Gata</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-spider" data-gender="fem" title="Bruxa">
+              <i class="fa-solid fa-spider"></i><span>Bruxa</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-sun" data-gender="fem" title="Deusa Sol">
+              <i class="fa-solid fa-sun"></i><span>Deusa Sol</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-moon" data-gender="fem" title="Deusa Lua">
+              <i class="fa-solid fa-moon"></i><span>Deusa Lua</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-star" data-gender="fem" title="Estrela">
+              <i class="fa-solid fa-star"></i><span>Estrela</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-heart" data-gender="fem" title="Coração">
+              <i class="fa-solid fa-heart"></i><span>Coração</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-gem" data-gender="fem" title="Diamante">
+              <i class="fa-solid fa-gem"></i><span>Diamante</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-crown" data-gender="fem" title="Rainha">
+              <i class="fa-solid fa-crown"></i><span>Rainha</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-feather" data-gender="fem" title="Pluma">
+              <i class="fa-solid fa-feather"></i><span>Pluma</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-fish" data-gender="fem" title="Sereia">
+              <i class="fa-solid fa-fish"></i><span>Sereia</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-butterfly" data-gender="fem" title="Borboleta">
+              <i class="fa-solid fa-butterfly"></i><span>Borboleta</span>
+            </button>
+
+            <!-- Neutros / Todos -->
+            <button type="button" class="avatar-option" data-icon="fa-dog" data-gender="all" title="Cão">
+              <i class="fa-solid fa-dog"></i><span>Cão</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-bird" data-gender="all" title="Pássaro">
+              <i class="fa-solid fa-bird"></i><span>Pássaro</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-frog" data-gender="all" title="Sapo">
+              <i class="fa-solid fa-frog"></i><span>Sapo</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-fire" data-gender="all" title="Fogo">
+              <i class="fa-solid fa-fire"></i><span>Fogo</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-bolt" data-gender="all" title="Raio">
+              <i class="fa-solid fa-bolt"></i><span>Raio</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-leaf" data-gender="all" title="Natureza">
+              <i class="fa-solid fa-leaf"></i><span>Natureza</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-tree" data-gender="all" title="Árvore">
+              <i class="fa-solid fa-tree"></i><span>Árvore</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-mountain" data-gender="all" title="Montanha">
+              <i class="fa-solid fa-mountain"></i><span>Montanha</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-music" data-gender="all" title="Música">
+              <i class="fa-solid fa-music"></i><span>Música</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-palette" data-gender="all" title="Arte">
+              <i class="fa-solid fa-palette"></i><span>Arte</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-gamepad" data-gender="all" title="Games">
+              <i class="fa-solid fa-gamepad"></i><span>Games</span>
+            </button>
+            <button type="button" class="avatar-option" data-icon="fa-rocket" data-gender="all" title="Foguete">
+              <i class="fa-solid fa-rocket"></i><span>Foguete</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-field">
+          <label for="profile-name">Nome</label>
+          <input type="text" id="profile-name" placeholder="Seu nome">
+        </div>
+        <div class="profile-field">
+          <label for="profile-email">E-mail <span style="opacity: 0.5; font-weight: 400; text-transform: none; letter-spacing: 0;">(opcional)</span></label>
+          <input type="email" id="profile-email" placeholder="seu@email.com">
+        </div>
+        <div class="profile-actions">
+          <button type="button" class="btn-save-profile" onclick="saveProfile()">
+            <i class="fa-solid fa-check"></i> Salvar alterações
+          </button>
+          <button type="button" class="btn-delete-account" onclick="confirmDeleteAccount()">
+            <i class="fa-solid fa-trash"></i> Excluir minha conta
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
