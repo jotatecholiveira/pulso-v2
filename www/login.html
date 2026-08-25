@@ -313,67 +313,180 @@
     }
     .trust-item i { color: #51cf66; font-size: 0.6rem; }
 
-    /* === THEME TOGGLE PILL === */
+    /* === THEME TOGGLE PILL — Visual Sky/Moon === */
     .theme-pill {
       position: fixed;
-      top: 16px; right: 16px;
+      top: 16px;
+      right: 16px;
       z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      width: 180px;
-      height: 48px;
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 999px;
+      width: 170px;
+      height: 52px;
+      border-radius: 26px;
       cursor: pointer;
-      transition: all 0.25s ease;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
       overflow: hidden;
-    }
-    .theme-pill:hover { box-shadow: 0 4px 16px rgba(79,108,245,0.15); }
-    .theme-pill:focus-visible { outline: 2px solid #4f6cf5; outline-offset: 3px; }
-    body.dark-mode .theme-pill { background: #1e1e3a; border-color: #374151; }
-    .theme-pill-btn {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      height: 100%;
-      background: transparent;
       border: none;
-      color: #9ca3af;
-      font-family: inherit;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 0 14px;
-      transition: color 0.2s ease;
-      white-space: nowrap;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
     }
-    .theme-pill-btn:hover { color: #1a1a2e; }
-    body.dark-mode .theme-pill-btn { color: #9ca3af; }
-    body.dark-mode .theme-pill-btn:hover { color: #f3f4f6; }
-    .theme-pill-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
-    .theme-pill-slider {
+    .theme-pill:focus-visible {
+      box-shadow: 0 0 0 3px rgba(79,108,245,0.5);
+    }
+    .theme-pill-bg {
       position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 84px;
-      height: 38px;
-      background: linear-gradient(135deg, #4f6cf5 0%, #3d5bd8 100%);
-      border-radius: 999px;
-      box-shadow: 0 2px 8px rgba(79,108,245,0.3);
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      z-index: 1;
+      inset: 0;
+      border-radius: 26px;
+      overflow: hidden;
+      transition: background 0.5s ease;
+    }
+    .theme-pill[data-theme="light"] .theme-pill-bg {
+      background: linear-gradient(135deg, #7ec8e3 0%, #a8d8ea 40%, #c9e8f5 100%);
+    }
+    .theme-pill[data-theme="dark"] .theme-pill-bg {
+      background: linear-gradient(135deg, #0a0e27 0%, #141852 50%, #0d1137 100%);
+    }
+    .theme-pill-stars {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .theme-pill[data-theme="dark"] .theme-pill-stars { opacity: 1; }
+    .theme-pill-stars::before,
+    .theme-pill-stars::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow:
+        12px 8px 0 0 rgba(255,255,255,0.6),
+        28px 14px 0 0 rgba(255,255,255,0.4),
+        45px 6px 0 0 rgba(255,255,255,0.7),
+        60px 20px 0 0 rgba(255,255,255,0.3),
+        80px 10px 0 0 rgba(255,255,255,0.5),
+        100px 22px 0 0 rgba(255,255,255,0.4),
+        120px 8px 0 0 rgba(255,255,255,0.6),
+        140px 18px 0 0 rgba(255,255,255,0.3),
+        18px 24px 0 0 rgba(255,255,255,0.5),
+        55px 30px 0 0 rgba(255,255,255,0.4),
+        90px 28px 0 0 rgba(255,255,255,0.6),
+        130px 26px 0 0 rgba(255,255,255,0.3);
+    }
+    .theme-pill-stars::after {
+      box-shadow:
+        8px 18px 0 0 rgba(255,255,255,0.3),
+        35px 4px 0 0 rgba(255,255,255,0.5),
+        72px 26px 0 0 rgba(255,255,255,0.4),
+        105px 6px 0 0 rgba(255,255,255,0.6),
+        148px 14px 0 0 rgba(255,255,255,0.3);
+    }
+    .theme-pill-clouds {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .theme-pill[data-theme="light"] .theme-pill-clouds { opacity: 1; }
+    .cloud {
+      position: absolute;
+      background: rgba(255,255,255,0.85);
+      border-radius: 50px;
+    }
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .cloud-1 { width: 32px; height: 10px; top: 12px; left: 10px; }
+    .cloud-1::before { width: 14px; height: 14px; top: -8px; left: 6px; }
+    .cloud-1::after { width: 10px; height: 10px; top: -5px; left: 17px; }
+    .cloud-2 { width: 24px; height: 8px; top: 28px; left: 22px; }
+    .cloud-2::before { width: 10px; height: 10px; top: -6px; left: 4px; }
+    .cloud-2::after { width: 8px; height: 8px; top: -4px; left: 12px; }
+    .cloud-3 { width: 20px; height: 7px; top: 18px; left: 50px; opacity: 0.7; }
+    .cloud-3::before { width: 8px; height: 8px; top: -5px; left: 3px; }
+    .cloud-3::after { width: 6px; height: 6px; top: -3px; left: 9px; }
+    .theme-pill-disc {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      z-index: 3;
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background 0.4s ease,
+                  box-shadow 0.4s ease;
       pointer-events: none;
     }
-    .theme-pill[data-theme="light"] .theme-pill-slider { transform: translateX(0); }
-    .theme-pill[data-theme="dark"] .theme-pill-slider { transform: translateX(96px); }
-    .theme-pill[data-theme="light"] .btn-day { color: #fff; }
-    .theme-pill[data-theme="dark"] .btn-night { color: #fff; }
+    .theme-pill[data-theme="light"] .theme-pill-disc {
+      transform: translateX(118px);
+      background: radial-gradient(circle at 40% 40%, #fff9e6, #ffe066, #ffb347);
+      box-shadow: 0 0 16px rgba(255,200,50,0.5), 0 0 32px rgba(255,170,50,0.2);
+    }
+    .theme-pill[data-theme="dark"] .theme-pill-disc {
+      transform: translateX(0);
+      background: radial-gradient(circle at 35% 35%, #e8e8e8, #c0c0c0, #a0a0a0);
+      box-shadow: inset -4px -2px 4px rgba(0,0,0,0.15), 0 0 12px rgba(200,200,220,0.3);
+    }
+    .theme-pill-disc::before {
+      content: '';
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.08);
+      top: 12px; left: 14px;
+    }
+    .theme-pill-disc::after {
+      content: '';
+      position: absolute;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.06);
+      top: 24px; left: 22px;
+    }
+    .theme-pill-label {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: inherit;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      z-index: 2;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .theme-pill-label-day {
+      right: 14px;
+      color: rgba(255,255,255,0.9);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+    .theme-pill[data-theme="light"] .theme-pill-label-day { opacity: 1; }
+    .theme-pill[data-theme="dark"] .theme-pill-label-day { opacity: 0; }
+    .theme-pill-label-night {
+      left: 14px;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .theme-pill[data-theme="dark"] .theme-pill-label-night { opacity: 1; }
+    .theme-pill[data-theme="light"] .theme-pill-label-night { opacity: 0; }
+    @media (max-width: 480px) {
+      .theme-pill { width: 150px; height: 46px; }
+      .theme-pill-disc { width: 38px; height: 38px; }
+      .theme-pill[data-theme="light"] .theme-pill-disc { transform: translateX(104px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .theme-pill-disc,
+      .theme-pill-stars,
+      .theme-pill-clouds,
+      .theme-pill-bg { transition-duration: 0.01ms; }
+    }
 
     /* === DARK MODE === */
     body.dark-mode {
@@ -506,16 +619,18 @@
   </div>
 
   <!-- THEME -->
-  <div class="theme-pill" id="themePill" data-theme="light" role="radiogroup" aria-label="Selecionar tema">
-    <div class="theme-pill-slider" aria-hidden="true"></div>
-    <button class="theme-pill-btn btn-day" role="radio" aria-checked="true" data-theme="light">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      DAYMODE
-    </button>
-    <button class="theme-pill-btn btn-night" role="radio" aria-checked="false" data-theme="dark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      NIGHTMODE
-    </button>
+  <div class="theme-pill" id="themePill" data-theme="light" role="switch" aria-checked="true" aria-label="Alternar tema claro/escuro" tabindex="0">
+    <div class="theme-pill-bg" aria-hidden="true">
+      <div class="theme-pill-stars"></div>
+      <div class="theme-pill-clouds">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+      </div>
+    </div>
+    <div class="theme-pill-disc" aria-hidden="true"></div>
+    <span class="theme-pill-label theme-pill-label-day" aria-hidden="true">DAY</span>
+    <span class="theme-pill-label theme-pill-label-night" aria-hidden="true">NIGHT</span>
   </div>
 
   <div class="login-wrapper">
@@ -693,29 +808,25 @@
       }
     }
 
-    // Theme toggle (pill) — compatível com app (light-theme) e login (dark-mode)
+    // Theme toggle (pill) — visual sky/moon design
     const STORAGE_KEY = 'pulso-theme';
     const pill = document.getElementById('themePill');
-    const btnDay = pill?.querySelector('.btn-day');
-    const btnNight = pill?.querySelector('.btn-night');
     function getStoredTheme() { return localStorage.getItem(STORAGE_KEY) || 'dark'; }
     function applyTheme(theme) {
       const isLight = theme === 'light';
       document.body.classList.toggle('dark-mode', !isLight);
       document.body.classList.toggle('light-theme', isLight);
-      pill.dataset.theme = theme;
-      btnDay?.setAttribute('aria-checked', isLight);
-      btnNight?.setAttribute('aria-checked', !isLight);
+      if (pill) {
+        pill.dataset.theme = theme;
+        pill.setAttribute('aria-checked', isLight);
+      }
     }
     function setTheme(theme) { localStorage.setItem(STORAGE_KEY, theme); applyTheme(theme); }
+    function toggleTheme() { setTheme(getStoredTheme() === 'dark' ? 'light' : 'dark'); }
     applyTheme(getStoredTheme());
-    pill?.addEventListener('click', (e) => {
-      const btn = e.target.closest('.theme-pill-btn');
-      if (btn) setTheme(btn.dataset.theme);
-    });
+    pill?.addEventListener('click', toggleTheme);
     pill?.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') { setTheme('light'); btnDay?.focus(); }
-      else if (e.key === 'ArrowRight') { setTheme('dark'); btnNight?.focus(); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTheme(); }
     });
     window.addEventListener('storage', (e) => {
       if (e.key === STORAGE_KEY && e.newValue) applyTheme(e.newValue);

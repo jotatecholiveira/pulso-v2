@@ -72,16 +72,12 @@ function applyTheme(theme) {
   const isLight = theme === 'light';
   document.body.classList.toggle('light-theme', isLight);
   document.body.classList.toggle('dark', !isLight);
-  // Support both old toggle (emoji) and new pill
   const legacyToggle = document.getElementById('themeToggle');
   if (legacyToggle) legacyToggle.textContent = isLight ? '☀️' : '🌙';
   const pill = document.getElementById('themePill');
   if (pill) {
     pill.dataset.theme = theme;
-    const btnDay = pill.querySelector('.btn-day');
-    const btnNight = pill.querySelector('.btn-night');
-    if (btnDay) btnDay.setAttribute('aria-checked', isLight);
-    if (btnNight) btnNight.setAttribute('aria-checked', !isLight);
+    pill.setAttribute('aria-checked', isLight);
   }
 }
 function setTheme(theme) {
@@ -96,18 +92,19 @@ if (legacyToggle) {
     setTheme(next);
   });
 }
-// New pill toggle
+// New pill toggle (visual sky/moon)
 const pill = document.getElementById('themePill');
 if (pill) {
-  pill.addEventListener('click', (e) => {
-    const btn = e.target.closest('.theme-pill-btn');
-    if (btn) setTheme(btn.dataset.theme);
-  });
+  function togglePillTheme() {
+    const next = pill.dataset.theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+  }
+  pill.addEventListener('click', togglePillTheme);
   pill.addEventListener('keydown', (e) => {
-    const btnDay = pill.querySelector('.btn-day');
-    const btnNight = pill.querySelector('.btn-night');
-    if (e.key === 'ArrowLeft') { setTheme('light'); btnDay?.focus(); }
-    else if (e.key === 'ArrowRight') { setTheme('dark'); btnNight?.focus(); }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      togglePillTheme();
+    }
   });
 }
 // Cross-tab sync

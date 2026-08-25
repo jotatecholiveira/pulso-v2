@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste Theme Pill - Comparação</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-global: #0b1220;
+      --bg-panel: rgba(13, 22, 39, 0.86);
+      --bg-card: rgba(17, 28, 48, 0.94);
+      --text-primary: #f4f7ff;
+      --text-secondary: #8da0c8;
+      --accent-color: #6c7cff;
+      --accent-primary: #6c7cff;
+      --button-bg: rgba(255, 255, 255, 0.06);
+      --border-color: rgba(255, 255, 255, 0.12);
+    }
+    body.light-theme {
+      --bg-global: #f4f6fb;
+      --bg-panel: rgba(255, 255, 255, 0.9);
+      --bg-card: #ffffff;
+      --text-primary: #19233b;
+      --text-secondary: #64708a;
+      --accent-color: #4f6cf5;
+      --accent-primary: #4f6cf5;
+      --button-bg: rgba(15, 24, 40, 0.06);
+      --border-color: rgba(15, 24, 40, 0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+    body {
+      background: var(--bg-global);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      padding: 40px 20px;
+    }
+
+    h1 { font-size: 1.4rem; font-weight: 700; }
+    h2 { font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; }
+
+    .test-section {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .pill-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* === CASO 1: index.html (CSS Variables) === */
+    .pill-case1 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      width: 160px;
+      height: 38px;
+      background: var(--button-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    .pill-case1:hover { box-shadow: 0 4px 16px rgba(79,108,245,0.15); }
+    .pill-case1:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 3px; }
+    .pill-case1 .pill-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0 10px;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    .pill-case1 .pill-btn:hover { color: var(--text-primary); }
+    .pill-case1 .pill-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .pill-case1 .pill-slider {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 76px;
+      height: 30px;
+      background: var(--accent-primary);
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(79,108,245,0.3);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .pill-case1[data-theme="light"] .pill-slider { transform: translateX(0); }
+    .pill-case1[data-theme="dark"] .pill-slider { transform: translateX(82px); }
+    .pill-case1[data-theme="light"] .btn-day { color: #fff; }
+    .pill-case1[data-theme="dark"] .btn-night { color: #fff; }
+
+    /* === CASO 2: login.html (Glassmorphism) === */
+    .pill-case2 {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      width: 180px;
+      height: 48px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      overflow: hidden;
+    }
+    .pill-case2:hover { background: rgba(255,255,255,0.2); }
+    .pill-case2:focus-visible { outline: 2px solid #FF6B6B; outline-offset: 3px; }
+    .pill-case2 .pill-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0 14px;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    .pill-case2 .pill-btn:hover { color: #fff; }
+    .pill-case2 .pill-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .pill-case2 .pill-slider {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 84px;
+      height: 38px;
+      background: linear-gradient(135deg, #FF6B6B 0%, #ee5a24 100%);
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(255,107,107,0.4);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .pill-case2[data-theme="light"] .pill-slider { transform: translateX(0); }
+    .pill-case2[data-theme="dark"] .pill-slider { transform: translateX(96px); }
+    .pill-case2[data-theme="light"] .btn-day { color: #fff; }
+    .pill-case2[data-theme="dark"] .btn-night { color: #fff; }
+
+    /* Light mode overrides for case2 */
+    body.light-theme .pill-case2 {
+      background: rgba(15, 24, 40, 0.06);
+      border-color: rgba(15, 24, 40, 0.1);
+    }
+    body.light-theme .pill-case2 .pill-btn { color: #64708a; }
+    body.light-theme .pill-case2 .pill-btn:hover { color: #19233b; }
+
+    .toggle-theme {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent-primary);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 100;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Teste Theme Pill - Comparação</h1>
+
+  <!-- CASO 1 -->
+  <div class="test-section">
+    <h2>CASO 1 — Painel Principal (index.html)</h2>
+    <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:16px;">
+      CSS Variables · Slider azul · Fundo semi-transparente
+    </p>
+    <div class="pill-row">
+      <div>
+        <div class="pill-case1" id="pill1" data-theme="dark" role="radiogroup" aria-label="Tema caso 1">
+          <div class="pill-slider" aria-hidden="true"></div>
+          <button class="pill-btn btn-day" data-theme="light">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            DAYMODE
+          </button>
+          <button class="pill-btn btn-night" data-theme="dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            NIGHTMODE
+          </button>
+        </div>
+        <div class="label">160×38px · bg: var(--button-bg)</div>
+      </div>
+
+      <!-- Versão estática para comparação -->
+      <div>
+        <div class="pill-case1" data-theme="light">
+          <div class="pill-slider" aria-hidden="true"></div>
+          <button class="pill-btn btn-day" data-theme="light">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            DAYMODE
+          </button>
+          <button class="pill-btn btn-night" data-theme="dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            NIGHTMODE
+          </button>
+        </div>
+        <div class="label">Preview light (estático)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 2 -->
+  <div class="test-section">
+    <h2>CASO 2 — Login (login.html)</h2>
+    <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:16px;">
+      Glassmorphism · Slider vermelho/laranja · backdrop-filter
+    </p>
+    <div class="pill-row">
+      <div>
+        <div class="pill-case2" id="pill2" data-theme="dark" role="radiogroup" aria-label="Tema caso 2">
+          <div class="pill-slider" aria-hidden="true"></div>
+          <button class="pill-btn btn-day" data-theme="light">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            DAYMODE
+          </button>
+          <button class="pill-btn btn-night" data-theme="dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            NIGHTMODE
+          </button>
+        </div>
+        <div class="label">180×48px · glass + gradient vermelho</div>
+      </div>
+
+      <div>
+        <div class="pill-case2" data-theme="light">
+          <div class="pill-slider" aria-hidden="true"></div>
+          <button class="pill-btn btn-day" data-theme="light">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            DAYMODE
+          </button>
+          <button class="pill-btn btn-night" data-theme="dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            NIGHTMODE
+          </button>
+        </div>
+        <div class="label">Preview light (estático)</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="toggle-theme" onclick="toggleGlobalTheme()">Alternar Tema Global</button>
+
+  <script>
+    function setupPill(pillId) {
+      const pill = document.getElementById(pillId);
+      if (!pill) return;
+      pill.addEventListener('click', (e) => {
+        const btn = e.target.closest('.pill-btn');
+        if (!btn) return;
+        const theme = btn.dataset.theme;
+        pill.dataset.theme = theme;
+        pill.querySelectorAll('.pill-btn').forEach(b => {
+          b.setAttribute('aria-checked', b.dataset.theme === theme);
+        });
+      });
+    }
+
+    function toggleGlobalTheme() {
+      document.body.classList.toggle('light-theme');
+    }
+
+    setupPill('pill1');
+    setupPill('pill2');
+  </script>
+</body>
+</html>
