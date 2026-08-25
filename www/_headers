@@ -9,6 +9,9 @@
 /login.html
   Cache-Control: no-cache, no-store, must-revalidate
 
+/login
+  Cache-Control: no-cache, no-store, must-revalidate
+
 /firebase-config.js
   Cache-Control: no-cache, no-store
 
