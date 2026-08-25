@@ -1,69 +1,64 @@
 {
-  "name": "orcamento-familiar-premium",
+  "name": "pulso",
   "version": "1.0.0",
-  "description": "App modular de gerenciamento de orçamento familiar com temas dinâmicos, gráficos e banco de dados",
+  "description": "Pulso - Controle financeiro pessoal e familiar. Dashboard interativo, gráficos, sincronização Firebase e importação de planilhas.",
   "main": "index.html",
   "scripts": {
-    "start": "http-server -p 8000",
-    "dev": "http-server -p 8000 -c-1",
+    "start": "http-server www -p 8000 -c-1",
+    "dev": "http-server www -p 8000 -c-1",
     "build": "echo 'Nenhuma build necessária - app é puro HTML/CSS/JS'",
+    "sync": "npx cap copy android && npx cap update android",
+    "android": "npx cap open android",
     "test": "echo 'Execute testes manualmente'",
-    "export": "echo 'Use o app para exportar dados'",
-    "import": "echo 'Use o app para importar dados'",
-    "backup": "echo 'Execute backup via Firebase ou SQL'",
     "deploy:firebase": "firebase deploy",
-    "deploy:netlify": "netlify deploy --prod",
-    "docs": "echo 'Documentação disponível em /docs'"
+    "deploy:netlify": "netlify deploy --prod"
   },
   "keywords": [
+    "pulso",
+    "finanças",
+    "controle-financeiro",
     "orçamento",
-    "financeiro",
-    "família",
     "dashboard",
-    "gráficos",
+    "pwa",
     "firebase",
-    "responsive",
-    "pwa"
+    "família"
   ],
-  "author": "João Pedro de Oliveira <joao@orcamento.local>",
+  "author": "João Pedro de Oliveira",
   "license": "MIT",
-  "homepage": "https://github.com/seu-usuario/orcamento-familiar",
+  "homepage": "https://github.com/joaopedro/pulso",
   "repository": {
     "type": "git",
-    "url": "https://github.com/seu-usuario/orcamento-familiar.git"
+    "url": "https://github.com/joaopedro/pulso.git"
   },
   "bugs": {
-    "url": "https://github.com/seu-usuario/orcamento-familiar/issues"
+    "url": "https://github.com/joaopedro/pulso/issues"
   },
-
   "dependencies": {
-    "firebase": "^10.0.0",
-    "chart.js": "^3.9.1"
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/cli": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
+    "chart.js": "^3.9.1",
+    "firebase": "^10.0.0"
   },
-
   "devDependencies": {
-    "http-server": "^14.1.1",
     "firebase-tools": "^12.0.0",
+    "http-server": "^14.1.1",
     "netlify-cli": "^17.0.0"
   },
-
   "optionalDependencies": {
     "mysql": "^2.18.1",
-    "sqlite3": "^5.1.6",
-    "pg": "^8.9.0"
+    "pg": "^8.9.0",
+    "sqlite3": "^5.1.6"
   },
-
   "engines": {
     "node": ">=14.0.0",
     "npm": ">=6.0.0"
   },
-
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
   ],
-
   "repository_structure": {
     "root": {
       "index.html": "Arquivo HTML principal",
@@ -89,7 +84,6 @@
       "netlify.toml": "Config Netlify"
     }
   },
-
   "versao_historico": [
     {
       "versao": "1.0.0",
@@ -109,13 +103,11 @@
       ]
     }
   ],
-
   "configuracoes_firebase": {
     "projeto": "planejamento-familiar-b3a1c",
     "region": "us-central1",
     "database": "planejamento-familiar-b3a1c-default-rtdb"
   },
-
   "configuracoes_banco": {
     "mysql": {
       "host": "localhost",
@@ -136,7 +128,6 @@
       "tipo": "file-based"
     }
   },
-
   "arquivos_gerados": [
     "index.html (8 KB) - Estrutura HTML",
     "styles.css (22 KB) - Estilos CSS",
@@ -149,9 +140,7 @@
     "INICIO_RAPIDO.md - Quick start",
     "SUMARIO_FINAL.md - Resumo final"
   ],
-
   "tamanho_total": "~140 KB",
-
   "performance": {
     "fcp": "< 1 segundo",
     "lcp": "< 2.5 segundos",
@@ -159,7 +148,6 @@
     "tti": "< 3.5 segundos",
     "lighthouse_score": "> 90"
   },
-
   "compatibilidade": {
     "navegadores": [
       "Chrome/Edge 90+",
@@ -181,7 +169,6 @@
       "Android 8+"
     ]
   },
-
   "seguranca": {
     "tipo": "HTTPS obrigatório",
     "tls": "1.2+",
@@ -190,7 +177,6 @@
     "autorizacao": "Role-based (admin, editor, viewer)",
     "auditoria": "Histórico de alterações"
   },
-
   "backup": {
     "automatico": {
       "habilitado": true,
@@ -204,28 +190,23 @@
       "sql": "mysqldump ou pg_dump"
     }
   },
-
   "monitoramento": {
     "logging": "Firebase Logs",
     "analytics": "Firebase Analytics (opcional)",
     "performance": "Firebase Performance",
     "erros": "Firebase Crashlytics (opcional)"
   },
-
   "suporte_tecnico": {
     "documentacao": "README_Completo.md",
     "faq": "Incluído em guias",
     "issues": "GitHub Issues",
     "email": "joao@orcamento.local"
   },
-
   "contribute": {
     "tipo": "Pull Requests bem-vindas",
     "guideline": "Seguir padrão de código existente",
     "testes": "Executar testes antes de PR"
   },
-
   "changelog": "https://github.com/seu-usuario/orcamento-familiar/blob/main/CHANGELOG.md",
-
   "roadmap": "https://github.com/seu-usuario/orcamento-familiar/blob/main/ROADMAP.md"
 }

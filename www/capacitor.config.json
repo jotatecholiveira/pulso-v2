@@ -1,0 +1,11 @@
+{
+  "appId": "com.pulso.financeiro",
+  "appName": "Pulso",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "backgroundColor": "#0b1220"
+  }
+}

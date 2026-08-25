@@ -1,5 +1,6 @@
 # Firebase config (contém API key)
 firebase-config.js
+www/firebase-config.js
 
 # Environment files
 .env
@@ -30,3 +31,7 @@ build/
 
 # ZIP disguised as JSON (backup)
 config.json
+
+# Version archive
+versions-archive.zip
+android/local.properties

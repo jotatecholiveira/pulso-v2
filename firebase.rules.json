@@ -12,6 +12,10 @@
         }
       }
     },
+    "investimentos": {
+      ".read": "auth != null",
+      ".write": false
+    },
     ".info": {
       "connected": {
         ".read": true

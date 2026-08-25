@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pulso — Entrar</title>
+  <meta name="description" content="Pulso - Acesse seu controle financeiro">
+  <meta name="theme-color" content="#fef7f4">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://kit.fontawesome.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com; img-src 'self' data: https:; base-uri 'self'; form-action 'self';">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style1.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js" integrity="sha384-yuGdyIzzYtOBlBG6JOWn+Ey9kpq7HocusNuxEGyyohr1eEyXpeEyehIIXC/hznw4" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js" integrity="sha384-lI+CxEx/bCvWP1b0OK13j5HTrTZP7yf1xle8TVOFq2smz6KC1RChTarRV/RHP5PP" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js" integrity="sha384-M6AmjBRXEjkdGzRN1Y94xtkmblFbYBSLkqzyZ8rPvpRM2c48nhjIRFXVvUM/VATL" crossorigin="anonymous"></script>
+  <script src="script.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body.login-page {
+      min-height: 100dvh;
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fef7f4;
+      color: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* === SPLASH === */
+    .splash-screen {
+      position: fixed; inset: 0; z-index: 100;
+      background: linear-gradient(135deg, #FF6B6B, #ee5a24);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 14px;
+      transition: opacity 0.5s ease;
+    }
+    .splash-screen.hidden { opacity: 0; pointer-events: none; }
+    .splash-logo {
+      width: 60px; height: 60px;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 800; color: #fff;
+    }
+    .splash-title { font-size: 1.3rem; font-weight: 700; color: #fff; }
+
+    /* === WRAPPER === */
+    .login-wrapper {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* === HEADER === */
+    .login-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .login-logo {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, #FF6B6B, #ee5a24);
+      border-radius: 14px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; color: #fff;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(255,107,107,0.25);
+    }
+    .login-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      letter-spacing: -0.5px;
+    }
+    .login-subtitle {
+      font-size: 0.9rem;
+      color: #868e96;
+      margin-top: 4px;
+    }
+
+    /* === CARD === */
+    .login-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #FF6B6B, #ee5a24, #FF8E53);
+    }
+
+    /* === TABS === */
+    .auth-tabs {
+      display: flex;
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 3px;
+      margin-bottom: 22px;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #868e96;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .auth-tab.active {
+      color: #1a1a2e;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* === MESSAGE === */
+    .auth-msg {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .auth-msg.error {
+      background: #fff5f5;
+      border: 1px solid #ffc9c9;
+      color: #e03131;
+    }
+    .auth-msg.info {
+      background: #fff0f0;
+      border: 1px solid #ffd8d8;
+      color: #FF6B6B;
+    }
+
+    /* === SOCIAL BUTTONS === */
+    .btn-social {
+      width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      color: #495057;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 10px;
+    }
+    .btn-social:hover {
+      border-color: #dee2e6;
+      background: #fafafa;
+    }
+    .btn-social:active { transform: scale(0.98); }
+    .btn-social svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .btn-apple {
+      background: #1a1a2e;
+      border-color: #1a1a2e;
+      color: #fff;
+    }
+    .btn-apple:hover { background: #2d2d4a; }
+
+    /* === DIVIDER === */
+    .or-divider {
+      display: flex; align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: #adb5bd;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .or-divider::before, .or-divider::after {
+      content: ''; flex: 1; height: 1px; background: #e9ecef;
+    }
+
+    /* === INPUTS === */
+    .input-group {
+      margin-bottom: 14px;
+    }
+    .input-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 6px;
+    }
+    .input-wrapper {
+      position: relative;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #f8f9fa;
+      border: 1.5px solid #e9ecef;
+      border-radius: 10px;
+      color: #1a1a2e;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .input-group input::placeholder {
+      color: #ced4da;
+    }
+    .input-group input:focus {
+      border-color: #FF6B6B;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(255,107,107,0.08);
+    }
+    .toggle-pass {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: #adb5bd;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 2px;
+    }
+    .toggle-pass:hover { color: #495057; }
+
+    /* === OPTIONS === */
+    .auth-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      font-size: 0.8rem;
+    }
+    .remember-check {
+      display: flex; align-items: center; gap: 6px;
+      color: #495057;
+      cursor: pointer;
+    }
+    .remember-check input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: #FF6B6B;
+    }
+    .forgot-link {
+      color: #FF6B6B;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+
+    /* === SUBMIT === */
+    .btn-submit {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #FF6B6B, #ee5a24);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.2px;
+    }
+    .btn-submit:hover {
+      box-shadow: 0 4px 16px rgba(255,107,107,0.35);
+      transform: translateY(-1px);
+    }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* === REGISTER === */
+    .register-fields { display: none; }
+    .register-fields.show { display: block; animation: slideDown 0.2s ease; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === BOTTOM === */
+    .login-bottom {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 0.82rem;
+      color: #868e96;
+    }
+    .login-bottom strong {
+      color: #FF6B6B;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* === TRUST === */
+    .trust-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 0.7rem;
+      color: #adb5bd;
+    }
+    .trust-item i { color: #51cf66; font-size: 0.6rem; }
+
+    /* === THEME TOGGLE PILL === */
+    .theme-pill {
+      position: fixed;
+      top: 16px; right: 16px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      width: 180px;
+      height: 48px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .theme-pill:hover { box-shadow: 0 4px 16px rgba(79,108,245,0.15); }
+    .theme-pill:focus-visible { outline: 2px solid #4f6cf5; outline-offset: 3px; }
+    body.dark-mode .theme-pill { background: #1e1e3a; border-color: #374151; }
+    .theme-pill-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: #9ca3af;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0 14px;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    .theme-pill-btn:hover { color: #1a1a2e; }
+    body.dark-mode .theme-pill-btn { color: #9ca3af; }
+    body.dark-mode .theme-pill-btn:hover { color: #f3f4f6; }
+    .theme-pill-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .theme-pill-slider {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 84px;
+      height: 38px;
+      background: linear-gradient(135deg, #4f6cf5 0%, #3d5bd8 100%);
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(79,108,245,0.3);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .theme-pill[data-theme="light"] .theme-pill-slider { transform: translateX(0); }
+    .theme-pill[data-theme="dark"] .theme-pill-slider { transform: translateX(96px); }
+    .theme-pill[data-theme="light"] .btn-day { color: #fff; }
+    .theme-pill[data-theme="dark"] .btn-night { color: #fff; }
+
+    /* === DARK MODE === */
+    body.dark-mode {
+      background: #0f0f1a;
+    }
+    body.dark-mode .login-card {
+      background: #1a1a2e;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    body.dark-mode .login-card::before {
+      background: linear-gradient(90deg, #FF6B6B, #ee5a24);
+    }
+    body.dark-mode .login-title { color: #fff; }
+    body.dark-mode .login-subtitle { color: #868e96; }
+    body.dark-mode .auth-tabs { background: #0f3460; }
+    body.dark-mode .auth-tab { color: #868e96; }
+    body.dark-mode .auth-tab.active {
+      color: #fff;
+      background: #1a1a2e;
+    }
+    body.dark-mode .btn-social {
+      background: #16213e;
+      border-color: #2d3748;
+      color: #e9ecef;
+    }
+    body.dark-mode .btn-apple {
+      background: #fff;
+      border-color: #fff;
+      color: #000;
+    }
+    body.dark-mode .or-divider { color: #495057; }
+    body.dark-mode .or-divider::before,
+    body.dark-mode .or-divider::after { background: #2d3748; }
+    body.dark-mode .input-group label { color: #adb5bd; }
+    body.dark-mode .input-group input {
+      background: #0f3460;
+      border-color: #2d3748;
+      color: #e9ecef;
+    }
+    body.dark-mode .input-group input::placeholder { color: #495057; }
+    body.dark-mode .input-group input:focus {
+      border-color: #FF6B6B;
+      background: #16213e;
+    }
+    body.dark-mode .remember-check { color: #adb5bd; }
+    body.dark-mode .login-bottom { color: #868e96; }
+    body.dark-mode .trust-item { color: #495057; }
+    body.dark-mode .theme-toggle {
+      background: linear-gradient(135deg, #1a1a3e, #2d1b69);
+    }
+
+    /* === COOKIE BANNER === */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      background: #fff;
+      border-top: 1px solid #e9ecef;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      padding: 16px 20px;
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+    }
+    .cookie-banner.show { transform: translateY(0); }
+    .cookie-content {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .cookie-text {
+      flex: 1;
+      min-width: 200px;
+      font-size: 0.82rem;
+      color: #495057;
+      line-height: 1.5;
+    }
+    .cookie-text strong {
+      display: block;
+      font-size: 0.88rem;
+      color: #1a1a2e;
+      margin-bottom: 2px;
+    }
+    .cookie-text a {
+      color: #FF6B6B;
+      text-decoration: underline;
+    }
+    .cookie-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .cookie-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-family: inherit;
+    }
+    .cookie-accept {
+      background: linear-gradient(135deg, #FF6B6B, #ee5a24);
+      color: #fff;
+    }
+    .cookie-accept:hover { box-shadow: 0 2px 8px rgba(255,107,107,0.3); }
+    .cookie-reject {
+      background: #f1f3f5;
+      color: #495057;
+      border: 1px solid #e9ecef;
+    }
+    .cookie-reject:hover { background: #e9ecef; }
+    body.dark-mode .cookie-banner {
+      background: #1a1a2e;
+      border-top-color: #2d3748;
+    }
+    body.dark-mode .cookie-text { color: #adb5bd; }
+    body.dark-mode .cookie-text strong { color: #e9ecef; }
+    body.dark-mode .cookie-reject { background: #0f3460; color: #adb5bd; border-color: #2d3748; }
+  </style>
+</head>
+<body class="login-page">
+  <!-- SPLASH -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-logo">P</div>
+    <div class="splash-title">Pulso</div>
+  </div>
+
+  <!-- THEME -->
+  <div class="theme-pill" id="themePill" data-theme="light" role="radiogroup" aria-label="Selecionar tema">
+    <div class="theme-pill-slider" aria-hidden="true"></div>
+    <button class="theme-pill-btn btn-day" role="radio" aria-checked="true" data-theme="light">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      DAYMODE
+    </button>
+    <button class="theme-pill-btn btn-night" role="radio" aria-checked="false" data-theme="dark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      NIGHTMODE
+    </button>
+  </div>
+
+  <div class="login-wrapper">
+    <!-- HEADER -->
+    <div class="login-header">
+      <div class="login-logo">P</div>
+      <h1 class="login-title">Entrar no Pulso</h1>
+      <p class="login-subtitle">Gerencie suas finanças com facilidade.</p>
+    </div>
+
+    <!-- CARD -->
+    <div class="login-card">
+      <!-- TABS -->
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Entrar</button>
+        <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Criar conta</button>
+      </div>
+
+      <!-- MESSAGE -->
+      <div id="auth-message" class="auth-msg" aria-live="polite"></div>
+
+      <!-- GOOGLE -->
+      <button type="button" id="googleBtn" class="btn-social">
+        <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.7l6.2 5.2C36.9 40.4 44 35 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+        Entrar com Google
+      </button>
+
+      <!-- APPLE -->
+      <button type="button" id="appleBtn" class="btn-social btn-apple">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        Entrar com Apple
+      </button>
+
+      <div class="or-divider"><span>ou</span></div>
+
+      <!-- FORM -->
+      <form id="loginForm" onsubmit="return false;">
+        <div class="register-fields" id="registerFields">
+          <div class="input-group">
+            <label for="fullName">Nome completo</label>
+            <div class="input-wrapper">
+              <input type="text" id="fullName" placeholder="Seu nome" autocomplete="name">
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="email">E-mail</label>
+          <div class="input-wrapper">
+            <input type="email" id="email" placeholder="seu@email.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Senha</label>
+          <div class="input-wrapper">
+            <input type="password" id="password" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="current-password">
+            <button type="button" class="toggle-pass" onclick="togglePass()" aria-label="Mostrar senha">
+              <i class="fa-solid fa-eye" id="passIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-options" id="loginOptions">
+          <label class="remember-check">
+            <input type="checkbox" id="rememberMe">
+            Lembrar-me
+          </label>
+          <a href="#" class="forgot-link" onclick="handleForgot(); return false;">Esqueci minha senha</a>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn" onclick="handleAuth()">
+          <span id="submitText">Entrar</span>
+        </button>
+        <button type="button" id="registerBtn" style="display:none"></button>
+      </form>
+
+      <div class="login-bottom">
+        <span id="bottomText">Não tem conta? <strong onclick="switchAuthTab('register')">Criar agora</strong></span>
+      </div>
+
+      <div class="trust-row">
+        <span class="trust-item"><i class="fa-solid fa-shield-halved"></i> HTTPS</span>
+        <span class="trust-item"><i class="fa-solid fa-lock"></i> Criptografado</span>
+        <span class="trust-item"><i class="fa-solid fa-user-shield"></i> Privacidade</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COOKIE CONSENT -->
+  <div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-content">
+      <div class="cookie-text">
+        <strong>Este site usa cookies</strong>
+        <span>Utilizamos cookies para melhorar sua experiência e analisar tráfego. Ao continuar navegando, você concorda com nossa <a href="#" onclick="return false">Política de Privacidade</a>.</span>
+      </div>
+      <div class="cookie-actions">
+        <button class="cookie-btn cookie-accept" onclick="acceptCookies()">Aceitar</button>
+        <button class="cookie-btn cookie-reject" onclick="rejectCookies()">Apenas essenciais</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const s = document.getElementById('splashScreen');
+      if (s) { s.classList.add('hidden'); setTimeout(() => s.style.display = 'none', 500); }
+    }, 1000);
+
+    let currentTab = 'login';
+
+    function switchAuthTab(tab) {
+      currentTab = tab;
+      const tabLogin = document.getElementById('tabLogin');
+      const tabRegister = document.getElementById('tabRegister');
+      const registerFields = document.getElementById('registerFields');
+      const loginOptions = document.getElementById('loginOptions');
+      const submitText = document.getElementById('submitText');
+      const bottomText = document.getElementById('bottomText');
+
+      if (tab === 'register') {
+        tabLogin.classList.remove('active');
+        tabRegister.classList.add('active');
+        registerFields.classList.add('show');
+        if (loginOptions) loginOptions.style.display = 'none';
+        submitText.textContent = 'Criar conta';
+        bottomText.innerHTML = 'Já tem conta? <strong onclick="switchAuthTab(\'login\')">Entrar</strong>';
+      } else {
+        tabRegister.classList.remove('active');
+        tabLogin.classList.add('active');
+        registerFields.classList.remove('show');
+        if (loginOptions) loginOptions.style.display = 'flex';
+        submitText.textContent = 'Entrar';
+        bottomText.innerHTML = 'Não tem conta? <strong onclick="switchAuthTab(\'register\')">Criar agora</strong>';
+      }
+    }
+
+    function togglePass() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('passIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    function handleAuth() {
+      const btn = document.getElementById('submitBtn');
+      const text = document.getElementById('submitText');
+      const orig = text.textContent;
+      text.textContent = 'Aguarde...';
+      btn.disabled = true;
+      if (currentTab === 'register') {
+        document.getElementById('registerBtn').click();
+      } else {
+        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+      }
+      setTimeout(() => { text.textContent = orig; btn.disabled = false; }, 3000);
+    }
+
+    function handleForgot() {
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        alert('Digite seu e-mail primeiro para redefinir a senha.');
+        document.getElementById('email').focus();
+        return;
+      }
+      if (typeof firebase !== 'undefined' && firebase.auth) {
+        firebase.auth().sendPasswordResetEmail(email)
+          .then(() => alert('E-mail de redefinição enviado para ' + email))
+          .catch(err => alert('Erro: ' + (err.message || 'Tente novamente.')));
+      }
+    }
+
+    // Theme toggle (pill) — compatível com app (light-theme) e login (dark-mode)
+    const STORAGE_KEY = 'pulso-theme';
+    const pill = document.getElementById('themePill');
+    const btnDay = pill?.querySelector('.btn-day');
+    const btnNight = pill?.querySelector('.btn-night');
+    function getStoredTheme() { return localStorage.getItem(STORAGE_KEY) || 'dark'; }
+    function applyTheme(theme) {
+      const isLight = theme === 'light';
+      document.body.classList.toggle('dark-mode', !isLight);
+      document.body.classList.toggle('light-theme', isLight);
+      pill.dataset.theme = theme;
+      btnDay?.setAttribute('aria-checked', isLight);
+      btnNight?.setAttribute('aria-checked', !isLight);
+    }
+    function setTheme(theme) { localStorage.setItem(STORAGE_KEY, theme); applyTheme(theme); }
+    applyTheme(getStoredTheme());
+    pill?.addEventListener('click', (e) => {
+      const btn = e.target.closest('.theme-pill-btn');
+      if (btn) setTheme(btn.dataset.theme);
+    });
+    pill?.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { setTheme('light'); btnDay?.focus(); }
+      else if (e.key === 'ArrowRight') { setTheme('dark'); btnNight?.focus(); }
+    });
+    window.addEventListener('storage', (e) => {
+      if (e.key === STORAGE_KEY && e.newValue) applyTheme(e.newValue);
+    });
+
+    // Cookie consent
+    function showCookieBanner() {
+      if (!localStorage.getItem('pulso-cookies')) {
+        setTimeout(() => {
+          document.getElementById('cookieBanner')?.classList.add('show');
+        }, 1500);
+      }
+    }
+    function acceptCookies() {
+      localStorage.setItem('pulso-cookies', 'accepted');
+      document.getElementById('cookieBanner')?.classList.remove('show');
+    }
+    function rejectCookies() {
+      localStorage.setItem('pulso-cookies', 'essential');
+      document.getElementById('cookieBanner')?.classList.remove('show');
+    }
+    showCookieBanner();
+  </script>
+</body>
+</html>

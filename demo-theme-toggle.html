@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Theme Toggle - Pulso</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fef7f4;
+    --text: #1a1a2e;
+    --card: #fff;
+    --border: #e5e7eb;
+    --accent: #4f6cf5;
+    --accent-hover: #3d5bd8;
+    --sun: #fbbf24;
+    --moon: #f5e6b8;
+    --pill-bg: #f3f4f6;
+    --pill-text: #6b7280;
+    --pill-active: #4f6cf5;
+    --pill-active-text: #fff;
+  }
+  .dark {
+    --bg: #0f0f1a;
+    --text: #f3f4f6;
+    --card: #1a1a2e;
+    --border: #2d3748;
+    --accent: #6c7cff;
+    --accent-hover: #8b98ff;
+    --sun: #fbbf24;
+    --moon: #f5e6b8;
+    --pill-bg: #1e1e3a;
+    --pill-text: #9ca3af;
+    --pill-active: #6c7cff;
+    --pill-active-text: #fff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    gap: 32px;
+  }
+  .demo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+  }
+  .demo-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .demo-subtitle {
+    font-size: 0.95rem;
+    color: var(--pill-text);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  /* PILL TOGGLE */
+  .theme-pill {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 200px;
+    height: 52px;
+    background: var(--pill-bg);
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    margin: 0 auto 24px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    overflow: hidden;
+  }
+  .theme-pill:hover {
+    box-shadow: 0 4px 16px rgba(79, 108, 245, 0.15);
+  }
+  .theme-pill:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .theme-pill-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: var(--pill-text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 16px;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+  }
+  .theme-pill-btn:hover { color: var(--text); }
+  .theme-pill-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+  /* Slider indicator */
+  .theme-pill-slider {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 94px;
+    height: 42px;
+    background: var(--pill-active);
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(79, 108, 245, 0.3);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .theme-pill[data-theme="light"] .theme-pill-slider { transform: translateX(0); }
+  .theme-pill[data-theme="dark"] .theme-pill-slider { transform: translateX(100px); }
+  .theme-pill[data-theme="light"] .btn-day { color: var(--pill-active-text); }
+  .theme-pill[data-theme="dark"] .btn-night { color: var(--pill-active-text); }
+  /* Legacy emoji toggle for comparison */
+  .legacy-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .legacy-toggle-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--pill-bg);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .legacy-toggle-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transform: scale(1.05);
+  }
+  /* Live preview box */
+  .preview-box {
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--pill-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  .preview-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--pill-text);
+    margin-bottom: 12px;
+  }
+  .preview-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .preview-row code {
+    background: var(--card);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    border: 1px solid var(--border);
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .badge-light { background: #dbeafe; color: #1e40af; }
+  .badge-dark { background: #1e1e3a; color: #a5b4fc; border: 1px solid #374151; }
+  .dark .badge-light { background: #1e3a5f; color: #93c5fd; }
+  .dark .badge-dark { background: #312e81; color: #c7d2fe; border-color: #4338ca; }
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+    font-size: 0.75rem;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; color: var(--pill-text); }
+  .legend-color { width: 12px; height: 12px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="demo-card">
+  <h1 class="demo-title">Pulso — Theme Toggle Demo</h1>
+  <p class="demo-subtitle">Novo design: pill DAYMODE/NIGHTMODE compatível com login + app</p>
+
+  <!-- NOVO: Pill toggle -->
+  <div class="theme-pill" id="themePill" data-theme="dark" role="radiogroup" aria-label="Selecionar tema">
+    <div class="theme-pill-slider" aria-hidden="true"></div>
+    <button class="theme-pill-btn btn-day" role="radio" aria-checked="false" data-theme="light">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      DAYMODE
+    </button>
+    <button class="theme-pill-btn btn-night" role="radio" aria-checked="true" data-theme="dark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      NIGHTMODE
+    </button>
+  </div>
+
+  <!-- Preview do estado atual -->
+  <div class="preview-box">
+    <div class="preview-label">Estado atual aplicado ao <code>body</code></div>
+    <div class="preview-row">
+      <span>Classe CSS:</span>
+      <code id="cssClass">dark (padrão)</code>
+    </div>
+    <div class="preview-row">
+      <span>localStorage:</span>
+      <code id="lsValue">pulso-theme = "dark"</code>
+    </div>
+    <div class="preview-row">
+      <span>Variáveis ativas:</span>
+      <span class="badge badge-dark" id="themeBadge">DARK</span>
+    </div>
+  </div>
+
+  <!-- Comparação: toggle antigo (emoji) -->
+  <div class="legacy-toggle">
+    <span style="font-size:0.85rem;color:var(--pill-text)">Legado (emoji):</span>
+    <button class="legacy-toggle-btn" id="legacyToggle" aria-label="Alternar tema (legado)">🌙</button>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="legend-color" style="background:var(--pill-active)"></span> Slider animado</div>
+    <div class="legend-item"><span class="legend-color" style="background:var(--pill-bg);border:1px solid var(--border)"></span> Fundo pill</div>
+    <div class="legend-item"><span class="legend-color" style="background:var(--sun)"></span> Ícone sol</div>
+    <div class="legend-item"><span class="legend-color" style="background:var(--moon)"></span> Ícone lua</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DEMO: Theme Toggle Pill - Compatível com Pulso
+// ============================================================
+
+const STORAGE_KEY = 'pulso-theme';
+const pill = document.getElementById('themePill');
+const slider = pill.querySelector('.theme-pill-slider');
+const btnDay = pill.querySelector('.btn-day');
+const btnNight = pill.querySelector('.btn-night');
+const legacyBtn = document.getElementById('legacyToggle');
+const cssClassEl = document.getElementById('cssClass');
+const lsValueEl = document.getElementById('lsValue');
+const themeBadge = document.getElementById('themeBadge');
+
+// --- Core theme logic (reutilizável no projeto) ---
+function getStoredTheme() {
+  return localStorage.getItem(STORAGE_KEY) || 'dark';
+}
+function applyThemeToBody(theme) {
+  const isLight = theme === 'light';
+  document.body.classList.toggle('dark', !isLight);  // login usa .dark
+  document.body.classList.toggle('light-theme', isLight);  // app usa .light-theme
+  pill.dataset.theme = theme;
+  btnDay.setAttribute('aria-checked', isLight);
+  btnNight.setAttribute('aria-checked', !isLight);
+  updatePreview(theme);
+}
+function setTheme(theme) {
+  localStorage.setItem(STORAGE_KEY, theme);
+  applyThemeToBody(theme);
+}
+function toggleTheme() {
+  const next = document.body.classList.contains('dark') ? 'light' : 'dark';
+  setTheme(next);
+}
+function updatePreview(theme) {
+  const isLight = theme === 'light';
+  cssClassEl.textContent = isLight ? 'light-theme (app) + dark removido (login)' : 'dark (login) + light-theme removido (app)';
+  lsValueEl.textContent = `pulso-theme = "${theme}"`;
+  themeBadge.textContent = isLight ? 'LIGHT' : 'DARK';
+  themeBadge.className = 'badge ' + (isLight ? 'badge-light' : 'badge-dark');
+}
+
+// --- Init ---
+const initialTheme = getStoredTheme();
+applyThemeToBody(initialTheme);
+
+// --- Event listeners ---
+pill.addEventListener('click', (e) => {
+  const btn = e.target.closest('.theme-pill-btn');
+  if (btn) setTheme(btn.dataset.theme);
+});
+pill.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') { setTheme('light'); btnDay.focus(); }
+  else if (e.key === 'ArrowRight') { setTheme('dark'); btnNight.focus(); }
+  else if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    const target = e.target.closest('.theme-pill-btn') || btnDay;
+    setTheme(target.dataset.theme);
+  }
+});
+btnDay.addEventListener('click', () => setTheme('light'));
+btnNight.addEventListener('click', () => setTheme('dark'));
+
+// Legacy toggle (emoji) - mantém compatibilidade
+legacyBtn.addEventListener('click', toggleTheme);
+
+// Sync com storage de outras abas
+window.addEventListener('storage', (e) => {
+  if (e.key === STORAGE_KEY && e.newValue) {
+    applyThemeToBody(e.newValue);
+  }
+});
+
+console.log('[Demo] Theme toggle ready. Classes suportadas: body.dark (login), body.light-theme (app)');
+console.log('[Demo] localStorage key:', STORAGE_KEY);
+</script>
+</body>
+</html>
