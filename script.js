@@ -478,12 +478,20 @@ if (isLoginPage()) {
     googleBtn.addEventListener('click', () => {
       if (!auth) { setAuthMsg('Sem conexão — o Firebase não carregou.', 'error'); return; }
       setAuthMsg('Conectando ao Google...', 'info');
+      if (googleBtn) googleBtn.disabled = true;
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).catch(err => {
-        if (err.code === 'auth/popup-blocked') {
+      auth.signInWithPopup(provider).then(() => {
+        if (googleBtn) googleBtn.disabled = false;
+      }).catch(err => {
+        if (err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-allowed') {
+          setAuthMsg('Redirecionando para Google...', 'info');
           auth.signInWithRedirect(provider);
+        } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+          setAuthMsg('', '');
+          if (googleBtn) googleBtn.disabled = false;
         } else {
           setAuthMsg(translateAuthError(err), 'error');
+          if (googleBtn) googleBtn.disabled = false;
         }
       });
     });
@@ -525,7 +533,7 @@ if (auth) {
           if (!currentUser && !authInitialized) {
             window.location.href = 'login.html';
           }
-        }, 5000);
+        }, 1000);
         return;
       }
       window.location.href = 'login.html';

@@ -257,6 +257,15 @@
     .trust-item { display: flex; align-items: center; gap: 5px; font-size: 0.72rem; color: #adb5bd; transition: color 0.5s ease; }
     body.dark-mode .trust-item { color: #484f58; }
     .trust-item i { color: #51cf66; font-size: 0.65rem; }
+    .login-theme-btn {
+      background: none; border: 1px solid #adb5bd; color: #adb5bd;
+      width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; transition: all 0.3s ease;
+    }
+    .login-theme-btn:hover { border-color: #FF6B6B; color: #FF6B6B; }
+    body.dark-mode .login-theme-btn { border-color: #484f58; color: #8b949e; }
+    body.dark-mode .login-theme-btn:hover { border-color: #FF6B6B; color: #FF6B6B; }
 
     /* === RIGHT PANEL — LANDSCAPE === */
     .login-right {
@@ -682,25 +691,15 @@
         <span class="trust-item"><i class="fa-solid fa-shield-halved"></i> HTTPS</span>
         <span class="trust-item"><i class="fa-solid fa-lock"></i> Criptografado</span>
         <span class="trust-item"><i class="fa-solid fa-user-shield"></i> Privacidade</span>
+        <button type="button" id="themePill" class="login-theme-btn" aria-label="Alternar tema claro/escuro" title="Alternar tema">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+        </button>
       </div>
     </div>
 
     <!-- RIGHT — LANDSCAPE -->
     <div class="login-right">
-      <!-- Theme Pill -->
-      <button class="landscape-pill" id="themePill" data-theme="dark" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro" tabindex="0">
-        <div class="lp-bg" aria-hidden="true">
-          <div class="lp-stars"></div>
-          <div class="lp-clouds">
-            <div class="lp-cloud lp-c1"></div>
-            <div class="lp-cloud lp-c2"></div>
-            <div class="lp-cloud lp-c3"></div>
-          </div>
-        </div>
-        <div class="lp-disc" aria-hidden="true"></div>
-        <span class="lp-label lp-label-day" aria-hidden="true">DAY</span>
-        <span class="lp-label lp-label-night" aria-hidden="true">NIGHT</span>
-      </button>
+      <!-- Landscape -->
 
       <!-- DAY SCENE -->
       <div class="landscape-day">
