@@ -101,19 +101,24 @@
       transition: color 0.5s ease;
     }
     .login-tagline {
-      font-size: 0.88rem; color: #868e96; margin-bottom: 28px;
+      font-size: 0.88rem; color: #868e96; margin-bottom: 20px;
     }
     body.dark-mode .login-tagline { color: #6c7a8d; }
 
-    /* === TABS === */
+    .social-proof {
+      display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .proof-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; color: #868e96;
+      transition: color 0.5s ease;
+    }
+    body.dark-mode .proof-item { color: #6c7a8d; }
+    .proof-item i { color: #51cf66; font-size: 0.65rem; }
+
+    /* === TABS (hidden but kept for JS) === */
     .auth-tabs {
-      display: flex;
-      background: #f1f3f5;
-      border-radius: 14px;
-      padding: 4px;
-      margin-bottom: 24px;
-      position: relative;
-      transition: background 0.5s ease;
+      position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; pointer-events: none;
     }
     body.dark-mode .auth-tabs { background: #161b22; }
     .auth-tab {
@@ -631,12 +636,27 @@
         <div class="login-brand-name">Pulso</div>
       </div>
       <h1 class="login-heading">Bem-vindo ao Pulso</h1>
-      <p class="login-tagline">Defina o compasso da sua vida financeira!</p>
+      <p class="login-tagline">Seu dinheiro, seu controle.</p>
 
-      <div class="auth-tabs">
+      <div class="auth-tabs" aria-hidden="true">
         <div class="auth-tab-indicator" id="tabIndicator"></div>
         <button type="button" class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Entrar</button>
         <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Criar conta</button>
+      </div>
+
+      <div class="social-proof">
+        <div class="proof-item">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Gratuito para sempre</span>
+        </div>
+        <div class="proof-item">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Setup em 30 segundos</span>
+        </div>
+        <div class="proof-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Dados protegidos</span>
+        </div>
       </div>
 
       <div id="auth-message" class="auth-msg" aria-live="polite"></div>
@@ -741,9 +761,6 @@
         <div class="night-grass"></div>
       </div>
 
-      <div class="landscape-brand">
-        <h2>Seu dinheiro,<br>seu controle.</h2>
-        <p>Organize receitas, despesas e investimentos em um só lugar.</p>
       </div>
     </div>
   </div>
