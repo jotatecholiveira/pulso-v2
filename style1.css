@@ -291,7 +291,32 @@ body.light-theme .nav-link:hover:not(.active) {
   margin-top: auto;
   padding: 16px 12px 12px;
   border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
+.kofi-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: rgba(255,107,107,0.12);
+  color: #FF6B6B;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255,107,107,0.2);
+}
+.kofi-btn:hover {
+  background: #FF6B6B;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255,107,107,0.3);
+}
+.kofi-btn i { font-size: 13px; }
 .sidebar-credit {
   font-size: 11px;
   color: rgba(255,255,255,0.35);
@@ -312,6 +337,14 @@ body.light-theme .nav-link:hover:not(.active) {
 }
 .light-theme .sidebar-footer {
   border-top-color: rgba(0,0,0,0.06);
+}
+.light-theme .kofi-btn {
+  background: rgba(255,107,107,0.08);
+  border-color: rgba(255,107,107,0.15);
+}
+.light-theme .kofi-btn:hover {
+  background: #FF6B6B;
+  color: #fff;
 }
 .light-theme .sidebar-credit {
   color: rgba(0,0,0,0.3);
