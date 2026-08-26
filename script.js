@@ -72,6 +72,7 @@ function applyTheme(theme) {
   const isLight = theme === 'light';
   document.body.classList.toggle('light-theme', isLight);
   document.body.classList.toggle('dark', !isLight);
+  document.body.classList.toggle('dark-mode', !isLight);
   const legacyToggle = document.getElementById('themeToggle');
   if (legacyToggle) legacyToggle.textContent = isLight ? '☀️' : '🌙';
   const pill = document.getElementById('themePill');
