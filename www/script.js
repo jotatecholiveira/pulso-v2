@@ -384,7 +384,7 @@ function setAuthMsg(text, type) {
   const el = document.getElementById('auth-message');
   if (!el) return;
   el.textContent = text;
-  el.className = 'auth-message ' + (type === 'error' ? 'error' : type === 'success' ? 'success' : 'info');
+  el.className = 'auth-msg ' + (type === 'error' ? 'error' : type === 'success' ? 'success' : 'info');
   el.style.display = 'block';
 }
 

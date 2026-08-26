@@ -1654,7 +1654,7 @@ body.light-theme .auth-shell {
 .auth-copy h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
 .auth-copy p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
 
-.auth-message {
+.auth-message, .auth-msg {
   display: none;
   font-size: 0.85rem;
   padding: 10px 12px;
@@ -1662,9 +1662,9 @@ body.light-theme .auth-shell {
   margin-bottom: 16px;
   line-height: 1.4;
 }
-.auth-message.info { background: rgba(108, 124, 255, 0.15); color: var(--accent-color); }
-.auth-message.error { background: rgba(255, 107, 107, 0.15); color: var(--accent-danger); }
-.auth-message.success { background: rgba(36, 195, 139, 0.15); color: var(--accent-success); }
+.auth-message.info, .auth-msg.info { background: rgba(108, 124, 255, 0.15); color: var(--accent-color); }
+.auth-message.error, .auth-msg.error { background: rgba(255, 107, 107, 0.15); color: var(--accent-danger); }
+.auth-message.success, .auth-msg.success { background: rgba(36, 195, 139, 0.15); color: var(--accent-success); }
 
 .auth-form {
   display: flex;
