@@ -268,6 +268,8 @@
       background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 40%, #E0F7FA 100%);
       opacity: 1;
       transition: opacity 0.8s ease;
+      z-index: 0;
+      pointer-events: none;
     }
     body.dark-mode .landscape-day { opacity: 0; }
 
@@ -289,6 +291,7 @@
 
     .landscape-day .cloud-layer {
       position: absolute; inset: 0;
+      pointer-events: none;
     }
 
     .lg-cloud {
@@ -370,11 +373,14 @@
       background: linear-gradient(180deg, #0a0e27 0%, #141852 40%, #1a1a2e 100%);
       opacity: 0;
       transition: opacity 0.8s ease;
+      z-index: 0;
+      pointer-events: none;
     }
     body.dark-mode .landscape-night { opacity: 1; }
 
     .landscape-night .stars {
       position: absolute; inset: 0;
+      pointer-events: none;
     }
     .landscape-night .star {
       position: absolute;
@@ -552,6 +558,7 @@
       color: #fff;
       text-shadow: 0 2px 20px rgba(0,0,0,0.3);
       transition: opacity 0.8s ease;
+      pointer-events: none;
     }
     .landscape-brand h2 {
       font-family: 'Fraunces', serif;
