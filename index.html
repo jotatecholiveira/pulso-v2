@@ -74,6 +74,17 @@
       <main class="main-content">
         <div class="topbar">
           <div class="topbar-left">
+            <button class="theme-pill theme-pill-sm" id="themePill" data-theme="dark" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro" tabindex="0">
+              <div class="theme-pill-bg" aria-hidden="true">
+                <div class="theme-pill-stars"></div>
+                <div class="theme-pill-clouds">
+                  <div class="cloud cloud-1"></div>
+                  <div class="cloud cloud-2"></div>
+                  <div class="cloud cloud-3"></div>
+                </div>
+              </div>
+              <div class="theme-pill-disc" aria-hidden="true"></div>
+            </button>
             <div class="greeting-topbar">
               <h2 id="topbar-greeting">Boa noite</h2>
             </div>
@@ -105,17 +116,6 @@
         </button>
       </div>
     </div>
-    <button class="theme-pill" id="themePill" data-theme="dark" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro" tabindex="0">
-      <div class="theme-pill-bg" aria-hidden="true">
-        <div class="theme-pill-stars"></div>
-        <div class="theme-pill-clouds">
-          <div class="cloud cloud-1"></div>
-          <div class="cloud cloud-2"></div>
-          <div class="cloud cloud-3"></div>
-        </div>
-      </div>
-      <div class="theme-pill-disc" aria-hidden="true"></div>
-    </button>
   </div>
         </div>
 
@@ -220,47 +220,6 @@
             <button type="button" class="hero-quick-btn hero-quick-receita" onclick="openModal('entrada')">
               <i class="fa-solid fa-plus"></i> Receita
             </button>
-          </div>
-        </div>
-
-        <!-- KPI CARDS + ATALHOS (Nubank-style row) -->
-        <div class="dash-top-row">
-          <div class="dash-kpi-grid">
-            <div class="kpi-card kpi-receitas">
-              <div class="kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
-              <div class="kpi-info">
-                <span class="kpi-label">Receitas</span>
-                <span class="kpi-value positive" id="dash-receitas-mes">R$ 0,00</span>
-              </div>
-            </div>
-            <div class="kpi-card kpi-despesas">
-              <div class="kpi-icon"><i class="fa-solid fa-arrow-trend-down"></i></div>
-              <div class="kpi-info">
-                <span class="kpi-label">Despesas</span>
-                <span class="kpi-value negative" id="dash-despesas-mes">R$ 0,00</span>
-              </div>
-            </div>
-          </div>
-          <div class="dash-quick-access">
-            <h3>Atalhos</h3>
-            <div class="quick-buttons">
-              <button type="button" class="quick-btn quick-despesa" onclick="openModal('saida')" title="Nova despesa">
-                <i class="fa-solid fa-minus-circle"></i>
-                <span>Despesa</span>
-              </button>
-              <button type="button" class="quick-btn quick-receita" onclick="openModal('entrada')" title="Nova receita">
-                <i class="fa-solid fa-plus-circle"></i>
-                <span>Receita</span>
-              </button>
-              <button type="button" class="quick-btn quick-fixo" onclick="openContaPagarModal()" title="Conta fixa recorrente">
-                <i class="fa-solid fa-rotate"></i>
-                <span>Fixo</span>
-              </button>
-              <button type="button" class="quick-btn quick-relatorio" onclick="switchTab('entrada')" title="Ver lançamentos">
-                <i class="fa-solid fa-list"></i>
-                <span>Lançar</span>
-              </button>
-            </div>
           </div>
         </div>
 

@@ -52,16 +52,20 @@ body.light-theme {
 
 body {
   min-height: 100vh;
-  background: radial-gradient(circle at top left, rgba(143, 124, 255, 0.2), transparent 24%),
-    linear-gradient(140deg, var(--bg-global), color-mix(in srgb, var(--bg-global) 70%, #0d1424 30%) 100%);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(143, 124, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(78, 203, 159, 0.08) 0%, transparent 35%),
+    linear-gradient(180deg, #0a0e27 0%, #101830 40%, var(--bg-global) 100%);
   color: var(--text-primary);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background 0.5s ease, color 0.3s ease;
   padding-bottom: 60px;
 }
 
 body.light-theme {
-  background: radial-gradient(circle at top left, rgba(79, 108, 245, 0.16), transparent 24%),
-    linear-gradient(140deg, var(--bg-global), #f1e8dc 100%);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(135, 206, 235, 0.3) 0%, transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(255, 200, 100, 0.15) 0%, transparent 35%),
+    linear-gradient(180deg, #87CEEB 0%, #B0E0E6 30%, #f5f0e8 70%, #faf6f0 100%);
 }
 
 button:focus-visible,
@@ -110,7 +114,7 @@ select:focus-visible {
 }
 
 .sidebar {
-  background: rgba(7, 17, 31, 0.6);
+  background: rgba(7, 17, 31, 0.5);
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   padding: 28px 12px;
   display: flex;
@@ -382,6 +386,11 @@ body.light-theme .nav-link:hover:not(.active) {
   align-items: center;
   gap: 16px;
   margin-bottom: 0;
+  padding: 12px 16px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.5s ease;
+  background: transparent;
 }
 
 .topbar h1 {
@@ -671,6 +680,31 @@ body.light-theme .nav-link:hover:not(.active) {
 }
 .theme-pill[data-theme="dark"] .theme-pill-label-night { opacity: 1; }
 .theme-pill[data-theme="light"] .theme-pill-label-night { opacity: 0; }
+
+/* Compact theme-pill for topbar */
+.theme-pill-sm {
+  width: 52px;
+  height: 28px;
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+.theme-pill-sm .theme-pill-disc {
+  width: 22px;
+  height: 22px;
+  top: 3px;
+  left: 3px;
+}
+.theme-pill-sm[data-theme="light"] .theme-pill-disc {
+  transform: translateX(24px);
+}
+.theme-pill-sm .theme-pill-stars {
+  transform: scale(0.35);
+  transform-origin: top left;
+}
+.theme-pill-sm .theme-pill-clouds {
+  transform: scale(0.35);
+  transform-origin: top left;
+}
 
 /* Mobile responsive */
 @media (max-width: 640px) {
@@ -5515,13 +5549,17 @@ body.light-theme .global-eye-btn:hover {
    HERO SALDO CARD (Nubank-style)
    ============================================================ */
 .hero-saldo-card {
-  background: linear-gradient(135deg, var(--accent-primary), color-mix(in srgb, var(--accent-primary) 70%, #6c5ce7));
+  background: linear-gradient(160deg, #FF6B6B 0%, #ee5a24 50%, #FF8E53 100%);
   border-radius: var(--border-radius-xl);
   padding: 20px 22px 18px;
   margin-bottom: 0;
   color: #fff;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 8px 32px rgba(238, 90, 36, 0.3);
+}
+body.light-theme .hero-saldo-card {
+  box-shadow: 0 8px 32px rgba(238, 90, 36, 0.2);
 }
 .hero-saldo-card::after {
   content: '';
@@ -5729,22 +5767,6 @@ body.light-theme .mobile-bottom-nav {
   .topbar {
     padding-bottom: 0;
   }
-
-  .dash-top-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .dash-kpi-grid {
-    flex-direction: column;
-  }
-
-  .kpi-card {
-    min-width: auto;
-  }
-
-  /* Hide quick buttons on mobile (hero has them) */
-  .dash-quick-access { display: none; }
 
   /* Reduce dashboard padding on mobile */
   .dash-header { gap: 12px; }
