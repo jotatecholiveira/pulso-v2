@@ -287,6 +287,39 @@ body.light-theme .nav-link:hover:not(.active) {
   color: white;
 }
 
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 12px 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.sidebar-credit {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+.sidebar-credit strong {
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+}
+.sidebar-credit .fa-heart {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+.light-theme .sidebar-footer {
+  border-top-color: rgba(0,0,0,0.06);
+}
+.light-theme .sidebar-credit {
+  color: rgba(0,0,0,0.3);
+}
+.light-theme .sidebar-credit strong {
+  color: rgba(0,0,0,0.5);
+}
+
 .main-content {
   padding: 28px 32px 40px;
   display: flex;
