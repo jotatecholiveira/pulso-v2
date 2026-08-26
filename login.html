@@ -1146,6 +1146,11 @@
         if (authEl) { authEl.textContent = 'Preencha e-mail e senha.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
         return;
       }
+      if (isGmail(email)) {
+        if (authEl) { authEl.textContent = 'Logando com Google...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+        document.getElementById('googleBtn').click();
+        return;
+      }
       doLogin(email, password);
     }
 
