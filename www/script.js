@@ -518,7 +518,7 @@ if (auth) {
   let authTimeout = null;
 
   auth.getRedirectResult().catch(err => {
-    if (isLoginPage()) setAuthMsg(translateAuthError(err), 'error');
+    console.debug('getRedirectResult:', err.code || err.message);
   });
 
   auth.onAuthStateChanged(user => {
