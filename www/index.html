@@ -103,6 +103,9 @@
             <div class="greeting-topbar">
               <h2 id="topbar-greeting">Boa noite</h2>
             </div>
+            <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Abrir/fechar menu" style="display:none;">
+              <i class="fa-solid fa-bars"></i>
+            </button>
           </div>
   <div class="header-controls">
     <button type="button" class="global-eye-btn" id="globalEyeBtn" onclick="toggleAllValuesVisibility()" title="Mostrar/ocultar valores">
@@ -996,6 +999,51 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Mobile sidebar toggle
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.getElementById('sidebar');
+  
+  if (sidebarToggle && sidebar) {
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('sidebar-mobile-open');
+      document.body.classList.toggle('sidebar-open');
+    });
+    
+    // Close sidebar when a nav link is clicked
+    const navLinks = sidebar.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('sidebar-mobile-open');
+        document.body.classList.remove('sidebar-open');
+      });
+    });
+  }
+  
+  // Responsive sidebar width based on screen size
+  function updateSidebarWidth() {
+    if (window.innerWidth < 768) {
+      if (sidebar) {
+        sidebar.style.width = '280px';
+        sidebar.style.padding = '20px 16px';
+        // Hide the toggles on mobile when sidebar is open
+        const themePill = document.getElementById('themePill');
+        if (themePill) themePill.style.display = 'none';
+      }
+    } else {
+      if (sidebar) {
+        sidebar.style.width = '';
+        sidebar.style.padding = '';
+        const themePill = document.getElementById('themePill');
+        if (themePill) themePill.style.display = '';
+      }
+    }
+  }
+  
+  window.addEventListener('resize', updateSidebarWidth);
+  updateSidebarWidth();
+</script>
 
 </body>
 </html>
