@@ -30,5 +30,5 @@
 script.js
   Cache-Control: no-cache, no-store, must-revalidate
 
-*.js
+*.css
   Cache-Control: public, max-age=31536000, immutable

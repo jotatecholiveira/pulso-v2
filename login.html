@@ -13,7 +13,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js" integrity="sha384-yuGdyIzzYtOBlBG6JOWn+Ey9kpq7HocusNuxEGyyohr1eEyXpeEyehIIXC/hznw4" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js" integrity="sha384-lI+CxEx/bCvWP1b0OK13j5HTrTZP7yf1xle8TVOFq2smz6KC1RChTarRV/RHP5PP" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js" integrity="sha384-M6AmjBRXEjkdGzRN1Y94xtkmblFbYBSLkqzyZ8rPvpRM2c48nhjIRFXVvUM/VATL" crossorigin="anonymous"></script>
-  <script src="script.js?v=2.0.1" defer></script>
+  <script src="script.js?v=3.0.0" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -153,11 +153,8 @@
     @keyframes shakeIn { 0% { transform: translateX(-8px); opacity: 0; } 50% { transform: translateX(4px); } 100% { transform: translateX(0); opacity: 1; } }
 
     .gmail-hint {
-      font-size: 0.75rem; margin-top: 6px;
-      color: #e03131; display: flex; align-items: center; gap: 6px;
-      animation: shakeIn 0.3s ease;
+      display: none;
     }
-    body.dark-mode .gmail-hint { color: #ff6b6b; }
 
     /* === GOOGLE BUTTON === */
     .btn-google-new {
@@ -589,11 +586,8 @@
         </div>
 
         <div class="input-group-new">
-          <input type="email" id="email" placeholder=" " required autocomplete="email" oninput="checkGmailHint()">
+          <input type="email" id="email" placeholder=" " required autocomplete="email">
           <label for="email">E-mail</label>
-          <div class="gmail-hint" id="gmailHint" style="display:none">
-            <i class="fa-brands fa-google"></i> Contas Google devem entrar com o botão acima
-          </div>
         </div>
 
         <div class="input-group-new">
@@ -886,15 +880,15 @@
 
       function drawSunReflection(time) {
         const cx = 160;
-        for (let y = HORIZON; y < LH - 20; y++) {
-          const dist = (y - HORIZON) / (LH - 20 - HORIZON);
-          const spread = 5 + dist * 20;
+        for (let y = HORIZON; y < LH - 25; y++) {
+          const dist = (y - HORIZON) / (LH - 25 - HORIZON);
+          const spread = 2 + dist * 6;
           for (let x = cx - spread; x <= cx + spread; x++) {
             if (x < 0 || x >= LW) continue;
-            const shimmer = Math.sin((x + time * 1.5) * 0.3) * Math.sin((y + time) * 0.2);
-            if (shimmer > 0.2) {
-              const bright = 1 - dist * 0.6;
-              px(x, y, lerp(255,200,dist), lerp(220,150,dist), lerp(80,60,dist));
+            const shimmer = Math.sin((x + time * 1.5) * 0.5) * Math.sin((y + time) * 0.35);
+            if (shimmer > 0.6 && Math.random() > 0.4) {
+              const b = (1 - dist * 0.7) * 0.6;
+              px(x, y, 255*b, 220*b, 100*b);
             }
           }
         }
@@ -1012,13 +1006,13 @@
         const mx = 200;
         for (let y = HORIZON; y < LH - 15; y++) {
           const dist = (y - HORIZON) / (LH - 15 - HORIZON);
-          const spread = 3 + dist * 15;
+          const spread = 1 + dist * 5;
           for (let x = mx - spread; x <= mx + spread; x++) {
             if (x < 0 || x >= LW) continue;
-            const shimmer = Math.sin((x + time) * 0.4) * Math.sin((y + time * 0.7) * 0.3);
-            if (shimmer > 0.3) {
-              const b = (1 - dist * 0.7);
-              px(x, y, 80*b, 90*b, 130*b);
+            const shimmer = Math.sin((x + time) * 0.5) * Math.sin((y + time * 0.7) * 0.4);
+            if (shimmer > 0.6 && Math.random() > 0.4) {
+              const b = (1 - dist * 0.7) * 0.5;
+              px(x, y, 80*b, 90*b, 140*b);
             }
           }
         }
@@ -1134,9 +1128,8 @@
     }
 
     function checkGmailHint() {
-      var email = document.getElementById('email').value.trim().toLowerCase();
       var hint = document.getElementById('gmailHint');
-      if (hint) hint.style.display = (email.endsWith('@gmail.com') || email.endsWith('@googlemail.com')) ? 'flex' : 'none';
+      if (hint) hint.style.display = 'none';
     }
 
     function isGmail(email) {
@@ -1146,16 +1139,11 @@
 
     function handleAuth() {
       if (currentTab === 'register') { document.getElementById('registerBtn').click(); return; }
-      var authEl = document.getElementById('auth-message');
       var email = document.getElementById('email').value.trim();
       var password = document.getElementById('password').value;
       if (!email || !password) {
+        var authEl = document.getElementById('auth-message');
         if (authEl) { authEl.textContent = 'Preencha e-mail e senha.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
-        return;
-      }
-      if (isGmail(email)) {
-        if (authEl) { authEl.textContent = 'Redirecionando para o Google...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
-        document.getElementById('googleBtn').click();
         return;
       }
       doLogin(email, password);
