@@ -1650,25 +1650,17 @@ function renderComparativo() {
 
 // Saudação
 function renderDashGreeting() {
-  const greetingEl = document.getElementById('dash-greeting');
-  const userEl = document.getElementById('dash-greeting-user');
-  const emojiEl = document.getElementById('greeting-emoji');
   const topGreeting = document.getElementById('topbar-greeting');
-  const topUser = document.getElementById('topbar-greeting-user');
 
   const hour = new Date().getHours();
-  let greeting, emoji;
-  if (hour < 12) { greeting = 'Bom dia'; emoji = '☀️'; }
-  else if (hour < 18) { greeting = 'Boa tarde'; emoji = '⛅'; }
-  else { greeting = 'Boa noite'; emoji = '🌙'; }
+  let greeting;
+  if (hour < 12) { greeting = 'Bom dia'; }
+  else if (hour < 18) { greeting = 'Boa tarde'; }
+  else { greeting = 'Boa noite'; }
 
   const name = currentUser ? (currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Usuário') : 'Usuário';
 
-  if (greetingEl) greetingEl.textContent = greeting;
-  if (userEl) userEl.textContent = name;
-  if (emojiEl) emojiEl.textContent = emoji;
   if (topGreeting) topGreeting.textContent = greeting + ', ' + name;
-  if (topUser) topUser.textContent = name;
 }
 
 // Resumo do mês no dashboard
