@@ -343,47 +343,16 @@
       100% { transform: translateX(calc(100vw + 200px)); }
     }
 
-    /* Green hills */
-    .landscape-day .hills {
-      position: absolute; bottom: 0; left: 0; right: 0; height: 35%;
-    }
-    .landscape-day .hill {
-      position: absolute; bottom: 0;
-      border-radius: 50% 50% 0 0;
-    }
-    .landscape-day .hill-1 { width: 60%; height: 100%; background: #4CAF50; left: -10%; }
-    .landscape-day .hill-2 { width: 50%; height: 80%; background: #66BB6A; left: 30%; }
-    .landscape-day .hill-3 { width: 45%; height: 70%; background: #81C784; left: 55%; }
-    .landscape-day .hill-4 { width: 55%; height: 90%; background: #388E3C; left: -5%; }
-
-    /* Trees */
-    .landscape-day .tree {
-      position: absolute; bottom: 0;
-    }
-    .landscape-day .tree-trunk {
-      width: 8px; height: 30px;
-      background: #5D4037;
-      margin: 0 auto;
-      border-radius: 2px;
-    }
-    .landscape-day .tree-top {
-      width: 0; height: 0;
-      border-left: 22px solid transparent;
-      border-right: 22px solid transparent;
-      border-bottom: 35px solid #2E7D32;
-      position: relative; left: -18px;
-    }
-    .landscape-day .tree-1 { left: 15%; bottom: 18%; }
-    .landscape-day .tree-2 { left: 25%; bottom: 22%; transform: scale(0.8); }
-    .landscape-day .tree-3 { right: 20%; bottom: 15%; transform: scale(1.1); }
-    .landscape-day .tree-4 { right: 30%; bottom: 20%; transform: scale(0.7); }
-    .landscape-day .tree-5 { left: 45%; bottom: 25%; transform: scale(0.9); }
-
-    /* Grass bottom */
-    .landscape-day .grass {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 8%;
-      background: #388E3C;
+    /* PIXEL ART OCEAN CANVAS */
+    #ocean-canvas {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 42%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      z-index: 2;
     }
 
     /* NIGHT SKY */
@@ -430,45 +399,6 @@
       width: 12px; height: 12px; border-radius: 50%;
       background: rgba(0,0,0,0.06);
       top: 55px; left: 55px;
-    }
-
-    .landscape-night .night-hills {
-      position: absolute; bottom: 0; left: 0; right: 0; height: 35%;
-    }
-    .landscape-night .night-hill {
-      position: absolute; bottom: 0;
-      border-radius: 50% 50% 0 0;
-    }
-    .landscape-night .night-hill-1 { width: 60%; height: 100%; background: #0d1b2a; left: -10%; }
-    .landscape-night .night-hill-2 { width: 50%; height: 80%; background: #1b2838; left: 30%; }
-    .landscape-night .night-hill-3 { width: 45%; height: 70%; background: #162032; left: 55%; }
-    .landscape-night .night-hill-4 { width: 55%; height: 90%; background: #0a1628; left: -5%; }
-
-    .landscape-night .night-tree {
-      position: absolute; bottom: 0;
-    }
-    .landscape-night .night-tree-trunk {
-      width: 6px; height: 24px;
-      background: #1a1a2e;
-      margin: 0 auto;
-      border-radius: 2px;
-    }
-    .landscape-night .night-tree-top {
-      width: 0; height: 0;
-      border-left: 18px solid transparent;
-      border-right: 18px solid transparent;
-      border-bottom: 28px solid #0d2818;
-      position: relative; left: -15px;
-    }
-    .landscape-night .night-tree-1 { left: 18%; bottom: 18%; }
-    .landscape-night .night-tree-2 { left: 35%; bottom: 22%; transform: scale(0.8); }
-    .landscape-night .night-tree-3 { right: 22%; bottom: 16%; transform: scale(1.1); }
-    .landscape-night .night-tree-4 { right: 35%; bottom: 20%; transform: scale(0.7); }
-
-    .landscape-night .night-grass {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 8%;
-      background: #0d1b2a;
     }
 
     /* === THEME PILL (inside landscape) === */
@@ -725,35 +655,15 @@
           <div class="lg-cloud lg-cloud-3"></div>
           <div class="lg-cloud lg-cloud-4"></div>
         </div>
-        <div class="hills">
-          <div class="hill hill-1"></div>
-          <div class="hill hill-2"></div>
-          <div class="hill hill-3"></div>
-          <div class="hill hill-4"></div>
-        </div>
-        <div class="tree tree-1"><div class="tree-top"></div><div class="tree-trunk"></div></div>
-        <div class="tree tree-2"><div class="tree-top"></div><div class="tree-trunk"></div></div>
-        <div class="tree tree-3"><div class="tree-top"></div><div class="tree-trunk"></div></div>
-        <div class="tree tree-4"><div class="tree-top"></div><div class="tree-trunk"></div></div>
-        <div class="tree tree-5"><div class="tree-top"></div><div class="tree-trunk"></div></div>
-        <div class="grass"></div>
       </div>
+
+      <!-- PIXEL ART OCEAN CANVAS -->
+      <canvas id="ocean-canvas"></canvas>
 
       <!-- NIGHT SCENE -->
       <div class="landscape-night">
         <div class="stars" id="starsContainer"></div>
         <div class="moon"></div>
-        <div class="night-hills">
-          <div class="night-hill night-hill-1"></div>
-          <div class="night-hill night-hill-2"></div>
-          <div class="night-hill night-hill-3"></div>
-          <div class="night-hill night-hill-4"></div>
-        </div>
-        <div class="night-tree night-tree-1"><div class="night-tree-top"></div><div class="night-tree-trunk"></div></div>
-        <div class="night-tree night-tree-2"><div class="night-tree-top"></div><div class="night-tree-trunk"></div></div>
-        <div class="night-tree night-tree-3"><div class="night-tree-top"></div><div class="night-tree-trunk"></div></div>
-        <div class="night-tree night-tree-4"><div class="night-tree-top"></div><div class="night-tree-trunk"></div></div>
-        <div class="night-grass"></div>
       </div>
 
       </div>
@@ -777,6 +687,262 @@
         s.style.opacity = Math.random() * 0.7 + 0.3;
         c.appendChild(s);
       }
+    })();
+
+    // ============================================================
+    // PIXEL ART OCEAN — Canvas engine (day: boats, night: boat + traveler)
+    // ============================================================
+    (function() {
+      const canvas = document.getElementById('ocean-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const PX = 4;
+      let W, H, cols, rows;
+      let frame = 0;
+      let isDark = false;
+
+      function isNight() {
+        return document.body.classList.contains('dark-mode') || document.body.classList.contains('dark');
+      }
+
+      function resize() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height * 0.42;
+        W = canvas.width;
+        H = canvas.height;
+        cols = Math.ceil(W / PX);
+        rows = Math.ceil(H / PX);
+      }
+
+      function px(x, y, color) {
+        ctx.fillStyle = color;
+        ctx.fillRect(x * PX, y * PX, PX, PX);
+      }
+
+      // Pixel art color palettes
+      const dayColors = {
+        sky: ['#5BA3D9', '#6DB3E8', '#7EC8F0', '#91D8F5'],
+        water: ['#1565C0', '#1976D2', '#1E88E5', '#2196F3', '#42A5F5', '#64B5F6'],
+        foam: ['#BBDEFB', '#E3F2FD', '#FFFFFF'],
+        sand: ['#F9A825', '#FBC02D', '#FFD54F', '#FFE082'],
+        sail: ['#FFFFFF', '#F5F5F5', '#E0E0E0'],
+        hull: ['#5D4037', '#6D4C41', '#4E342E', '#8D6E63'],
+        flag: ['#FF6B6B', '#FF5252', '#F44336']
+      };
+
+      const nightColors = {
+        water: ['#0a1628', '#0d1b2a', '#102038', '#0d1930', '#132840'],
+        foam: ['#1a3050', '#1e3858', '#243f5f'],
+        glow: ['#1a4a6a', '#205880', '#2670a0'],
+        hull: ['#1a1a2e', '#252540', '#101020'],
+        sail: ['#2a2a4e', '#353560', '#1e1e3a'],
+        lantern: ['#FFD54F', '#FFC107', '#FF9800', '#FFB300'],
+        reflection: ['#1a3a5a', '#1e4060', '#224868']
+      };
+
+      // Boat objects
+      const dayBoats = [
+        { x: -20, y: 0.25, speed: 0.35, size: 1, dir: 1 },
+        { x: cols * 0.4, y: 0.35, speed: 0.2, size: 0.8, dir: 1 },
+        { x: cols * 0.7, y: 0.2, speed: 0.45, size: 0.7, dir: 1 }
+      ];
+
+      let nightBoat = { x: -30, y: 0.3, speed: 0.15, dir: 1 };
+
+      function drawWaterLine(row, time, colors) {
+        const waterColors = colors.water;
+        const foamColors = colors.foam;
+        for (let col = 0; col < cols; col++) {
+          const waveH = Math.sin((col + time * 0.8) * 0.15) * 1.5 +
+                        Math.sin((col + time * 0.5) * 0.25) * 0.8;
+          const depth = row + waveH;
+          const ci = Math.abs(Math.floor(depth * 0.7 + col * 0.1)) % waterColors.length;
+          px(col, row, waterColors[ci]);
+
+          if (Math.sin((col + time * 1.2) * 0.3) > 0.85) {
+            px(col, row, foamColors[Math.floor(Math.random() * foamColors.length)]);
+          }
+        }
+      }
+
+      function drawSunReflection(centerCol, waterStartRow, time) {
+        for (let r = waterStartRow; r < rows; r++) {
+          const spread = (r - waterStartRow) * 0.4;
+          for (let c = centerCol - spread; c <= centerCol + spread; c++) {
+            if (c < 0 || c >= cols) continue;
+            if (Math.random() > 0.3) continue;
+            const shimmer = Math.sin((c + r + time * 2) * 0.5);
+            if (shimmer > 0.3) {
+              px(Math.floor(c), r, '#FFF9C4');
+            } else if (shimmer > 0) {
+              px(Math.floor(c), r, '#FFD54F');
+            }
+          }
+        }
+      }
+
+      function drawPixelSailboat(cx, cy, s, time) {
+        const sx = Math.floor(cx);
+        const sy = Math.floor(cy);
+        const colors = isDark ? nightColors : dayColors;
+
+        // Hull
+        for (let i = -4 * s; i <= 4 * s; i++) {
+          px(sx + i, sy, colors.hull[Math.abs(i) % colors.hull.length]);
+          if (Math.abs(i) <= 3 * s) px(sx + i, sy + 1, colors.hull[1]);
+        }
+
+        // Mast
+        px(sx, sy - 1, '#5D4037');
+        px(sx, sy - 2, '#5D4037');
+        px(sx, sy - 3, '#5D4037');
+        px(sx, sy - 4, '#5D4037');
+
+        // Sail
+        for (let j = 0; j < 3; j++) {
+          for (let i = 1; i <= 2 - j * 0.5; i++) {
+            const sc = colors.sail[Math.floor(Math.random() * colors.sail.length)];
+            px(sx + Math.floor(i), sy - 2 - j, sc);
+          }
+        }
+
+        // Flag
+        const flagWave = Math.sin(time * 3) > 0 ? 1 : 0;
+        px(sx + 1, sy - 4, colors.flag ? colors.flag[0] : '#FF6B6B');
+        px(sx + 1 + flagWave, sy - 4, colors.flag ? colors.flag[0] : '#FF5252');
+
+        // Wake behind boat
+        for (let i = 1; i <= 3; i++) {
+          if (Math.random() > 0.4) {
+            px(sx - i, sy + 1, isDark ? '#1a3050' : '#BBDEFB');
+          }
+        }
+      }
+
+      function drawNightBoat(cx, cy, time) {
+        const sx = Math.floor(cx);
+        const sy = Math.floor(cy);
+
+        // Hull (larger, darker)
+        for (let i = -6; i <= 6; i++) {
+          px(sx + i, sy, nightColors.hull[Math.abs(i) % 3]);
+          if (Math.abs(i) <= 5) px(sx + i, sy + 1, nightColors.hull[1]);
+          if (Math.abs(i) <= 4) px(sx + i, sy + 2, nightColors.hull[2]);
+        }
+
+        // Mast
+        for (let j = 1; j <= 6; j++) px(sx, sy - j, '#1a1a2e');
+        for (let j = 1; j <= 3; j++) px(sx - 1, sy - 2 - j, '#1a1a2e');
+
+        // Sail (large, dark)
+        for (let j = 0; j < 5; j++) {
+          for (let i = 1; i <= 4 - j * 0.7; i++) {
+            px(sx + Math.floor(i), sy - 2 - j, nightColors.sail[j % 3]);
+          }
+        }
+
+        // Lantern glow
+        const lanternFlicker = Math.sin(time * 4) * 0.3 + 0.7;
+        px(sx + 1, sy - 1, nightColors.lantern[0]);
+        if (lanternFlicker > 0.5) px(sx + 2, sy - 1, nightColors.lantern[1]);
+        if (Math.sin(time * 5) > 0) px(sx, sy - 1, nightColors.lantern[2]);
+
+        // Lantern reflection in water
+        for (let r = 1; r <= 3; r++) {
+          if (Math.random() < lanternFlicker) {
+            px(sx + 1, sy + 2 + r, nightColors.lantern[Math.floor(Math.random() * 3)]);
+          }
+        }
+
+        // Traveler silhouette (standing at the back)
+        // Head
+        px(sx - 3, sy - 3, '#0a0a18');
+        // Body
+        px(sx - 3, sy - 2, '#0a0a18');
+        px(sx - 3, sy - 1, '#0a0a18');
+        px(sx - 4, sy - 2, '#0a0a18');
+        px(sx - 4, sy - 1, '#0a0a18');
+        // Arms
+        if (Math.sin(time * 1.5) > 0) {
+          px(sx - 2, sy - 2, '#0a0a18');
+          px(sx - 5, sy - 2, '#0a0a18');
+        }
+
+        // Wake
+        for (let i = 1; i <= 5; i++) {
+          if (Math.random() > 0.3) {
+            px(sx - i, sy + 3, nightColors.foam[i % 3]);
+          }
+        }
+      }
+
+      function drawMoonReflection(centerCol, waterStartRow, time) {
+        for (let r = waterStartRow; r < rows; r++) {
+          const spread = (r - waterStartRow) * 0.3;
+          for (let c = centerCol - spread; c <= centerCol + spread; c++) {
+            if (c < 0 || c >= cols) continue;
+            if (Math.random() > 0.2) continue;
+            const shimmer = Math.sin((c + r + time * 1.5) * 0.4);
+            if (shimmer > 0.4) px(Math.floor(c), r, nightColors.glow[0]);
+            else if (shimmer > 0) px(Math.floor(c), r, nightColors.reflection[1]);
+          }
+        }
+      }
+
+      function drawScene() {
+        isDark = isNight();
+        const colors = isDark ? nightColors : dayColors;
+        frame++;
+
+        ctx.clearRect(0, 0, W, H);
+
+        // Water
+        const waterStart = Math.floor(rows * 0.15);
+        for (let r = waterStart; r < rows; r++) {
+          drawWaterLine(r, frame, colors);
+        }
+
+        // Sand/rocks at bottom
+        if (!isDark) {
+          for (let c = 0; c < cols; c++) {
+            const sandH = Math.floor(Math.sin(c * 0.1) * 1.5 + 2);
+            for (let s = 0; s < sandH; s++) {
+              const si = (c + s) % dayColors.sand.length;
+              px(c, rows - 1 - s, dayColors.sand[si]);
+            }
+          }
+        }
+
+        // Reflections
+        if (isDark) {
+          drawMoonReflection(Math.floor(cols * 0.75), waterStart, frame);
+        } else {
+          drawSunReflection(Math.floor(cols * 0.82), waterStart, frame);
+        }
+
+        // Boats
+        if (isDark) {
+          nightBoat.x += nightBoat.speed;
+          if (nightBoat.x > cols + 30) nightBoat.x = -30;
+          drawNightBoat(nightBoat.x, waterStart + rows * 0.25, frame);
+        } else {
+          dayBoats.forEach(b => {
+            b.x += b.speed * b.dir;
+            if (b.x > cols + 25) b.x = -25;
+            if (b.x < -25) b.x = cols + 25;
+            const waveY = waterStart + rows * b.y + Math.sin(frame * 0.05 + b.x * 0.1) * 1.5;
+            drawPixelSailboat(b.x, waveY, b.size, frame);
+          });
+        }
+
+        requestAnimationFrame(drawScene);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+      drawScene();
     })();
 
     // Splash
