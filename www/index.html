@@ -17,7 +17,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" integrity="sha384-NrKB+u6Ts6AtkIhwPixiKTzgSKNblyhlk0Sohlgar9UHUBzai/sgnNNWWd291xqt" crossorigin="anonymous" defer></script>
   <script src="script.js?v=2.0.1" defer></script>
-  <script src="https://kit.fontawesome.com/7747098184.js" crossorigin="anonymous" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/regular.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
   <div class="app-shell">
@@ -81,6 +82,9 @@
     <button type="button" class="global-eye-btn" id="globalEyeBtn" onclick="toggleAllValuesVisibility()" title="Mostrar/ocultar valores">
       <i class="fa-solid fa-eye" id="global-eye-icon"></i>
     </button>
+    <div class="user-avatar-header" id="user-avatar-header" onclick="toggleUserDropdown()" title="Perfil">
+      <i class="fa-solid fa-user" id="user-avatar-icon"></i>
+    </div>
     <div class="user-menu" id="user-menu">
       <button type="button" class="user-menu-btn" title="Perfil" onclick="toggleUserDropdown()">
         <i class="fa-solid fa-bars"></i>
