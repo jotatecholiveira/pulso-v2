@@ -3427,11 +3427,11 @@ function selectTemplate(templateId) {
   
   // Save template + categories to Firebase
   if (storageMode === 'rtdb' && db && currentUser) {
-    const updates = {};
-    updates['users/' + currentUser.uid + '/profile/template'] = templateId;
-    updates['users/' + currentUser.uid + '/profile/onboardingDone'] = true;
-    updates['users/' + currentUser.uid + '/categories'] = customCategories;
-    db.ref().update(updates).catch(err => console.warn('Erro ao salvar template:', err));
+    const uid = currentUser.uid;
+    db.ref('users/' + uid + '/profile/template').set(templateId);
+    db.ref('users/' + uid + '/profile/onboardingDone').set(true);
+    db.ref('users/' + uid + '/categories').set(customCategories)
+      .catch(err => console.warn('Erro ao salvar template:', err));
   }
   
   // Also save to localStorage as fallback
