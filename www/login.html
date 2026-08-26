@@ -841,37 +841,15 @@
     function handleAuth() {
       if (currentTab === 'register') { document.getElementById('registerBtn').click(); return; }
       var authEl = document.getElementById('auth-message');
-      var btn = document.getElementById('submitBtn');
-      var txt = document.getElementById('submitText');
       var email = document.getElementById('email').value.trim();
       var password = document.getElementById('password').value;
       if (!email || !password) {
         if (authEl) { authEl.textContent = 'Preencha e-mail e senha.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
         return;
       }
-      if (typeof firebase === 'undefined' || !firebase.auth) {
-        if (authEl) { authEl.textContent = 'Sem conexão com o Firebase.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
-        return;
-      }
       if (isGmail(email)) {
-        if (btn) btn.disabled = true;
-        if (txt) txt.textContent = 'Verificando...';
-        if (authEl) { authEl.textContent = 'Verificando conta Gmail...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
-        firebase.auth().fetchSignInMethodsForEmail(email).then(function(methods) {
-          if (methods.indexOf('google.com') !== -1) {
-            if (authEl) { authEl.textContent = 'Esta conta foi criada com Google. Redirecionando...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
-            document.getElementById('googleBtn').click();
-          } else if (methods.indexOf('password') !== -1) {
-            doLogin(email, password);
-          } else {
-            if (authEl) { authEl.textContent = 'Conta Gmail não encontrada. Use "Continuar com Google" para criar sua conta.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
-            if (txt) txt.textContent = 'Entrar';
-            if (btn) btn.disabled = false;
-          }
-        }).catch(function() {
-          if (authEl) { authEl.textContent = 'Conta Gmail deve entrar com o Google. Clique no botão acima.'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
-          document.getElementById('googleBtn').click();
-        });
+        if (authEl) { authEl.textContent = 'Redirecionando para o Google...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+        document.getElementById('googleBtn').click();
         return;
       }
       doLogin(email, password);
