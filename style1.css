@@ -156,6 +156,7 @@ body.light-theme .sidebar:hover {
   display: flex;
   flex-direction: column;
   gap: 28px;
+  flex: 1;
 }
 
 .sidebar-header {
@@ -201,6 +202,13 @@ body.light-theme .sidebar:hover {
   margin: 0;
 }
 
+.brand-name {
+  display: block;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+}
+
 .brand span {
   display: block;
   font-weight: 800;
@@ -210,7 +218,7 @@ body.light-theme .sidebar:hover {
 .nav-menu {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
 .nav-link {
@@ -369,6 +377,76 @@ body.light-theme .nav-link:hover:not(.active) {
 }
 .light-theme .sidebar-credit strong {
   color: rgba(0,0,0,0.5);
+}
+
+.sidebar-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.sidebar-social a {
+  color: rgba(255,255,255,0.4);
+  font-size: 15px;
+  transition: color 0.2s, transform 0.2s;
+}
+.sidebar-social a:hover {
+  color: var(--accent-color);
+  transform: translateY(-1px);
+}
+.light-theme .sidebar-social a {
+  color: rgba(0,0,0,0.35);
+}
+.light-theme .sidebar-social a:hover {
+  color: var(--accent-color);
+}
+
+.sidebar-thanks {
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  line-height: 1.3;
+}
+.light-theme .sidebar-thanks {
+  color: rgba(0,0,0,0.3);
+}
+
+.sidebar-version {
+  font-size: 10px;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  font-family: monospace;
+}
+.light-theme .sidebar-version {
+  color: rgba(0,0,0,0.2);
+}
+
+.sidebar-legal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.sidebar-legal a {
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.sidebar-legal a:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+.sidebar-legal-sep {
+  font-size: 9px;
+  color: rgba(255,255,255,0.15);
+}
+.light-theme .sidebar-legal a {
+  color: rgba(0,0,0,0.3);
+}
+.light-theme .sidebar-legal-sep {
+  color: rgba(0,0,0,0.15);
 }
 
 .main-content {
