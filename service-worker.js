@@ -1,10 +1,9 @@
-const CACHE_NAME = 'pulso-v1';
+const CACHE_NAME = 'pulso-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/login.html',
   '/style1.css',
-  '/script.js',
   '/manifest.json'
 ];
 
@@ -52,7 +51,13 @@ self.addEventListener('fetch', (event) => {
   }
 
   event.respondWith(
-    fetch(event.request).catch(() => {
+    fetch(event.request).then((response) => {
+      if (event.request.url.endsWith('.js') || event.request.url.endsWith('.css')) {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+      }
+      return response;
+    }).catch(() => {
       return caches.match(event.request);
     })
   );
