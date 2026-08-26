@@ -466,6 +466,7 @@ if (isLoginPage()) {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       if (!email || !password) { setAuthMsg('Preencha e-mail e senha.', 'error'); return; }
+      if (typeof isGmail === 'function' && isGmail(email)) { setAuthMsg('Contas Gmail não podem ser criadas com senha. Use "Continuar com Google".', 'error'); return; }
       if (password.length < 6) { setAuthMsg('Senha fraca (mínimo 6 caracteres).', 'error'); return; }
       const submitBtn = document.getElementById('submitBtn');
       const submitText = document.getElementById('submitText');

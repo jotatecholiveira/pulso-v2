@@ -152,6 +152,13 @@
     body.dark-mode .auth-msg.success { background: #0d1f15; border-color: #1a4d2e; color: #4ade80; }
     @keyframes shakeIn { 0% { transform: translateX(-8px); opacity: 0; } 50% { transform: translateX(4px); } 100% { transform: translateX(0); opacity: 1; } }
 
+    .gmail-hint {
+      font-size: 0.75rem; margin-top: 6px;
+      color: #e03131; display: flex; align-items: center; gap: 6px;
+      animation: shakeIn 0.3s ease;
+    }
+    body.dark-mode .gmail-hint { color: #ff6b6b; }
+
     /* === GOOGLE BUTTON === */
     .btn-google-new {
       width: 100%; display: flex; align-items: center; justify-content: center;
@@ -652,8 +659,11 @@
         </div>
 
         <div class="input-group-new">
-          <input type="email" id="email" placeholder=" " required autocomplete="email">
+          <input type="email" id="email" placeholder=" " required autocomplete="email" oninput="checkGmailHint()">
           <label for="email">E-mail</label>
+          <div class="gmail-hint" id="gmailHint" style="display:none">
+            <i class="fa-brands fa-google"></i> Contas Google devem entrar com o botão acima
+          </div>
         </div>
 
         <div class="input-group-new">
@@ -817,21 +827,60 @@
       else { input.type = 'password'; icon.className = 'fa-solid fa-eye'; }
     }
 
+    function checkGmailHint() {
+      var email = document.getElementById('email').value.trim().toLowerCase();
+      var hint = document.getElementById('gmailHint');
+      if (hint) hint.style.display = (email.endsWith('@gmail.com') || email.endsWith('@googlemail.com')) ? 'flex' : 'none';
+    }
+
+    function isGmail(email) {
+      var e = email.toLowerCase();
+      return e.endsWith('@gmail.com') || e.endsWith('@googlemail.com');
+    }
+
     function handleAuth() {
       if (currentTab === 'register') { document.getElementById('registerBtn').click(); return; }
       var authEl = document.getElementById('auth-message');
       var btn = document.getElementById('submitBtn');
       var txt = document.getElementById('submitText');
-      if (typeof firebase === 'undefined' || !firebase.auth) {
-        if (authEl) { authEl.textContent = 'Sem conexão com o Firebase.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
-        return;
-      }
       var email = document.getElementById('email').value.trim();
       var password = document.getElementById('password').value;
       if (!email || !password) {
         if (authEl) { authEl.textContent = 'Preencha e-mail e senha.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
         return;
       }
+      if (typeof firebase === 'undefined' || !firebase.auth) {
+        if (authEl) { authEl.textContent = 'Sem conexão com o Firebase.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
+        return;
+      }
+      if (isGmail(email)) {
+        if (btn) btn.disabled = true;
+        if (txt) txt.textContent = 'Verificando...';
+        if (authEl) { authEl.textContent = 'Verificando conta Gmail...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+        firebase.auth().fetchSignInMethodsForEmail(email).then(function(methods) {
+          if (methods.indexOf('google.com') !== -1) {
+            if (authEl) { authEl.textContent = 'Esta conta foi criada com Google. Redirecionando...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+            document.getElementById('googleBtn').click();
+          } else if (methods.indexOf('password') !== -1) {
+            doLogin(email, password);
+          } else {
+            if (authEl) { authEl.textContent = 'Conta Gmail não encontrada. Use "Continuar com Google" para criar sua conta.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
+            if (txt) txt.textContent = 'Entrar';
+            if (btn) btn.disabled = false;
+          }
+        }).catch(function() {
+          if (authEl) { authEl.textContent = 'Conta Gmail deve entrar com o Google. Clique no botão acima.'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+          document.getElementById('googleBtn').click();
+        });
+        return;
+      }
+      doLogin(email, password);
+    }
+
+    function doLogin(email, password) {
+      var authEl = document.getElementById('auth-message');
+      var btn = document.getElementById('submitBtn');
+      var txt = document.getElementById('submitText');
       if (btn) btn.disabled = true;
       if (txt) txt.textContent = 'Entrando...';
       if (authEl) { authEl.textContent = 'Entrando...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
