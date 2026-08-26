@@ -105,6 +105,14 @@
     }
     body.dark-mode .login-tagline { color: #6c7a8d; }
 
+    .daily-quote {
+      font-size: 0.78rem; color: #adb5bd; font-style: italic;
+      margin-bottom: 22px; line-height: 1.5;
+      min-height: 2.4em;
+      transition: color 0.5s ease;
+    }
+    body.dark-mode .daily-quote { color: #484f58; }
+
     .social-proof {
       display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
     }
@@ -262,15 +270,19 @@
     .trust-item { display: flex; align-items: center; gap: 5px; font-size: 0.72rem; color: #adb5bd; transition: color 0.5s ease; }
     body.dark-mode .trust-item { color: #484f58; }
     .trust-item i { color: #51cf66; font-size: 0.65rem; }
+    .theme-toggle-row {
+      display: flex; justify-content: center; margin-bottom: 14px;
+    }
     .login-theme-btn {
-      background: none; border: 1px solid #adb5bd; color: #adb5bd;
-      width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; transition: all 0.3s ease;
+      background: none; border: 1px solid #dee2e6; color: #868e96;
+      padding: 7px 14px; border-radius: 20px; cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.75rem; transition: all 0.3s ease;
     }
     .login-theme-btn:hover { border-color: #FF6B6B; color: #FF6B6B; }
-    body.dark-mode .login-theme-btn { border-color: #484f58; color: #8b949e; }
+    body.dark-mode .login-theme-btn { border-color: #30363d; color: #8b949e; }
     body.dark-mode .login-theme-btn:hover { border-color: #FF6B6B; color: #FF6B6B; }
+    .login-theme-btn i { font-size: 0.85rem; }
 
     /* === RIGHT PANEL — LANDSCAPE === */
     .login-right {
@@ -637,6 +649,7 @@
       </div>
       <h1 class="login-heading">Bem-vindo ao Pulso</h1>
       <p class="login-tagline">Seu dinheiro, seu controle.</p>
+      <p class="daily-quote" id="dailyQuote"></p>
 
       <div class="auth-tabs" aria-hidden="true">
         <div class="auth-tab-indicator" id="tabIndicator"></div>
@@ -707,13 +720,17 @@
         <span id="bottomText">Não tem conta? <strong onclick="switchAuthTab('register')">Criar agora</strong></span>
       </div>
 
+      <div class="theme-toggle-row">
+        <button type="button" id="themePill" class="login-theme-btn" aria-label="Alternar tema claro/escuro" title="Alternar entre modo dia e noite">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+          <span class="theme-label">Alternar tema</span>
+        </button>
+      </div>
+
       <div class="trust-row">
         <span class="trust-item"><i class="fa-solid fa-shield-halved"></i> HTTPS</span>
         <span class="trust-item"><i class="fa-solid fa-lock"></i> Criptografado</span>
         <span class="trust-item"><i class="fa-solid fa-user-shield"></i> Privacidade</span>
-        <button type="button" id="themePill" class="login-theme-btn" aria-label="Alternar tema claro/escuro" title="Alternar tema">
-          <i class="fa-solid fa-circle-half-stroke"></i>
-        </button>
       </div>
     </div>
 
@@ -871,6 +888,68 @@
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTheme(); }
     });
     window.addEventListener('storage', (e) => { if (e.key === STORAGE_KEY && e.newValue) applyTheme(e.newValue); });
+
+    // Daily Quote
+    const quotes = [
+      { text: "O homem é a medida de todas as coisas.", author: "Protágoras" },
+      { text: "Só sei que nada sei.", author: "Sócrates" },
+      { text: "Conhece-te a ti mesmo.", author: "Inscrição no Templo de Delfos" },
+      { text: "A virtude é o conhecimento; o vício é a ignorância.", author: "Sócrates" },
+      { text: "A alma humana não tem preço.", author: "Aristóteles" },
+      { text: "Não é o que temos, mas o que fazemos com o que temos que nos define.", author: "Aristóteles" },
+      { text: "A riqueza não consiste em possuir grandes bens, mas em ter poucas necessidades.", author: "Epicteto" },
+      { text: "Começa cada dia como se fosse o último.", author: "Marco Aurélio" },
+      { text: "A felicidade depende de nós mesmos.", author: "Aristóteles" },
+      { text: "Ninguém é livre senão aquele que domina a si mesmo.", author: "Pitágoras" },
+      { text: "O que importa não é o que acontece contigo, mas como você reage.", author: "Epicteto" },
+      { text: "A paciência amarga, mas o seu fruto é doce.", author: "Jean-Jacques Rousseau" },
+      { text: "Antes de querer mudar o mundo, mude a si mesmo.", author: "Mahatma Gandhi" },
+      { text: "A verdade vos libertará.", author: "Jesus Cristo — João 8:32" },
+      { text: "Felizes os pobres de espírito, porque deles é o Reino dos Céus.", author: "Jesus Cristo — Mateus 5:3" },
+      { text: "Ame ao próximo como a ti mesmo.", author: "Jesus Cristo — Mateus 22:39" },
+      { text: "Não se apaziguem pelo dia de amanhã, porque o dia de amanhã é de si mesmo.", author: "Provérbios 27:1" },
+      { text: "O Senhor é o meu pastor; nada me faltará.", author: "Salmo 23:1" },
+      { text: "Tudo posso naquele que me fortalece.", author: "Filipenses 4:13" },
+      { text: "Deem graças em todas as circunstâncias.", author: "1 Tessalonicenses 5:18" },
+      { text: "O temor do Senhor é o princípio da sabedoria.", author: "Salmo 111:10" },
+      { text: "Busquem primeiro o Reino de Deus e a sua justiça, e todas essas coisas lhes serão acrescentadas.", author: "Jesus Cristo — Mateus 6:33" },
+      { text: "Não julguem para que não sejam julgados.", author: "Jesus Cristo — Mateus 7:1" },
+      { text: "O dinheiro é um servo bom, mas um mau mestre.", author: "Provérbio" },
+      { text: "O preço de qualquer coisa é a quantidade de vida que você troca por ela.", author: "Henry David Thoreau" },
+      { text: "O investimento em conhecimento sempre paga os melhores juros.", author: "Benjamin Franklin" },
+      { text: "Os juros compostos são a oitava maravilha do mundo.", author: "Albert Einstein" },
+      { text: "Não coloque todos os seus ovos em uma cesta.", author: "Provérbio de investimentos" },
+      { text: "A economia é a arte de satisfazer necessidades ilimitadas com recursos limitados.", author: "George Bernard Shaw" },
+      { text: "O orçamento não é uma restrição, é uma liberdade.", author: "Desconhecido" },
+      { text: "Gaste menos do que ganhe. Invista o resto.", author: "George Clason — O Homem Mais Rico da Babilônia" },
+      { text: "A gravidade financeira pega todos eventualmente. Prepare-se.", author: "Desconhecido" },
+      { text: "Quem controla o dinheiro, controla o futuro.", author: "Desconhecido" },
+      { text: "A melhor hora para plantar uma árvore foi há vinte anos. A segunda melhor hora é agora.", author: "Provérbio Chinês" },
+      { text: "A perseverança não é uma longa corrida; é muitas corridas pequenas uma atrás da outra.", author: "Walter Elliot" },
+      { text: "Disciplina é a ponte entre metas e realizações.", author: "Jim Rohn" },
+      { text: "O sucesso é a soma de pequenos esforços repetidos dia após dia.", author: "Robert Collier" },
+      { text: "A melhor vingança é uma vida bem vivida.", author: "Marcus Aurelius" },
+      { text: "Não há vento favorável para quem não sabe aonde vai.", author: "Sêneca" },
+      { text: "Enquanto vivemos, aprendamos a viver.", author: "Sêneca" },
+      { text: "Não é que temos pouco tempo, é que desperdiçamos muito dele.", author: "Sêneca" },
+      { text: "O maior obstáculo para a vida é a expectativa de amanhã.", author: "Sêneca" },
+      { text: "Quem é pobre não pelo pouco que tem, mas pelo muito que deseja.", author: "Sêneca" },
+      { text: "A sorte é o que acontece quando a preparação encontra a oportunidade.", author: "Sêneca" },
+      { text: "Comece a viver cada dia como se fosse o último.", author: "Sêneca" },
+      { text: "A liberdade consiste não em fazer o que se quer, mas em não ser impedido de fazer o que se quer.", author: "Baruch Espinoza" },
+      { text: "Pequenos gastos diários se tornam grandes fortunas com o tempo.", author: "Desconhecido" },
+      { text: "Quem poupa, tem. Quem investe, multiplica.", author: "Desconhecido" },
+      { text: "O melhor investimento é em você mesmo.", author: "Warren Buffett" },
+      { text: "Seja Battlefield de alguém. Seja grato.", author: "Provérbio" },
+      { text: "A gratidão é a memória do coração.", author: "Jean Baptiste Massieu" }
+    ];
+    const today = new Date();
+    const dayIndex = (today.getFullYear() * 366 + today.getMonth() * 31 + today.getDate()) % quotes.length;
+    const quote = quotes[dayIndex];
+    const quoteEl = document.getElementById('dailyQuote');
+    if (quoteEl) {
+      quoteEl.innerHTML = '"' + quote.text + '" — <em>' + quote.author + '</em>';
+    }
   </script>
 </body>
 </html>
