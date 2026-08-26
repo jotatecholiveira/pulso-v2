@@ -361,18 +361,23 @@ document.addEventListener('click', function(e) {
 // 7. AUTENTICAÇÃO
 function translateAuthError(err) {
   const map = {
-    'auth/invalid-email': 'E-mail inválido.',
-    'auth/user-disabled': 'Conta desativada.',
-    'auth/user-not-found': 'Nenhuma conta com este e-mail.',
-    'auth/wrong-password': 'Senha incorreta.',
-    'auth/invalid-credential': 'E-mail ou senha incorretos.',
+    'auth/invalid-email': 'E-mail inválido. Verifique o formato.',
+    'auth/user-disabled': 'Conta desativada. Contacte o suporte.',
+    'auth/user-not-found': 'Nenhuma conta encontrada com este e-mail. Criar conta primeiro.',
+    'auth/wrong-password': 'Senha incorreta. Tente novamente.',
+    'auth/invalid-credential': 'E-mail ou senha incorretos. Se não tem conta, clique em "Criar agora".',
     'auth/weak-password': 'Senha fraca (mínimo 6 caracteres).',
-    'auth/email-already-in-use': 'Este e-mail já está em uso.',
-    'auth/too-many-requests': 'Muitas tentativas. Tente mais tarde.',
+    'auth/email-already-in-use': 'Este e-mail já está em uso. Faça login.',
+    'auth/too-many-requests': 'Muitas tentativas. Aguarde alguns minutos e tente novamente.',
     'auth/popup-closed-by-user': 'Janela do Google fechada.',
-    'auth/unauthorized-domain': 'Domínio não autorizado no Firebase.'
+    'auth/unauthorized-domain': 'Domínio não autorizado no Firebase.',
+    'auth/network-request-failed': 'Sem conexão com a internet. Verifique sua rede.',
+    'auth/operation-not-allowed': 'Este método de login não está activado no Firebase.'
   };
-  return map[err.code] || (err.message || 'Erro desconhecido.');
+  const msg = map[err.code];
+  if (msg) return msg;
+  if (err.code && err.code.startsWith('auth/')) return 'Erro: ' + err.code.replace('auth/', '').replace(/-/g, ' ');
+  return err.message || 'Erro desconhecido. Tente novamente.';
 }
 
 function setAuthMsg(text, type) {
