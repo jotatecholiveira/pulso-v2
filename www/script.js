@@ -928,7 +928,7 @@ function saveProfile() {
   }
   if (db && storageMode === 'rtdb') {
     const uid = currentUser.uid;
-    db.ref('users/' + uid + '/profile').set({
+    db.ref('users/' + uid + '/profile').update({
       displayName: newName,
       photoURL: updates.photoURL || null,
       updatedAt: new Date().toISOString()

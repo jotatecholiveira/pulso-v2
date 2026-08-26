@@ -690,259 +690,399 @@
     })();
 
     // ============================================================
-    // PIXEL ART OCEAN — Canvas engine (day: boats, night: boat + traveler)
+    // PIXEL ART OCEAN — Sunset & Night (arcade pixel art style)
     // ============================================================
     (function() {
       const canvas = document.getElementById('ocean-canvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
 
-      const PX = 4;
-      let W, H, cols, rows;
+      const LW = 320, LH = 180;
       let frame = 0;
-      let isDark = false;
+      let fadeAlpha = 0;
 
       function isNight() {
         return document.body.classList.contains('dark-mode') || document.body.classList.contains('dark');
       }
 
-      function resize() {
-        const rect = canvas.parentElement.getBoundingClientRect();
-        canvas.width = rect.width;
-        canvas.height = rect.height * 0.42;
-        W = canvas.width;
-        H = canvas.height;
-        cols = Math.ceil(W / PX);
-        rows = Math.ceil(H / PX);
+      canvas.width = LW;
+      canvas.height = LH;
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+
+      function px(x, y, r, g, b) {
+        x = Math.floor(x); y = Math.floor(y);
+        if (x < 0 || x >= LW || y < 0 || y >= LH) return;
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(x, y, 1, 1);
       }
 
-      function px(x, y, color) {
-        ctx.fillStyle = color;
-        ctx.fillRect(x * PX, y * PX, PX, PX);
+      function rect(x, y, w, h, r, g, b) {
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(Math.floor(x), Math.floor(y), w, h);
       }
 
-      // Pixel art color palettes
-      const dayColors = {
-        sky: ['#5BA3D9', '#6DB3E8', '#7EC8F0', '#91D8F5'],
-        water: ['#1565C0', '#1976D2', '#1E88E5', '#2196F3', '#42A5F5', '#64B5F6'],
-        foam: ['#BBDEFB', '#E3F2FD', '#FFFFFF'],
-        sand: ['#F9A825', '#FBC02D', '#FFD54F', '#FFE082'],
-        sail: ['#FFFFFF', '#F5F5F5', '#E0E0E0'],
-        hull: ['#5D4037', '#6D4C41', '#4E342E', '#8D6E63'],
-        flag: ['#FF6B6B', '#FF5252', '#F44336']
-      };
+      function lerp(a, b, t) { return Math.round(a + (b - a) * Math.max(0, Math.min(1, t))); }
+      function lerpColor(c1, c2, t) { return [lerp(c1[0],c2[0],t), lerp(c1[1],c2[1],t), lerp(c1[2],c2[2],t)]; }
 
-      const nightColors = {
-        water: ['#0a1628', '#0d1b2a', '#102038', '#0d1930', '#132840'],
-        foam: ['#1a3050', '#1e3858', '#243f5f'],
-        glow: ['#1a4a6a', '#205880', '#2670a0'],
-        hull: ['#1a1a2e', '#252540', '#101020'],
-        sail: ['#2a2a4e', '#353560', '#1e1e3a'],
-        lantern: ['#FFD54F', '#FFC107', '#FF9800', '#FFB300'],
-        reflection: ['#1a3a5a', '#1e4060', '#224868']
-      };
+      // =================== SUNSET SCENE ===================
+      const HORIZON = 95;
 
-      // Boat objects
-      const dayBoats = [
-        { x: -20, y: 0.25, speed: 0.35, size: 1, dir: 1 },
-        { x: cols * 0.4, y: 0.35, speed: 0.2, size: 0.8, dir: 1 },
-        { x: cols * 0.7, y: 0.2, speed: 0.45, size: 0.7, dir: 1 }
-      ];
-
-      let nightBoat = { x: -30, y: 0.3, speed: 0.15, dir: 1 };
-
-      function drawWaterLine(row, time, colors) {
-        const waterColors = colors.water;
-        const foamColors = colors.foam;
-        for (let col = 0; col < cols; col++) {
-          const waveH = Math.sin((col + time * 0.8) * 0.15) * 1.5 +
-                        Math.sin((col + time * 0.5) * 0.25) * 0.8;
-          const depth = row + waveH;
-          const ci = Math.abs(Math.floor(depth * 0.7 + col * 0.1)) % waterColors.length;
-          px(col, row, waterColors[ci]);
-
-          if (Math.sin((col + time * 1.2) * 0.3) > 0.85) {
-            px(col, row, foamColors[Math.floor(Math.random() * foamColors.length)]);
-          }
+      function drawSunsetSky() {
+        for (let y = 0; y < HORIZON; y++) {
+          const t = y / HORIZON;
+          let c;
+          if (t < 0.15) c = lerpColor([140,50,90], [200,80,100], t/0.15);
+          else if (t < 0.35) c = lerpColor([200,80,100], [230,130,60], (t-0.15)/0.2);
+          else if (t < 0.6) c = lerpColor([230,130,60], [245,180,50], (t-0.35)/0.25);
+          else c = lerpColor([245,180,50], [255,220,100], (t-0.6)/0.4);
+          rect(0, y, LW, 1, c[0], c[1], c[2]);
         }
       }
 
-      function drawSunReflection(centerCol, waterStartRow, time) {
-        for (let r = waterStartRow; r < rows; r++) {
-          const spread = (r - waterStartRow) * 0.4;
-          for (let c = centerCol - spread; c <= centerCol + spread; c++) {
-            if (c < 0 || c >= cols) continue;
-            if (Math.random() > 0.3) continue;
-            const shimmer = Math.sin((c + r + time * 2) * 0.5);
-            if (shimmer > 0.3) {
-              px(Math.floor(c), r, '#FFF9C4');
-            } else if (shimmer > 0) {
-              px(Math.floor(c), r, '#FFD54F');
+      function drawSun(time) {
+        const sx = 160, sy = HORIZON - 5;
+        const r = 22;
+        for (let dy = -r; dy <= r; dy++) {
+          for (let dx = -r; dx <= r; dx++) {
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist > r) continue;
+            const t = dist / r;
+            const c = lerpColor([255,240,120], [255,200,60], t);
+            px(sx+dx, sy+dy, c[0], c[1], c[2]);
+          }
+        }
+        // Glow
+        for (let dy = -r-4; dy <= r+4; dy++) {
+          for (let dx = -r-4; dx <= r+4; dx++) {
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < r || dist > r+4) continue;
+            const glow = 1 - (dist - r) / 4;
+            if (Math.random() < glow * 0.3) {
+              px(sx+dx, sy+dy, 255, 200, 80);
             }
           }
         }
       }
 
-      function drawPixelSailboat(cx, cy, s, time) {
-        const sx = Math.floor(cx);
-        const sy = Math.floor(cy);
-        const colors = isDark ? nightColors : dayColors;
+      function drawSunCloud(x, y, w, h) {
+        for (let dy = 0; dy < h; dy++) {
+          for (let dx = 0; dx < w; dx++) {
+            const edge = Math.sin(dx * 0.5) * 2 + Math.sin(dx * 0.8) * 1;
+            if (dy < h/2 + edge && dy > -edge) {
+              const t = dy / h;
+              px(x+dx, y+dy, lerp(240,220,t), lerp(150,130,t), lerp(120,110,t));
+            }
+          }
+        }
+      }
 
+      function drawBird(x, y, time) {
+        const wingUp = Math.sin(time * 0.15 + x * 0.1) > 0;
+        if (wingUp) {
+          px(x-2,y-1, 60,40,50); px(x-1,y, 60,40,50); px(x,y, 60,40,50);
+          px(x+1,y, 60,40,50); px(x+2,y-1, 60,40,50);
+        } else {
+          px(x-2,y, 60,40,50); px(x-1,y-1, 60,40,50); px(x,y, 60,40,50);
+          px(x+1,y-1, 60,40,50); px(x+2,y, 60,40,50);
+        }
+      }
+
+      function drawMountain(points, cr, cg, cb) {
+        for (let i = 0; i < points.length - 1; i++) {
+          const [x1, y1] = points[i];
+          const [x2, y2] = points[i+1];
+          const steps = Math.max(Math.abs(x2-x1), Math.abs(y2-y1));
+          for (let s = 0; s <= steps; s++) {
+            const t = steps === 0 ? 0 : s / steps;
+            const x = lerp(x1, x2, t);
+            const y = lerp(y1, y2, t);
+            for (let fy = y; fy < HORIZON; fy++) px(x, fy, cr, cg, cb);
+          }
+        }
+      }
+
+      function drawPalmTree(tx, ty, flip) {
+        const d = flip ? -1 : 1;
+        // Trunk (curved)
+        for (let i = 0; i < 35; i++) {
+          const curve = Math.sin(i * 0.08) * 4 * d;
+          const tw = Math.max(1, 3 - i * 0.06);
+          for (let w = -tw; w <= tw; w++) {
+            px(tx + curve + w, ty - i, 85, 55, 30);
+          }
+        }
+        // Trunk highlights
+        for (let i = 0; i < 35; i++) {
+          const curve = Math.sin(i * 0.08) * 4 * d;
+          px(tx + curve - 1, ty - i, 100, 70, 40);
+        }
+        // Fronds
+        const topX = tx + Math.sin(35 * 0.08) * 4 * d;
+        const topY = ty - 35;
+        const frondAngles = [-0.8, -0.4, -0.1, 0.2, 0.5, 0.9];
+        frondAngles.forEach((angle, fi) => {
+          const len = 18 + (fi % 2) * 6;
+          const sway = Math.sin(frame * 0.02 + fi) * 1.5;
+          for (let f = 0; f < len; f++) {
+            const fx = topX + Math.cos(angle + sway * 0.05) * f * d;
+            const fy = topY + Math.sin(angle) * f * 0.6 + f * 0.15;
+            px(fx, fy, 20, 60, 30);
+            if (f > 3 && f < len - 2) {
+              const leafDir = Math.sin(angle) > 0 ? 1 : -1;
+              px(fx, fy + leafDir * 1, 25, 70, 35);
+              if (f % 3 === 0) px(fx + d, fy + leafDir * 2, 30, 75, 40);
+            }
+          }
+        });
+        // Coconuts
+        px(topX + d, topY + 2, 100, 70, 30);
+        px(topX + d*2, topY + 1, 90, 60, 25);
+      }
+
+      function drawRock(rx, ry, rw, rh) {
+        for (let dy = 0; dy < rh; dy++) {
+          const w = Math.floor(rw * (1 - dy/rh * 0.3));
+          for (let dx = -w; dx <= w; dx++) {
+            const shade = Math.sin(dx + dy) > 0.3 ? 5 : 0;
+            px(rx+dx, ry+dy, 45+shade, 30+shade, 40+shade);
+          }
+        }
+        // Highlights
+        for (let i = 0; i < rw; i++) {
+          px(rx - rw + i, ry, 65, 50, 55);
+        }
+      }
+
+      function drawSand(time) {
+        for (let y = HORIZON + 55; y < LH; y++) {
+          for (let x = 0; x < LW; x++) {
+            const wave = Math.sin(x * 0.08 + time * 0.02) * 2;
+            const edge = Math.sin(x * 0.15) * 3;
+            if (y > HORIZON + 55 + wave + edge) {
+              const t = (y - HORIZON - 55) / (LH - HORIZON - 55);
+              const c = lerpColor([210,170,100], [190,150,85], t);
+              const noise = (Math.sin(x*7+y*3)*5);
+              px(x, y, c[0]+noise, c[1]+noise, c[2]+noise);
+            }
+          }
+        }
+      }
+
+      function drawSunsetWater(time) {
+        for (let y = HORIZON; y < LH - 20; y++) {
+          const depth = (y - HORIZON) / (LH - 20 - HORIZON);
+          for (let x = 0; x < LW; x++) {
+            const wave1 = Math.sin((x + time * 0.5) * 0.08) * 1.5;
+            const wave2 = Math.sin((x + time * 0.3) * 0.12) * 1;
+            const waveY = y + wave1 + wave2;
+            if (waveY < HORIZON) continue;
+            const t = depth;
+            const c = lerpColor([50,150,170], [20,80,100], t);
+            px(x, waveY, c[0], c[1], c[2]);
+          }
+        }
+      }
+
+      function drawSunReflection(time) {
+        const cx = 160;
+        for (let y = HORIZON; y < LH - 20; y++) {
+          const dist = (y - HORIZON) / (LH - 20 - HORIZON);
+          const spread = 5 + dist * 20;
+          for (let x = cx - spread; x <= cx + spread; x++) {
+            if (x < 0 || x >= LW) continue;
+            const shimmer = Math.sin((x + time * 1.5) * 0.3) * Math.sin((y + time) * 0.2);
+            if (shimmer > 0.2) {
+              const bright = 1 - dist * 0.6;
+              px(x, y, lerp(255,200,dist), lerp(220,150,dist), lerp(80,60,dist));
+            }
+          }
+        }
+      }
+
+      function drawSailboat(bx, by, time) {
+        const bob = Math.sin(time * 0.06 + bx * 0.1) * 1.5;
+        const y = Math.floor(by + bob);
         // Hull
-        for (let i = -4 * s; i <= 4 * s; i++) {
-          px(sx + i, sy, colors.hull[Math.abs(i) % colors.hull.length]);
-          if (Math.abs(i) <= 3 * s) px(sx + i, sy + 1, colors.hull[1]);
+        for (let i = -7; i <= 7; i++) {
+          const hw = 7 - Math.abs(i) * 0.4;
+          if (Math.abs(i) <= 7) px(bx+i, y, 50,35,30);
+          if (Math.abs(i) <= 5) px(bx+i, y+1, 40,28,25);
         }
-
         // Mast
-        px(sx, sy - 1, '#5D4037');
-        px(sx, sy - 2, '#5D4037');
-        px(sx, sy - 3, '#5D4037');
-        px(sx, sy - 4, '#5D4037');
-
+        for (let m = 1; m <= 12; m++) px(bx, y-m, 60,40,30);
         // Sail
-        for (let j = 0; j < 3; j++) {
-          for (let i = 1; i <= 2 - j * 0.5; i++) {
-            const sc = colors.sail[Math.floor(Math.random() * colors.sail.length)];
-            px(sx + Math.floor(i), sy - 2 - j, sc);
+        for (let s = 0; s < 9; s++) {
+          for (let w = 1; w <= 5 - s * 0.4; w++) {
+            px(bx+w, y-3-s, 220+Math.sin(s)*10, 190+Math.sin(s)*10, 150);
           }
         }
-
-        // Flag
-        const flagWave = Math.sin(time * 3) > 0 ? 1 : 0;
-        px(sx + 1, sy - 4, colors.flag ? colors.flag[0] : '#FF6B6B');
-        px(sx + 1 + flagWave, sy - 4, colors.flag ? colors.flag[0] : '#FF5252');
-
-        // Wake behind boat
-        for (let i = 1; i <= 3; i++) {
-          if (Math.random() > 0.4) {
-            px(sx - i, sy + 1, isDark ? '#1a3050' : '#BBDEFB');
-          }
+        // Reflection
+        for (let r = 1; r < 6; r++) {
+          if (Math.random() > 0.4) px(bx + Math.sin(time*0.1+r)*2, y+2+r, 40, 100, 110);
         }
       }
 
-      function drawNightBoat(cx, cy, time) {
-        const sx = Math.floor(cx);
-        const sy = Math.floor(cy);
+      // =================== NIGHT SCENE ===================
 
-        // Hull (larger, darker)
-        for (let i = -6; i <= 6; i++) {
-          px(sx + i, sy, nightColors.hull[Math.abs(i) % 3]);
-          if (Math.abs(i) <= 5) px(sx + i, sy + 1, nightColors.hull[1]);
-          if (Math.abs(i) <= 4) px(sx + i, sy + 2, nightColors.hull[2]);
-        }
-
-        // Mast
-        for (let j = 1; j <= 6; j++) px(sx, sy - j, '#1a1a2e');
-        for (let j = 1; j <= 3; j++) px(sx - 1, sy - 2 - j, '#1a1a2e');
-
-        // Sail (large, dark)
-        for (let j = 0; j < 5; j++) {
-          for (let i = 1; i <= 4 - j * 0.7; i++) {
-            px(sx + Math.floor(i), sy - 2 - j, nightColors.sail[j % 3]);
-          }
-        }
-
-        // Lantern glow
-        const lanternFlicker = Math.sin(time * 4) * 0.3 + 0.7;
-        px(sx + 1, sy - 1, nightColors.lantern[0]);
-        if (lanternFlicker > 0.5) px(sx + 2, sy - 1, nightColors.lantern[1]);
-        if (Math.sin(time * 5) > 0) px(sx, sy - 1, nightColors.lantern[2]);
-
-        // Lantern reflection in water
-        for (let r = 1; r <= 3; r++) {
-          if (Math.random() < lanternFlicker) {
-            px(sx + 1, sy + 2 + r, nightColors.lantern[Math.floor(Math.random() * 3)]);
-          }
-        }
-
-        // Traveler silhouette (standing at the back)
-        // Head
-        px(sx - 3, sy - 3, '#0a0a18');
-        // Body
-        px(sx - 3, sy - 2, '#0a0a18');
-        px(sx - 3, sy - 1, '#0a0a18');
-        px(sx - 4, sy - 2, '#0a0a18');
-        px(sx - 4, sy - 1, '#0a0a18');
-        // Arms
-        if (Math.sin(time * 1.5) > 0) {
-          px(sx - 2, sy - 2, '#0a0a18');
-          px(sx - 5, sy - 2, '#0a0a18');
-        }
-
-        // Wake
-        for (let i = 1; i <= 5; i++) {
-          if (Math.random() > 0.3) {
-            px(sx - i, sy + 3, nightColors.foam[i % 3]);
-          }
+      function drawNightSky() {
+        for (let y = 0; y < HORIZON; y++) {
+          const t = y / HORIZON;
+          const c = lerpColor([8,12,35], [15,25,55], t);
+          rect(0, y, LW, 1, c[0], c[1], c[2]);
         }
       }
 
-      function drawMoonReflection(centerCol, waterStartRow, time) {
-        for (let r = waterStartRow; r < rows; r++) {
-          const spread = (r - waterStartRow) * 0.3;
-          for (let c = centerCol - spread; c <= centerCol + spread; c++) {
-            if (c < 0 || c >= cols) continue;
-            if (Math.random() > 0.2) continue;
-            const shimmer = Math.sin((c + r + time * 1.5) * 0.4);
-            if (shimmer > 0.4) px(Math.floor(c), r, nightColors.glow[0]);
-            else if (shimmer > 0) px(Math.floor(c), r, nightColors.reflection[1]);
-          }
-        }
-      }
-
-      function drawScene() {
-        isDark = isNight();
-        const colors = isDark ? nightColors : dayColors;
-        frame++;
-
-        ctx.clearRect(0, 0, W, H);
-
-        // Water
-        const waterStart = Math.floor(rows * 0.15);
-        for (let r = waterStart; r < rows; r++) {
-          drawWaterLine(r, frame, colors);
-        }
-
-        // Sand/rocks at bottom
-        if (!isDark) {
-          for (let c = 0; c < cols; c++) {
-            const sandH = Math.floor(Math.sin(c * 0.1) * 1.5 + 2);
-            for (let s = 0; s < sandH; s++) {
-              const si = (c + s) % dayColors.sand.length;
-              px(c, rows - 1 - s, dayColors.sand[si]);
+      function drawStars(time) {
+        const seed = 42;
+        for (let i = 0; i < 60; i++) {
+          const x = ((i * 137 + seed) % LW);
+          const y = ((i * 89 + seed) % Math.floor(HORIZON * 0.7));
+          const twinkle = Math.sin(time * 0.05 + i * 2.3);
+          const brightness = 0.4 + twinkle * 0.4;
+          const size = (i % 5 === 0) ? 2 : 1;
+          for (let dx = 0; dx < size; dx++) {
+            for (let dy = 0; dy < size; dy++) {
+              px(x+dx, y+dy, 255*brightness, 255*brightness, 255*brightness);
             }
           }
         }
-
-        // Reflections
-        if (isDark) {
-          drawMoonReflection(Math.floor(cols * 0.75), waterStart, frame);
-        } else {
-          drawSunReflection(Math.floor(cols * 0.82), waterStart, frame);
-        }
-
-        // Boats
-        if (isDark) {
-          nightBoat.x += nightBoat.speed;
-          if (nightBoat.x > cols + 30) nightBoat.x = -30;
-          drawNightBoat(nightBoat.x, waterStart + rows * 0.25, frame);
-        } else {
-          dayBoats.forEach(b => {
-            b.x += b.speed * b.dir;
-            if (b.x > cols + 25) b.x = -25;
-            if (b.x < -25) b.x = cols + 25;
-            const waveY = waterStart + rows * b.y + Math.sin(frame * 0.05 + b.x * 0.1) * 1.5;
-            drawPixelSailboat(b.x, waveY, b.size, frame);
-          });
-        }
-
-        requestAnimationFrame(drawScene);
       }
 
-      resize();
-      window.addEventListener('resize', resize);
-      drawScene();
+      function drawMoon(time) {
+        const mx = 200, my = 30;
+        const r = 14;
+        for (let dy = -r; dy <= r; dy++) {
+          for (let dx = -r; dx <= r; dx++) {
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist > r) continue;
+            const t = dist / r;
+            const c = lerpColor([230,230,240], [180,185,200], t);
+            px(mx+dx, my+dy, c[0], c[1], c[2]);
+          }
+        }
+        // Craters
+        px(mx-4, my-3, 170,175,185); px(mx-3, my-4, 170,175,185);
+        px(mx+3, my+2, 165,170,180); px(mx+4, my+3, 165,170,180);
+        px(mx-1, my+5, 175,180,190);
+        // Glow
+        for (let dy = -r-5; dy <= r+5; dy++) {
+          for (let dx = -r-5; dx <= r+5; dx++) {
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < r || dist > r+5) continue;
+            const glow = 1 - (dist - r) / 5;
+            if (Math.random() < glow * 0.15) {
+              px(mx+dx, my+dy, 100,110,150);
+            }
+          }
+        }
+      }
+
+      function drawNightCloud(x, y, w) {
+        for (let dx = 0; dx < w; dx++) {
+          const h = 3 + Math.sin(dx * 0.6) * 2;
+          for (let dy = 0; dy < h; dy++) {
+            px(x+dx, y+dy, 25,35,60);
+          }
+        }
+      }
+
+      function drawNightMountain(points) {
+        drawMountain(points, 12, 18, 38);
+      }
+
+      function drawNightWater(time) {
+        for (let y = HORIZON; y < LH - 15; y++) {
+          const depth = (y - HORIZON) / (LH - 15 - HORIZON);
+          for (let x = 0; x < LW; x++) {
+            const wave = Math.sin((x + time * 0.3) * 0.1) * 1;
+            const y2 = y + wave;
+            if (y2 < HORIZON) continue;
+            const c = lerpColor([18,30,55], [10,18,35], depth);
+            px(x, y2, c[0], c[1], c[2]);
+            // Wave highlights
+            if (Math.sin((x + time * 0.4) * 0.15) > 0.85 && depth < 0.6) {
+              px(x, y2, 30, 45, 70);
+            }
+          }
+        }
+      }
+
+      function drawMoonReflection(time) {
+        const mx = 200;
+        for (let y = HORIZON; y < LH - 15; y++) {
+          const dist = (y - HORIZON) / (LH - 15 - HORIZON);
+          const spread = 3 + dist * 15;
+          for (let x = mx - spread; x <= mx + spread; x++) {
+            if (x < 0 || x >= LW) continue;
+            const shimmer = Math.sin((x + time) * 0.4) * Math.sin((y + time * 0.7) * 0.3);
+            if (shimmer > 0.3) {
+              const b = (1 - dist * 0.7);
+              px(x, y, 80*b, 90*b, 130*b);
+            }
+          }
+        }
+      }
+
+      function drawNightShore(time) {
+        for (let y = LH - 15; y < LH; y++) {
+          for (let x = 0; x < LW; x++) {
+            const wave = Math.sin(x * 0.06 + time * 0.03) * 2;
+            if (y > LH - 12 + wave) {
+              px(x, y, 50, 48, 42);
+            }
+            // Foam line
+            if (Math.abs(y - (LH - 12 + wave)) < 1.5 && Math.sin(x * 0.2 + time * 0.1) > 0) {
+              px(x, y, 40, 55, 75);
+            }
+          }
+        }
+      }
+
+      // =================== RENDER ===================
+
+      function render() {
+        frame++;
+        ctx.clearRect(0, 0, LW, LH);
+
+        if (isNight()) {
+          // Night scene
+          drawNightSky();
+          drawStars(frame);
+          drawMoon(frame);
+          drawNightCloud(40, 25, 30);
+          drawNightCloud(130, 40, 25);
+          drawNightCloud(250, 20, 20);
+          drawNightMountain([[0,HORIZON],[30,HORIZON-30],[80,HORIZON-20],[130,HORIZON-35],[180,HORIZON-15],[230,HORIZON-28],[280,HORIZON-18],[320,HORIZON]]);
+          drawNightWater(frame);
+          drawMoonReflection(frame);
+          drawNightShore(frame);
+        } else {
+          // Sunset scene
+          drawSunsetSky();
+          drawSun(frame);
+          drawSunCloud(30, 15, 40);
+          drawSunCloud(240, 22, 35);
+          drawSunCloud(120, 8, 25);
+          drawBird(80 + Math.sin(frame*0.01)*30, 35, frame);
+          drawBird(110 + Math.sin(frame*0.012)*25, 28, frame);
+          drawBird(250 + Math.sin(frame*0.008)*20, 42, frame);
+          drawMountain([[0,HORIZON],[50,HORIZON-25],[100,HORIZON-15],[150,HORIZON-30],[200,HORIZON-10],[260,HORIZON-22],[320,HORIZON]], 55,40,70);
+          drawMountain([[0,HORIZON],[40,HORIZON-15],[90,HORIZON-35],[160,HORIZON-18],[220,HORIZON-28],[300,HORIZON-12],[320,HORIZON]], 45,35,60);
+          drawPalmTree(25, HORIZON + 50, false);
+          drawPalmTree(280, HORIZON + 48, true);
+          drawRock(55, HORIZON + 45, 18, 12);
+          drawRock(40, HORIZON + 50, 12, 8);
+          drawSunsetWater(frame);
+          drawSunReflection(frame);
+          drawSailboat(180, HORIZON + 25, frame);
+          drawSand(frame);
+        }
+
+        requestAnimationFrame(render);
+      }
+
+      render();
     })();
 
     // Splash
