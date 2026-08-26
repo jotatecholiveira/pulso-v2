@@ -389,6 +389,87 @@ body.light-theme .nav-link:hover:not(.active) {
   margin: 0;
 }
 
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.greeting-topbar h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.greeting-user-topbar {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* === NUBANK-STYLE: DASH TOP ROW (greeting + KPIs + atalhos) === */
+.dash-top-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dash-kpi-grid {
+  display: flex;
+  gap: 12px;
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card-bg, rgba(255,255,255,0.04));
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 10px 14px;
+  min-width: 150px;
+}
+
+.kpi-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.kpi-receitas .kpi-icon {
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+}
+
+.kpi-despesas .kpi-icon {
+  background: rgba(255, 107, 107, 0.15);
+  color: #ff6b6b;
+}
+
+.kpi-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: block;
+}
+
+.kpi-value.positive { color: #2ecc71; }
+.kpi-value.negative { color: #ff6b6b; }
+
 .header-controls {
   display: flex;
   align-items: center;
@@ -1759,23 +1840,14 @@ body.light-theme .auth-shell {
 
 /* --- Header do Dashboard --- */
 .dash-header {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 20px;
-  align-items: center;
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-xl);
-  padding: 24px 28px;
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(18px);
-  margin-bottom: 20px;
+  display: none;
 }
 
 .dash-greeting {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 8px 0;
 }
 
 .greeting-text h2 {
@@ -1797,36 +1869,20 @@ body.light-theme .auth-shell {
 }
 
 .dash-month-summary {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  justify-content: center;
-  padding: 6px 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: none;
 }
 
 .month-receitas,
 .month-despesas {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  display: none;
 }
 
 .month-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-secondary);
-  font-weight: 700;
+  display: none;
 }
 
 .month-value {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 700;
+  display: none;
 }
 
 .month-value.positive { color: var(--accent-success); }
@@ -3860,6 +3916,27 @@ body.light-theme .toast-notification {
   gap: 8px;
 }
 
+.user-menu-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg, rgba(255,255,255,0.05));
+  color: var(--text-secondary);
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.user-menu-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: rgba(108, 124, 255, 0.1);
+}
+
 .user-avatar-header {
   width: 40px;
   height: 40px;
@@ -5654,7 +5731,20 @@ body.light-theme .mobile-bottom-nav {
     padding-bottom: 0;
   }
 
-  /* Hide old quick buttons on mobile (hero has them) */
+  .dash-top-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .dash-kpi-grid {
+    flex-direction: column;
+  }
+
+  .kpi-card {
+    min-width: auto;
+  }
+
+  /* Hide quick buttons on mobile (hero has them) */
   .dash-quick-access { display: none; }
 
   /* Reduce dashboard padding on mobile */

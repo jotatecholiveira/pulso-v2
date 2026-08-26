@@ -283,9 +283,13 @@ function attachRtdbListener(uid) {
       }
       // Only show onboarding if NO template in Firebase AND no template in localStorage
       const localTemplate = localStorage.getItem(storageKey() + '_template');
-      if (!profile || !profile.template) {
-        if (!localTemplate) setTimeout(showOnboarding, 800);
+      if ((!profile || !profile.template) && !localTemplate && !(profile && profile.onboardingDone)) {
+        showOnboarding();
       }
+    }).catch(() => {
+      // Firebase failed — check localStorage only
+      const localTemplate = localStorage.getItem(storageKey() + '_template');
+      if (!localTemplate) showOnboarding();
     });
 
     // Load categories from Firebase
@@ -1649,7 +1653,8 @@ function renderDashGreeting() {
   const greetingEl = document.getElementById('dash-greeting');
   const userEl = document.getElementById('dash-greeting-user');
   const emojiEl = document.getElementById('greeting-emoji');
-  if (!greetingEl) return;
+  const topGreeting = document.getElementById('topbar-greeting');
+  const topUser = document.getElementById('topbar-greeting-user');
 
   const hour = new Date().getHours();
   let greeting, emoji;
@@ -1657,12 +1662,13 @@ function renderDashGreeting() {
   else if (hour < 18) { greeting = 'Boa tarde'; emoji = '⛅'; }
   else { greeting = 'Boa noite'; emoji = '🌙'; }
 
-  greetingEl.textContent = greeting;
-  if (userEl) {
-    const name = currentUser ? (currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Usuário') : 'Usuário';
-    userEl.textContent = name;
-  }
+  const name = currentUser ? (currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Usuário') : 'Usuário';
+
+  if (greetingEl) greetingEl.textContent = greeting;
+  if (userEl) userEl.textContent = name;
   if (emojiEl) emojiEl.textContent = emoji;
+  if (topGreeting) topGreeting.textContent = greeting + ', ' + name;
+  if (topUser) topUser.textContent = name;
 }
 
 // Resumo do mês no dashboard
@@ -3430,6 +3436,7 @@ function selectTemplate(templateId) {
   if (storageMode === 'rtdb' && db && currentUser) {
     const updates = {};
     updates['users/' + currentUser.uid + '/profile/template'] = templateId;
+    updates['users/' + currentUser.uid + '/profile/onboardingDone'] = true;
     updates['users/' + currentUser.uid + '/categories'] = customCategories;
     db.ref().update(updates).catch(err => console.warn('Erro ao salvar template:', err));
   }

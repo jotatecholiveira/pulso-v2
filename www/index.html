@@ -41,23 +41,23 @@
 
           <nav class="nav-menu">
             <button type="button" class="nav-link active" onclick="switchTab('dashboard')" data-tab="dashboard">
-              <i class="fa-regular fa-chart-bar"></i>
+              <i class="fa-solid fa-gauge-high"></i>
               <span class="nav-label">Dashboard</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('entrada')" data-tab="entrada">
-              <i class="fa-regular fa-paper-plane"></i>
+              <i class="fa-solid fa-receipt"></i>
               <span class="nav-label">Lançamentos</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('investimentos')" data-tab="investimentos">
-              <i class="fa-regular fa-chart-pie"></i>
+              <i class="fa-solid fa-chart-line"></i>
               <span class="nav-label">Investimentos</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('historico')" data-tab="historico">
-              <i class="fa-regular fa-calendar"></i>
+              <i class="fa-solid fa-clock-rotate-left"></i>
               <span class="nav-label">Histórico</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('banco')" data-tab="banco">
-              <i class="fa-regular fa-building"></i>
+              <i class="fa-solid fa-building-columns"></i>
               <span class="nav-label">Banco</span>
             </button>
           </nav>
@@ -72,18 +72,20 @@
 
       <main class="main-content">
         <div class="topbar">
-          <div>
-            <p class="eyebrow">Orçamento familiar</p>
-            <h1>Visão geral</h1>
+          <div class="topbar-left">
+            <div class="greeting-topbar">
+              <h2 id="topbar-greeting">Boa noite</h2>
+              <p class="greeting-user-topbar" id="topbar-greeting-user">Usuário</p>
+            </div>
           </div>
   <div class="header-controls">
     <button type="button" class="global-eye-btn" id="globalEyeBtn" onclick="toggleAllValuesVisibility()" title="Mostrar/ocultar valores">
       <i class="fa-solid fa-eye" id="global-eye-icon"></i>
     </button>
     <div class="user-menu" id="user-menu">
-      <div class="user-avatar-header" id="user-avatar-header" title="Perfil" onclick="toggleUserDropdown()">
-        <i class="fa-solid fa-user" id="user-avatar-icon"></i>
-      </div>
+      <button type="button" class="user-menu-btn" title="Perfil" onclick="toggleUserDropdown()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
       <div class="user-dropdown" id="user-dropdown">
         <div class="dropdown-header">
           <div class="dropdown-name" id="dropdown-user-name">Usuário</div>
@@ -186,7 +188,7 @@
 
       <section id="dashboard" class="tab-content active">
 
-        <!-- HERO SALDO (Nubank-style: first thing user sees) -->
+        <!-- HERO SALDO (Nubank-style: balance-first hierarchy) -->
         <div class="hero-saldo-card" id="hero-saldo-card">
           <div class="hero-saldo-top">
             <div class="hero-saldo-label">Saldo disponível</div>
@@ -218,14 +220,8 @@
           </div>
         </div>
 
-        <!-- TRUST BADGE -->
-        <div class="trust-badge">
-          <i class="fa-solid fa-shield-halved"></i>
-          <span>Dados protegidos e sincronizados</span>
-        </div>
-
-        <!-- Saudação + Resumo + Acesso Rápido -->
-        <div class="dash-header">
+        <!-- SAUDAÇÃO + KPI CARDS + ATALHOS (Nubank-style grid) -->
+        <div class="dash-top-row">
           <div class="dash-greeting">
             <div class="greeting-text">
               <h2 id="dash-greeting">Boa noite</h2>
@@ -233,14 +229,20 @@
             </div>
             <div class="greeting-emoji" id="greeting-emoji">🌙</div>
           </div>
-          <div class="dash-month-summary">
-            <div class="month-receitas">
-              <span class="month-label">Receitas no mês</span>
-              <span class="month-value positive" id="dash-receitas-mes">R$ 0,00</span>
+          <div class="dash-kpi-grid">
+            <div class="kpi-card kpi-receitas">
+              <div class="kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+              <div class="kpi-info">
+                <span class="kpi-label">Receitas</span>
+                <span class="kpi-value positive" id="dash-receitas-mes">R$ 0,00</span>
+              </div>
             </div>
-            <div class="month-despesas">
-              <span class="month-label">Despesas no mês</span>
-              <span class="month-value negative" id="dash-despesas-mes">R$ 0,00</span>
+            <div class="kpi-card kpi-despesas">
+              <div class="kpi-icon"><i class="fa-solid fa-arrow-trend-down"></i></div>
+              <div class="kpi-info">
+                <span class="kpi-label">Despesas</span>
+                <span class="kpi-value negative" id="dash-despesas-mes">R$ 0,00</span>
+              </div>
             </div>
           </div>
           <div class="dash-quick-access">
