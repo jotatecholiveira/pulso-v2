@@ -113,17 +113,6 @@
     }
     body.dark-mode .daily-quote { color: #484f58; }
 
-    .social-proof {
-      display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .proof-item {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 0.72rem; color: #868e96;
-      transition: color 0.5s ease;
-    }
-    body.dark-mode .proof-item { color: #6c7a8d; }
-    .proof-item i { color: #51cf66; font-size: 0.65rem; }
-
     /* === TABS (hidden but kept for JS) === */
     .auth-tabs {
       position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; pointer-events: none;
@@ -270,19 +259,6 @@
     .trust-item { display: flex; align-items: center; gap: 5px; font-size: 0.72rem; color: #adb5bd; transition: color 0.5s ease; }
     body.dark-mode .trust-item { color: #484f58; }
     .trust-item i { color: #51cf66; font-size: 0.65rem; }
-    .theme-toggle-row {
-      display: flex; justify-content: center; margin-bottom: 14px;
-    }
-    .login-theme-btn {
-      background: none; border: 1px solid #dee2e6; color: #868e96;
-      padding: 7px 14px; border-radius: 20px; cursor: pointer;
-      display: flex; align-items: center; gap: 6px;
-      font-size: 0.75rem; transition: all 0.3s ease;
-    }
-    .login-theme-btn:hover { border-color: #FF6B6B; color: #FF6B6B; }
-    body.dark-mode .login-theme-btn { border-color: #30363d; color: #8b949e; }
-    body.dark-mode .login-theme-btn:hover { border-color: #FF6B6B; color: #FF6B6B; }
-    .login-theme-btn i { font-size: 0.85rem; }
 
     /* === RIGHT PANEL — LANDSCAPE === */
     .login-right {
@@ -657,21 +633,6 @@
         <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Criar conta</button>
       </div>
 
-      <div class="social-proof">
-        <div class="proof-item">
-          <i class="fa-solid fa-check-double"></i>
-          <span>Gratuito para sempre</span>
-        </div>
-        <div class="proof-item">
-          <i class="fa-solid fa-bolt"></i>
-          <span>Setup em 30 segundos</span>
-        </div>
-        <div class="proof-item">
-          <i class="fa-solid fa-shield-halved"></i>
-          <span>Dados protegidos</span>
-        </div>
-      </div>
-
       <div id="auth-message" class="auth-msg" aria-live="polite"></div>
 
       <button type="button" id="googleBtn" class="btn-google-new">
@@ -720,13 +681,6 @@
         <span id="bottomText">Não tem conta? <strong onclick="switchAuthTab('register')">Criar agora</strong></span>
       </div>
 
-      <div class="theme-toggle-row">
-        <button type="button" id="themePill" class="login-theme-btn" aria-label="Alternar tema claro/escuro" title="Alternar entre modo dia e noite">
-          <i class="fa-solid fa-circle-half-stroke"></i>
-          <span class="theme-label">Alternar tema</span>
-        </button>
-      </div>
-
       <div class="trust-row">
         <span class="trust-item"><i class="fa-solid fa-shield-halved"></i> HTTPS</span>
         <span class="trust-item"><i class="fa-solid fa-lock"></i> Criptografado</span>
@@ -736,7 +690,20 @@
 
     <!-- RIGHT — LANDSCAPE -->
     <div class="login-right">
-      <!-- Landscape -->
+      <!-- Theme Pill -->
+      <button class="landscape-pill" id="themePill" data-theme="dark" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro" tabindex="0">
+        <div class="lp-bg" aria-hidden="true">
+          <div class="lp-stars"></div>
+          <div class="lp-clouds">
+            <div class="lp-cloud lp-c1"></div>
+            <div class="lp-cloud lp-c2"></div>
+            <div class="lp-cloud lp-c3"></div>
+          </div>
+        </div>
+        <div class="lp-disc" aria-hidden="true"></div>
+        <span class="lp-label lp-label-day" aria-hidden="true">DAY</span>
+        <span class="lp-label lp-label-night" aria-hidden="true">NIGHT</span>
+      </button>
 
       <!-- DAY SCENE -->
       <div class="landscape-day">
