@@ -320,12 +320,14 @@ body.light-theme .nav-link:hover:not(.active) {
   max-height: 0;
   transition: opacity 0.3s ease, max-height 0.3s ease;
 }
-.sidebar:hover .sidebar-footer {
-  opacity: 1;
-  pointer-events: auto;
-  max-height: 300px;
-  transition-delay: 0.1s;
-}
+  .sidebar:hover .sidebar-footer {
+    opacity: 1;
+    pointer-events: auto;
+    max-height: 300px;
+    transition-delay: 0.1s;
+  }
+
+  .sidebar-footer { display: none !important; }
 .kofi-btn {
   display: inline-flex;
   align-items: center;

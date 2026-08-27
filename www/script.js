@@ -437,48 +437,12 @@ function resetSessionTimer() {
 
 if (isLoginPage()) {
   const loginForm = document.getElementById('loginForm');
-  const registerBtn = document.getElementById('registerBtn');
   const googleBtn = document.getElementById('googleBtn');
 
   if (loginForm) {
     loginForm.addEventListener('submit', (event) => {
       event.preventDefault();
       handleAuth();
-    });
-
-    registerBtn.addEventListener('click', () => {
-      if (!auth) { setAuthMsg('Sem conexão — o Firebase não carregou.', 'error'); return; }
-      const rateErr = checkRateLimit();
-      if (rateErr) { setAuthMsg(rateErr, 'error'); return; }
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const fullName = document.getElementById('fullName') ? document.getElementById('fullName').value.trim() : '';
-      if (!email || !password) { setAuthMsg('Preencha e-mail e senha.', 'error'); return; }
-      if (typeof isGmail === 'function' && isGmail(email)) { setAuthMsg('Contas Gmail não podem ser criadas com senha. Use "Continuar com Google".', 'error'); return; }
-      if (password.length < 6) { setAuthMsg('Senha fraca (mínimo 6 caracteres).', 'error'); return; }
-      const submitBtn = document.getElementById('submitBtn');
-      const submitText = document.getElementById('submitText');
-      setAuthMsg('Criando conta...', 'info');
-      if (submitBtn) submitBtn.disabled = true;
-      if (submitText) submitText.textContent = 'Criando...';
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(function(result) {
-          resetRateLimit();
-          if (fullName && result.user) {
-            return result.user.updateProfile({ displayName: fullName }).then(function() {
-              return db.ref('users/' + result.user.uid + '/profile').update({
-                name: fullName,
-                email: email,
-                createdAt: firebase.database.ServerValue.TIMESTAMP
-              });
-            });
-          }
-        })
-        .catch(err => {
-          setAuthMsg(translateAuthError(err), 'error');
-          if (submitBtn) submitBtn.disabled = false;
-          if (submitText) submitText.textContent = 'Criar conta';
-        });
     });
 
     googleBtn.addEventListener('click', () => {

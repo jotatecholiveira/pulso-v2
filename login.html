@@ -611,7 +611,6 @@
         <button type="button" class="btn-primary-new" id="submitBtn" onclick="handleAuth()">
           <span id="submitText">Entrar</span>
         </button>
-        <button type="button" id="registerBtn" style="display:none"></button>
       </form>
 
       <div class="login-bottom">
@@ -1097,9 +1096,17 @@
       const tabRegister = document.getElementById('tabRegister');
       const registerFields = document.getElementById('registerFields');
       const loginOptions = document.getElementById('loginOptions');
+      const submitBtn = document.getElementById('submitBtn');
       const submitText = document.getElementById('submitText');
       const bottomText = document.getElementById('bottomText');
       const passLabel = document.querySelector('label[for="password"]');
+      const passGroup = document.getElementById('passwordGroup');
+      const hint = document.getElementById('gmailHint');
+      const email = document.getElementById('email').value.trim();
+
+      if (hint) hint.style.display = 'none';
+      if (passGroup) passGroup.style.display = '';
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.style.opacity = ''; submitBtn.style.background = ''; }
 
       if (tab === 'register') {
         indicator.classList.add('right');
@@ -1167,7 +1174,10 @@
     }
 
     function handleAuth() {
-      if (currentTab === 'register') { document.getElementById('registerBtn').click(); return; }
+      if (currentTab === 'register') {
+        doRegister();
+        return;
+      }
       var email = document.getElementById('email').value.trim();
       var password = document.getElementById('password').value;
       if (!email) {
@@ -1185,6 +1195,51 @@
         return;
       }
       doLogin(email, password);
+    }
+
+    function doRegister() {
+      var email = document.getElementById('email').value.trim();
+      var password = document.getElementById('password').value;
+      var fullName = document.getElementById('fullName') ? document.getElementById('fullName').value.trim() : '';
+      var authEl = document.getElementById('auth-message');
+      var btn = document.getElementById('submitBtn');
+      var txt = document.getElementById('submitText');
+
+      if (!email) { if (authEl) { authEl.textContent = 'Preencha o e-mail.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
+      if (isGmail(email)) { if (authEl) { authEl.textContent = 'Contas Gmail usam "Continuar com Google".'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
+      if (!password) { if (authEl) { authEl.textContent = 'Preencha a senha.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
+      if (password.length < 6) { if (authEl) { authEl.textContent = 'Senha precisa de no mínimo 6 caracteres.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
+
+      if (btn) btn.disabled = true;
+      if (txt) txt.textContent = 'Criando...';
+      if (authEl) { authEl.textContent = 'Criando conta...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(function(result) {
+          if (fullName && result.user) {
+            return result.user.updateProfile({ displayName: fullName }).then(function() {
+              return db.ref('users/' + result.user.uid + '/profile').set({
+                name: fullName,
+                email: email,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+              });
+            });
+          }
+        })
+        .then(function() {
+          if (txt) txt.textContent = 'Criar conta';
+          if (btn) btn.disabled = false;
+        })
+        .catch(function(err) {
+          var msg = err.code === 'auth/email-already-in-use' ? 'Este e-mail já foi cadastrado. Faça login.'
+            : err.code === 'auth/weak-password' ? 'Senha fraca (mínimo 6 caracteres).'
+            : err.code === 'auth/invalid-email' ? 'E-mail inválido.'
+            : err.code === 'auth/network-request-failed' ? 'Sem conexão com a internet.'
+            : (err.message || 'Erro ao criar conta. Tente novamente.');
+          if (authEl) { authEl.textContent = msg; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
+          if (txt) txt.textContent = 'Criar conta';
+          if (btn) btn.disabled = false;
+        });
     }
 
     function doLogin(email, password) {
