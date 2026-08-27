@@ -883,13 +883,15 @@
         const cx = 160;
         for (let y = HORIZON; y < LH - 25; y++) {
           const dist = (y - HORIZON) / (LH - 25 - HORIZON);
-          const spread = 2 + dist * 6;
+          const spread = 2 + dist * 8;
           for (let x = cx - spread; x <= cx + spread; x++) {
             if (x < 0 || x >= LW) continue;
-            const shimmer = Math.sin((x + time * 1.5) * 0.5) * Math.sin((y + time) * 0.35);
-            if (shimmer > 0.6 && Math.random() > 0.4) {
-              const b = (1 - dist * 0.7) * 0.6;
-              px(x, y, 255*b, 220*b, 100*b);
+            const shimmer = Math.sin((x + time * 1.2) * 0.4) * Math.sin((y + time * 0.8) * 0.3);
+            const waveOffset = Math.sin((x + time * 0.5) * 0.08) * 1.5;
+            if (shimmer > 0.3) {
+              const b = (1 - dist * 0.6) * 0.55;
+              const fade = Math.max(0, 1 - Math.abs(x - cx) / spread);
+              px(x, y + waveOffset, 255 * b * fade, 210 * b * fade, 90 * b * fade);
             }
           }
         }
@@ -900,7 +902,6 @@
         const y = Math.floor(by + bob);
         // Hull
         for (let i = -7; i <= 7; i++) {
-          const hw = 7 - Math.abs(i) * 0.4;
           if (Math.abs(i) <= 7) px(bx+i, y, 50,35,30);
           if (Math.abs(i) <= 5) px(bx+i, y+1, 40,28,25);
         }
@@ -912,7 +913,65 @@
             px(bx+w, y-3-s, 220+Math.sin(s)*10, 190+Math.sin(s)*10, 150);
           }
         }
-        // Reflection
+        // Fisherman (sitting on left side of hull)
+        const fx = bx - 4, fy = y - 1;
+        if (isNight()) {
+          // Night: sleeping, slumped over
+          // Body (slumped, shirt)
+          px(fx, fy, 180, 60, 50); px(fx+1, fy, 180, 60, 50);
+          px(fx, fy-1, 180, 60, 50);
+          // Head (tilted forward, sleeping)
+          px(fx, fy-2, 210, 170, 130); px(fx+1, fy-2, 210, 170, 130);
+          // Red cap (tilted)
+          px(fx, fy-3, 200, 40, 40); px(fx+1, fy-3, 200, 40, 40);
+          px(fx-1, fy-3, 200, 40, 40);
+          // Legs (dangling)
+          px(fx, fy+1, 50, 70, 100); px(fx+1, fy+1, 50, 70, 100);
+          // Zzz floating up
+          const zOff = Math.sin(time * 0.05) * 1;
+          px(fx+2, fy-5 + zOff, 180, 200, 255);
+          px(fx+3, fy-6 + zOff, 180, 200, 255);
+          px(fx+2, fy-7 + zOff, 180, 200, 255);
+          px(fx+3, fy-8 + zOff, 180, 200, 255);
+        } else {
+          // Day: fishing actively
+          // Legs (sitting on hull edge)
+          px(fx, fy+1, 50, 70, 100); px(fx+1, fy+1, 50, 70, 100);
+          // Body (shirt)
+          px(fx, fy, 180, 60, 50); px(fx+1, fy, 180, 60, 50);
+          // Arms: one holding rod, one resting
+          px(fx+2, fy, 210, 170, 130); // right arm extended
+          px(fx+3, fy-1, 210, 170, 130); // arm up to rod
+          // Head
+          px(fx, fy-2, 210, 170, 130); px(fx+1, fy-2, 210, 170, 130);
+          // Eyes (looking at water)
+          px(fx+1, fy-2, 40, 30, 30);
+          // Red cap
+          px(fx, fy-3, 200, 40, 40); px(fx+1, fy-3, 200, 40, 40);
+          px(fx+2, fy-3, 200, 40, 40); // cap brim
+          // Fishing rod (line from hand into water)
+          const rodTipX = fx + 8, rodTipY = fy - 6;
+          // Rod pole
+          for (let r = 0; r < 7; r++) {
+            const t = r / 6;
+            const rx = lerp(fx+3, rodTipX, t);
+            const ry = lerp(fy-1, rodTipY, t);
+            px(rx, ry, 100, 70, 40);
+          }
+          // Fishing line (from rod tip down into water)
+          const lineSwing = Math.sin(time * 0.08) * 0.5;
+          for (let l = 0; l < 14; l++) {
+            const lx = rodTipX + Math.sin(l * 0.2 + time * 0.04) * 0.5 + lineSwing;
+            const ly = rodTipY + l;
+            if (ly <= y + 3) px(lx, ly, 200, 200, 200);
+          }
+          // Bobber (small red dot at water surface)
+          const bobberX = rodTipX + Math.sin(time * 0.04) * 0.5 + lineSwing;
+          const bobberY = y + 2;
+          px(bobberX, bobberY, 220, 50, 50);
+          px(bobberX, bobberY - 1, 220, 50, 50);
+        }
+        // Hull reflection
         for (let r = 1; r < 6; r++) {
           if (Math.random() > 0.4) px(bx + Math.sin(time*0.1+r)*2, y+2+r, 40, 100, 110);
         }
@@ -1007,13 +1066,15 @@
         const mx = 200;
         for (let y = HORIZON; y < LH - 15; y++) {
           const dist = (y - HORIZON) / (LH - 15 - HORIZON);
-          const spread = 1 + dist * 5;
+          const spread = 1 + dist * 6;
           for (let x = mx - spread; x <= mx + spread; x++) {
             if (x < 0 || x >= LW) continue;
-            const shimmer = Math.sin((x + time) * 0.5) * Math.sin((y + time * 0.7) * 0.4);
-            if (shimmer > 0.6 && Math.random() > 0.4) {
-              const b = (1 - dist * 0.7) * 0.5;
-              px(x, y, 80*b, 90*b, 140*b);
+            const shimmer = Math.sin((x + time * 0.8) * 0.4) * Math.sin((y + time * 0.5) * 0.3);
+            const waveOffset = Math.sin((x + time * 0.3) * 0.1) * 1;
+            if (shimmer > 0.3) {
+              const b = (1 - dist * 0.6) * 0.45;
+              const fade = Math.max(0, 1 - Math.abs(x - mx) / spread);
+              px(x, y + waveOffset, 80 * b * fade, 90 * b * fade, 140 * b * fade);
             }
           }
         }
@@ -1059,9 +1120,9 @@
           drawSunCloud(30, 15, 40);
           drawSunCloud(240, 22, 35);
           drawSunCloud(120, 8, 25);
-          drawBird(80 + Math.sin(frame*0.01)*30, 35, frame);
-          drawBird(110 + Math.sin(frame*0.012)*25, 28, frame);
-          drawBird(250 + Math.sin(frame*0.008)*20, 42, frame);
+          drawBird(80 + Math.sin(frame*0.06)*30, 35, frame);
+          drawBird(110 + Math.sin(frame*0.07)*25, 28, frame);
+          drawBird(250 + Math.sin(frame*0.05)*20, 42, frame);
           drawMountain([[0,HORIZON],[50,HORIZON-25],[100,HORIZON-15],[150,HORIZON-30],[200,HORIZON-10],[260,HORIZON-22],[320,HORIZON]], 55,40,70);
           drawMountain([[0,HORIZON],[40,HORIZON-15],[90,HORIZON-35],[160,HORIZON-18],[220,HORIZON-28],[300,HORIZON-12],[320,HORIZON]], 45,35,60);
           drawPalmTree(25, HORIZON + 50, false);

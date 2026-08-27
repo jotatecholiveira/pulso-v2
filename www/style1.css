@@ -250,6 +250,11 @@ body.light-theme .sidebar:hover {
   white-space: nowrap;
   transition: all 0.2s ease;
   overflow: hidden;
+  justify-content: center;
+}
+
+.sidebar:hover .nav-link {
+  justify-content: flex-start;
 }
 
 .nav-link i {
