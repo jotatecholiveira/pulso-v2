@@ -614,10 +614,9 @@ function toggleUserDropdown() {
 
 // Fechar dropdown ao clicar fora
 document.addEventListener('click', function(e) {
-  const menu = document.getElementById('user-menu');
   const avatar = document.getElementById('user-avatar-header');
   const dropdown = document.getElementById('user-dropdown');
-  if (menu && dropdown && !menu.contains(e.target) && !avatar?.contains(e.target)) {
+  if (dropdown && !dropdown.contains(e.target) && !avatar?.contains(e.target)) {
     dropdown.classList.remove('active');
   }
 });

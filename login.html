@@ -1146,11 +1146,6 @@
         if (authEl) { authEl.textContent = 'Preencha e-mail e senha.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
         return;
       }
-      if (isGmail(email)) {
-        if (authEl) { authEl.textContent = 'Logando com Google...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
-        document.getElementById('googleBtn').click();
-        return;
-      }
       doLogin(email, password);
     }
 
@@ -1164,6 +1159,12 @@
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function() { if (txt) txt.textContent = 'Entrar'; if (btn) btn.disabled = false; })
         .catch(function(err) {
+          if (err.code === 'auth/user-not-found' && isGmail(email)) {
+            if (authEl) { authEl.textContent = 'Redirecionando para Google...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithRedirect(provider);
+            return;
+          }
           var msg = err.code === 'auth/invalid-credential' ? 'E-mail ou senha incorretos. Se não tem conta, clique em "Criar agora".'
             : err.code === 'auth/user-not-found' ? 'Nenhuma conta encontrada com este e-mail. Criar conta primeiro.'
             : err.code === 'auth/wrong-password' ? 'Senha incorreta. Tente novamente.'

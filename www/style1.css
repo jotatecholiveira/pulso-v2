@@ -4048,35 +4048,6 @@ body.light-theme .toast-notification {
 /* ============================================================
    USER MENU — Avatar + Dropdown no header
    ============================================================ */
-.user-menu {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.user-menu-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  border: 1.5px solid var(--border-color);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--card-bg, rgba(255,255,255,0.05));
-  color: var(--text-secondary);
-  font-size: 1rem;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.user-menu-btn:hover {
-  border-color: var(--accent-color);
-  color: var(--accent-color);
-  background: rgba(143, 124, 255, 0.1);
-}
-
 .user-avatar-header {
   width: 48px;
   height: 48px;
