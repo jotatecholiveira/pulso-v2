@@ -114,17 +114,17 @@ select:focus-visible {
 }
 
 .sidebar {
-  background: rgba(12, 18, 36, 0.35);
+  background: rgba(15, 22, 40, 0.72);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   padding: 20px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
-  -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   width: 68px;
-  overflow: hidden;
+  overflow: clip;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -138,7 +138,7 @@ select:focus-visible {
   width: 260px;
   padding: 20px 14px;
   z-index: 100;
-  background: rgba(12, 18, 36, 0.55) !important;
+  background: rgba(15, 22, 40, 0.82) !important;
 }
 
 .sidebar::before {
@@ -153,22 +153,22 @@ select:focus-visible {
 .sidebar:hover {
   width: 240px;
   padding: 20px 14px;
-  background: rgba(12, 18, 36, 0.55);
+  background: rgba(15, 22, 40, 0.82);
   box-shadow: 8px 0 40px rgba(0, 0, 0, 0.3), -2px 0 20px rgba(143, 124, 255, 0.08);
   border-right-color: rgba(255, 255, 255, 0.12);
   transform: translateX(-4px);
 }
 
 body.light-theme .sidebar {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.65);
   border-right-color: rgba(0, 0, 0, 0.06);
-  backdrop-filter: blur(40px) saturate(200%) brightness(1.05);
-  -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.05);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
 }
 
 body.light-theme .sidebar:hover {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.82);
   box-shadow: 8px 0 40px rgba(0, 0, 0, 0.12), -2px 0 20px rgba(79, 108, 245, 0.06);
   transform: translateX(-4px);
 }
@@ -1732,9 +1732,9 @@ select.form-control {
     border-top: 1px solid rgba(255,255,255,0.1);
     padding: 6px 8px 8px;
     z-index: 100;
-    backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
-    -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
-    background: rgba(12, 18, 36, 0.6) !important;
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(15, 22, 40, 0.82) !important;
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.2);
   }
 
@@ -1742,18 +1742,18 @@ select.form-control {
 
   .sidebar:hover {
     width: 100% !important;
-    background: rgba(12, 18, 36, 0.75) !important;
+    background: rgba(15, 22, 40, 0.9) !important;
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.25);
   }
 
   body.light-theme .sidebar {
-    background: rgba(255, 255, 255, 0.5) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
     border-top-color: rgba(0, 0, 0, 0.08);
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
   }
 
   body.light-theme .sidebar:hover {
-    background: rgba(255, 255, 255, 0.7) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
   }
 
   .sidebar-top {
@@ -5744,12 +5744,14 @@ body.light-theme .global-eye-btn:hover {
 @media (hover: none) and (pointer: coarse) {
   .sidebar:hover {
     width: 68px !important;
-    background: rgba(12, 18, 36, 0.35);
+    background: rgba(15, 22, 40, 0.72);
     box-shadow: none;
+    transform: none;
   }
   body.light-theme .sidebar:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.65);
     box-shadow: none;
+    transform: none;
   }
 }
 
