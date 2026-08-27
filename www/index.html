@@ -10,7 +10,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style1.css">
+  <link rel="stylesheet" href="style1.css?v=3.1.0">
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js" integrity="sha384-yuGdyIzzYtOBlBG6JOWn+Ey9kpq7HocusNuxEGyyohr1eEyXpeEyehIIXC/hznw4" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js" integrity="sha384-lI+CxEx/bCvWP1b0OK13j5HTrTZP7yf1xle8TVOFq2smz6KC1RChTarRV/RHP5PP" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js" integrity="sha384-M6AmjBRXEjkdGzRN1Y94xtkmblFbYBSLkqzyZ8rPvpRM2c48nhjIRFXVvUM/VATL" crossorigin="anonymous"></script>
@@ -995,23 +995,45 @@
 </div>
 
 <script>
-  // Mobile sidebar toggle
+  // Sidebar drawer — desktop hover + mobile toggle
   const sidebarToggle = document.getElementById('sidebarToggle');
   const sidebar = document.getElementById('sidebar');
   
+  function closeSidebarDrawer(){
+    if(!sidebar) return;
+    sidebar.classList.remove('sidebar-mobile-open');
+    document.body.classList.remove('sidebar-open');
+  }
+  function toggleSidebarDrawer(e){
+    if(e) e.stopPropagation();
+    if(!sidebar) return;
+    sidebar.classList.toggle('sidebar-mobile-open');
+    document.body.classList.toggle('sidebar-open', sidebar.classList.contains('sidebar-mobile-open'));
+  }
+
   if (sidebarToggle && sidebar) {
-    sidebarToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('sidebar-mobile-open');
-      document.body.classList.toggle('sidebar-open');
-    });
+    sidebarToggle.addEventListener('click', toggleSidebarDrawer);
     
-    // Close sidebar when a nav link is clicked
+    // Close sidebar when a nav link is clicked (mobile)
     const navLinks = sidebar.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
       link.addEventListener('click', () => {
-        sidebar.classList.remove('sidebar-mobile-open');
-        document.body.classList.remove('sidebar-open');
+        if(window.innerWidth <= 768) closeSidebarDrawer();
       });
+    });
+
+    // Fechar ao clicar fora (overlay) ou no body
+    document.addEventListener('click', (e) => {
+      if(window.innerWidth > 768) return;
+      if(!sidebar.classList.contains('sidebar-mobile-open')) return;
+      if(sidebar.contains(e.target) || (sidebarToggle && sidebarToggle.contains(e.target))) return;
+      // se clicou no overlay (body::after) ou fora, fecha
+      closeSidebarDrawer();
+    });
+
+    // ESC fecha
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeSidebarDrawer();
     });
   }
 </script>
