@@ -314,15 +314,16 @@ body.light-theme .nav-link:hover:not(.active) {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  opacity: 0.5;
-  transform: translateY(4px);
-  pointer-events: auto;
+  opacity: 0;
+  pointer-events: none;
   overflow: hidden;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  max-height: 0;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 .sidebar:hover .sidebar-footer {
   opacity: 1;
-  transform: translateY(0);
+  pointer-events: auto;
+  max-height: 300px;
   transition-delay: 0.1s;
 }
 .kofi-btn {

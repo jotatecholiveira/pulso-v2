@@ -443,24 +443,7 @@ if (isLoginPage()) {
   if (loginForm) {
     loginForm.addEventListener('submit', (event) => {
       event.preventDefault();
-      if (!auth) { setAuthMsg('Sem conexão — o Firebase não carregou.', 'error'); return; }
-      const rateErr = checkRateLimit();
-      if (rateErr) { setAuthMsg(rateErr, 'error'); return; }
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      if (!email || !password) { setAuthMsg('Preencha e-mail e senha.', 'error'); return; }
-      const submitBtn = document.getElementById('submitBtn');
-      const submitText = document.getElementById('submitText');
-      setAuthMsg('Entrando...', 'info');
-      if (submitBtn) submitBtn.disabled = true;
-      if (submitText) submitText.textContent = 'Entrando...';
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => resetRateLimit())
-        .catch(err => {
-          setAuthMsg(translateAuthError(err), 'error');
-          if (submitBtn) submitBtn.disabled = false;
-          if (submitText) submitText.textContent = 'Entrar';
-        });
+      handleAuth();
     });
 
     registerBtn.addEventListener('click', () => {
