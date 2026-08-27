@@ -110,7 +110,7 @@ select:focus-visible {
   z-index: 1;
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 68px 1fr;
+  grid-template-columns: 1fr;
 }
 
 .sidebar {
@@ -500,6 +500,7 @@ body.light-theme .nav-link:hover:not(.active) {
 
 .main-content {
   padding: 20px 24px 32px;
+  margin-left: 68px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -1707,6 +1708,10 @@ select.form-control {
 @media (max-width: 768px) {
   .app-container {
     grid-template-columns: 1fr;
+  }
+
+  .main-content {
+    margin-left: 0;
   }
 
   .sidebar {
