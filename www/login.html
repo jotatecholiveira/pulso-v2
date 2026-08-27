@@ -1160,9 +1160,9 @@
         .then(function() { if (txt) txt.textContent = 'Entrar'; if (btn) btn.disabled = false; })
         .catch(function(err) {
           if ((err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password') && isGmail(email)) {
-            if (authEl) { authEl.textContent = 'Conta Google detectada. Redirecionando...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
-            var provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithRedirect(provider);
+            if (authEl) { authEl.textContent = 'Esta conta foi criada com Google. Clique em "Entrar com Google" para acessar.'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+            if (txt) txt.textContent = 'Entrar';
+            if (btn) btn.disabled = false;
             return;
           }
           var msg = err.code === 'auth/invalid-credential' ? 'E-mail ou senha incorretos. Se não tem conta, clique em "Criar agora".'
