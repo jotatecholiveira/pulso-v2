@@ -1014,29 +1014,6 @@
       });
     });
   }
-  
-  // Responsive sidebar width based on screen size
-  function updateSidebarWidth() {
-    if (window.innerWidth < 768) {
-      if (sidebar) {
-        sidebar.style.width = '280px';
-        sidebar.style.padding = '20px 16px';
-        // Hide the toggles on mobile when sidebar is open
-        const themePill = document.getElementById('themePill');
-        if (themePill) themePill.style.display = 'none';
-      }
-    } else {
-      if (sidebar) {
-        sidebar.style.width = '';
-        sidebar.style.padding = '';
-        const themePill = document.getElementById('themePill');
-        if (themePill) themePill.style.display = '';
-      }
-    }
-  }
-  
-  window.addEventListener('resize', updateSidebarWidth);
-  updateSidebarWidth();
 </script>
 
 </body>
