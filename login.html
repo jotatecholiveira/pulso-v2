@@ -1135,15 +1135,18 @@
       var hint = document.getElementById('gmailHint');
       var passGroup = document.getElementById('passwordGroup');
       var submitBtn = document.getElementById('submitBtn');
+      var registerFields = document.getElementById('registerFields');
+      if (registerFields && currentTab !== 'register') {
+        registerFields.classList.remove('show');
+      }
       if (currentTab === 'register') {
+        if (hint) hint.style.display = 'none';
+        if (passGroup) passGroup.style.display = '';
+        if (submitBtn) { submitBtn.textContent = 'Criar conta'; submitBtn.style.background = ''; submitBtn.disabled = false; submitBtn.style.opacity = ''; }
         if (isGmail(email)) {
-          if (hint) { hint.textContent = 'Contas Gmail só podem ser criadas com Google. Clique em "Continuar com Google" abaixo.'; hint.style.display = 'block'; hint.className = 'auth-msg info'; }
+          if (hint) { hint.textContent = 'Contas Gmail só podem ser criadas com Google. Use "Continuar com Google" acima.'; hint.style.display = 'block'; hint.className = 'auth-msg info'; }
           if (passGroup) passGroup.style.display = 'none';
           if (submitBtn) { submitBtn.textContent = 'Criar conta'; submitBtn.style.background = ''; submitBtn.disabled = true; submitBtn.style.opacity = '0.5'; }
-        } else {
-          if (hint) hint.style.display = 'none';
-          if (passGroup) passGroup.style.display = '';
-          if (submitBtn) { submitBtn.textContent = 'Criar conta'; submitBtn.style.background = ''; submitBtn.disabled = false; submitBtn.style.opacity = ''; }
         }
         return;
       }
