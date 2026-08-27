@@ -971,9 +971,14 @@
           px(bobberX, bobberY, 220, 50, 50);
           px(bobberX, bobberY - 1, 220, 50, 50);
         }
-        // Hull reflection
-        for (let r = 1; r < 6; r++) {
-          if (Math.random() > 0.4) px(bx + Math.sin(time*0.1+r)*2, y+2+r, 40, 100, 110);
+        // Hull reflection — subtle water-colored shimmer
+        for (let r = 1; r < 5; r++) {
+          const rr = Math.sin(time * 0.12 + r * 1.3) * 0.5 + 0.5;
+          if (rr > 0.3) {
+            const alpha = 0.25 + rr * 0.15;
+            const bxr = bx + Math.sin(time * 0.08 + r) * 2;
+            px(bxr, y + 2 + r, 35 + 20 * rr, 110 + 20 * rr, 130 + 15 * rr);
+          }
         }
       }
 
@@ -1346,63 +1351,49 @@
       if (p) { p.dataset.theme = stored; p.setAttribute('aria-checked', isLight); }
     })();
 
-    // Daily Quote
-    const quotes = [
-      { text: "O homem é a medida de todas as coisas.", author: "Protágoras" },
-      { text: "Só sei que nada sei.", author: "Sócrates" },
-      { text: "Conhece-te a ti mesmo.", author: "Inscrição no Templo de Delfos" },
-      { text: "A virtude é o conhecimento; o vício é a ignorância.", author: "Sócrates" },
-      { text: "A alma humana não tem preço.", author: "Aristóteles" },
-      { text: "Não é o que temos, mas o que fazemos com o que temos que nos define.", author: "Aristóteles" },
-      { text: "A riqueza não consiste em possuir grandes bens, mas em ter poucas necessidades.", author: "Epicteto" },
-      { text: "Começa cada dia como se fosse o último.", author: "Marco Aurélio" },
-      { text: "A felicidade depende de nós mesmos.", author: "Aristóteles" },
-      { text: "Ninguém é livre senão aquele que domina a si mesmo.", author: "Pitágoras" },
-      { text: "O que importa não é o que acontece contigo, mas como você reage.", author: "Epicteto" },
-      { text: "A paciência amarga, mas o seu fruto é doce.", author: "Jean-Jacques Rousseau" },
-      { text: "Antes de querer mudar o mundo, mude a si mesmo.", author: "Mahatma Gandhi" },
-      { text: "A verdade vos libertará.", author: "Jesus Cristo — João 8:32" },
-      { text: "Felizes os pobres de espírito, porque deles é o Reino dos Céus.", author: "Jesus Cristo — Mateus 5:3" },
-      { text: "Ame ao próximo como a ti mesmo.", author: "Jesus Cristo — Mateus 22:39" },
-      { text: "Não se apaziguem pelo dia de amanhã, porque o dia de amanhã é de si mesmo.", author: "Provérbios 27:1" },
+    // Daily Quote — alternates biblical / non-biblical, random per visit
+    const biblicalQuotes = [
+      { text: "A verdade vos libertará.", author: "João 8:32" },
+      { text: "Felizes os pobres de espírito, porque deles é o Reino dos Céus.", author: "Mateus 5:3" },
+      { text: "Ame ao próximo como a ti mesmo.", author: "Mateus 22:39" },
+      { text: "Não se apazigues pelo dia de amanhã, porque o dia de amanhã é de si mesmo.", author: "Provérbios 27:1" },
       { text: "O Senhor é o meu pastor; nada me faltará.", author: "Salmo 23:1" },
       { text: "Tudo posso naquele que me fortalece.", author: "Filipenses 4:13" },
       { text: "Deem graças em todas as circunstâncias.", author: "1 Tessalonicenses 5:18" },
       { text: "O temor do Senhor é o princípio da sabedoria.", author: "Salmo 111:10" },
-      { text: "Busquem primeiro o Reino de Deus e a sua justiça, e todas essas coisas lhes serão acrescentadas.", author: "Jesus Cristo — Mateus 6:33" },
-      { text: "Não julguem para que não sejam julgados.", author: "Jesus Cristo — Mateus 7:1" },
+      { text: "Busquem primeiro o Reino de Deus e a sua justiça, e todas essas coisas lhes serão acrescentadas.", author: "Mateus 6:33" },
+      { text: "Não julguem para que não sejam julgados.", author: "Mateus 7:1" },
+      { text: "Porque eu bem sei os pensamentos que tenho a vosso respeito, diz o Senhor; pensamentos de paz, e não de mal, para vos dar o fim que esperais.", author: "Jeremias 29:11" },
+      { text: "Confia no Senhor de todo o teu coração e não te estribes no teu próprio entendimento.", author: "Provérbios 3:5" },
       { text: "O dinheiro é um servo bom, mas um mau mestre.", author: "Provérbio" },
+    ];
+    const nonBiblicalQuotes = [
+      { text: "O homem é a medida de todas as coisas.", author: "Protágoras" },
+      { text: "Só sei que nada sei.", author: "Sócrates" },
+      { text: "A riqueza não consiste em possuir grandes bens, mas em ter poucas necessidades.", author: "Epicteto" },
       { text: "O preço de qualquer coisa é a quantidade de vida que você troca por ela.", author: "Henry David Thoreau" },
       { text: "O investimento em conhecimento sempre paga os melhores juros.", author: "Benjamin Franklin" },
       { text: "Os juros compostos são a oitava maravilha do mundo.", author: "Albert Einstein" },
       { text: "Não coloque todos os seus ovos em uma cesta.", author: "Provérbio de investimentos" },
       { text: "A economia é a arte de satisfazer necessidades ilimitadas com recursos limitados.", author: "George Bernard Shaw" },
       { text: "O orçamento não é uma restrição, é uma liberdade.", author: "Desconhecido" },
-      { text: "Gaste menos do que ganhe. Invista o resto.", author: "George Clason — O Homem Mais Rico da Babilônia" },
-      { text: "A gravidade financeira pega todos eventualmente. Prepare-se.", author: "Desconhecido" },
-      { text: "Quem controla o dinheiro, controla o futuro.", author: "Desconhecido" },
+      { text: "Gaste menos do que ganhe. Invista o resto.", author: "George Clason" },
       { text: "A melhor hora para plantar uma árvore foi há vinte anos. A segunda melhor hora é agora.", author: "Provérbio Chinês" },
-      { text: "A perseverança não é uma longa corrida; é muitas corridas pequenas uma atrás da outra.", author: "Walter Elliot" },
       { text: "Disciplina é a ponte entre metas e realizações.", author: "Jim Rohn" },
       { text: "O sucesso é a soma de pequenos esforços repetidos dia após dia.", author: "Robert Collier" },
-      { text: "A melhor vingança é uma vida bem vivida.", author: "Marcus Aurelius" },
       { text: "Não há vento favorável para quem não sabe aonde vai.", author: "Sêneca" },
-      { text: "Enquanto vivemos, aprendamos a viver.", author: "Sêneca" },
       { text: "Não é que temos pouco tempo, é que desperdiçamos muito dele.", author: "Sêneca" },
-      { text: "O maior obstáculo para a vida é a expectativa de amanhã.", author: "Sêneca" },
       { text: "Quem é pobre não pelo pouco que tem, mas pelo muito que deseja.", author: "Sêneca" },
       { text: "A sorte é o que acontece quando a preparação encontra a oportunidade.", author: "Sêneca" },
-      { text: "Comece a viver cada dia como se fosse o último.", author: "Sêneca" },
-      { text: "A liberdade consiste não em fazer o que se quer, mas em não ser impedido de fazer o que se quer.", author: "Baruch Espinoza" },
+      { text: "O melhor investimento é em você mesmo.", author: "Warren Buffett" },
       { text: "Pequenos gastos diários se tornam grandes fortunas com o tempo.", author: "Desconhecido" },
       { text: "Quem poupa, tem. Quem investe, multiplica.", author: "Desconhecido" },
-      { text: "O melhor investimento é em você mesmo.", author: "Warren Buffett" },
-      { text: "Seja Battlefield de alguém. Seja grato.", author: "Provérbio" },
-      { text: "A gratidão é a memória do coração.", author: "Jean Baptiste Massieu" }
     ];
-    const today = new Date();
-    const dayIndex = (today.getFullYear() * 366 + today.getMonth() * 31 + today.getDate()) % quotes.length;
-    const quote = quotes[dayIndex];
+    // Alternate: even visits = biblical, odd = non-biblical; random within category
+    const visitCount = parseInt(sessionStorage.getItem('pulsoVisits') || '0');
+    sessionStorage.setItem('pulsoVisits', String(visitCount + 1));
+    const pool = visitCount % 2 === 0 ? biblicalQuotes : nonBiblicalQuotes;
+    const quote = pool[Math.floor(Math.random() * pool.length)];
     const quoteEl = document.getElementById('dailyQuote');
     if (quoteEl) {
       quoteEl.innerHTML = '"' + quote.text + '" — <em>' + quote.author + '</em>';

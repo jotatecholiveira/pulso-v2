@@ -678,7 +678,7 @@ function renderHeaderUser() {
   const avatarHeader = document.getElementById('user-avatar-header');
   const sidebarAvatar = document.getElementById('sidebar-avatar');
 
-  if (dropdownName) dropdownName.textContent = displayName;
+  if (dropdownName) dropdownName.textContent = displayName.split(' ')[0];
   if (dropdownEmail) dropdownEmail.textContent = email;
 
   if (photoURL && photoURL.startsWith('icon:')) {
@@ -1618,9 +1618,10 @@ function renderDashGreeting() {
   else if (hour < 18) { greeting = 'Boa tarde'; }
   else { greeting = 'Boa noite'; }
 
-  const name = currentUser ? (currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Usuário') : 'Usuário';
+  const fullName = currentUser ? (currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Usuário') : 'Usuário';
+  const firstName = fullName.split(' ')[0];
 
-  if (topGreeting) topGreeting.textContent = greeting + ', ' + name;
+  if (topGreeting) topGreeting.textContent = greeting + ', ' + firstName;
 }
 
 // Resumo do mês no dashboard

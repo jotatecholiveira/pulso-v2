@@ -125,8 +125,11 @@ select:focus-visible {
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, background 0.3s ease;
   width: 68px;
   overflow: hidden;
-  position: relative;
+  position: sticky;
+  top: 0;
+  height: 100vh;
   z-index: 10;
+  align-self: start;
 }
 
 .sidebar.sidebar-mobile-open {
@@ -151,12 +154,14 @@ select:focus-visible {
 }
 
 body.light-theme .sidebar {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.35);
   border-right-color: rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
 }
 
 body.light-theme .sidebar:hover {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.75);
 }
 
 .sidebar-top {
@@ -490,8 +495,8 @@ body.light-theme .nav-link:hover:not(.active) {
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  margin-bottom: 0;
-  padding: 12px 16px;
+  margin-bottom: 8px;
+  padding: 16px 20px;
   position: relative;
   overflow: visible;
   transition: background 0.5s ease;
@@ -513,9 +518,10 @@ body.light-theme .nav-link:hover:not(.active) {
 
 .greeting-topbar h2 {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 700;
   margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .greeting-user-topbar {
@@ -589,7 +595,7 @@ body.light-theme .nav-link:hover:not(.active) {
 .header-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .sidebar-toggle {
@@ -1692,6 +1698,7 @@ select.form-control {
     left: 0;
     right: 0;
     top: auto;
+    height: auto;
     width: 100% !important;
     flex-direction: row;
     border-right: 0;
@@ -4091,8 +4098,8 @@ body.light-theme .toast-notification {
    USER MENU — Avatar + Dropdown no header
    ============================================================ */
 .user-avatar-header {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 2px solid var(--border-color);
   cursor: pointer;
@@ -4103,7 +4110,7 @@ body.light-theme .toast-notification {
   justify-content: center;
   background: var(--accent-gradient);
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   flex-shrink: 0;
   position: relative;
 }
