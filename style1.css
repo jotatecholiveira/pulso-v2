@@ -1705,7 +1705,7 @@ select.form-control {
   color: var(--text-secondary);
 }
 
-@media (max-width: 960px) {
+@media (max-width: 768px) {
   .app-container {
     grid-template-columns: 1fr;
   }
@@ -1746,8 +1746,6 @@ select.form-control {
 
   body.light-theme .sidebar:hover {
     background: rgba(255, 255, 255, 0.7) !important;
-  }
-    background: rgba(255, 255, 255, 0.95) !important;
   }
 
   .sidebar-top {
