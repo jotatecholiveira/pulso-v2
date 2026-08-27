@@ -586,11 +586,13 @@
         </div>
 
         <div class="input-group-new">
-          <input type="email" id="email" placeholder=" " required autocomplete="email">
+          <input type="email" id="email" placeholder=" " required autocomplete="email" oninput="checkGmailHint()">
           <label for="email">E-mail</label>
         </div>
 
-        <div class="input-group-new">
+        <div id="gmailHint" style="display:none"></div>
+
+        <div class="input-group-new" id="passwordGroup">
           <input type="password" id="password" placeholder=" " required minlength="6" autocomplete="current-password">
           <label for="password">Senha</label>
           <button type="button" class="toggle-pass" onclick="togglePass()" aria-label="Mostrar senha">
@@ -1128,8 +1130,19 @@
     }
 
     function checkGmailHint() {
+      var email = document.getElementById('email').value.trim();
       var hint = document.getElementById('gmailHint');
-      if (hint) hint.style.display = 'none';
+      var passGroup = document.getElementById('passwordGroup');
+      var submitBtn = document.getElementById('submitBtn');
+      if (isGmail(email)) {
+        if (hint) { hint.textContent = 'Conta Gmail detectada — será feito login com Google automaticamente.'; hint.style.display = 'block'; hint.className = 'auth-msg info'; }
+        if (passGroup) passGroup.style.display = 'none';
+        if (submitBtn) { submitBtn.textContent = 'Entrar com Google'; submitBtn.style.background = '#4285f4'; }
+      } else {
+        if (hint) hint.style.display = 'none';
+        if (passGroup) passGroup.style.display = '';
+        if (submitBtn) { submitBtn.textContent = 'Entrar'; submitBtn.style.background = ''; }
+      }
     }
 
     function isGmail(email) {
@@ -1141,9 +1154,18 @@
       if (currentTab === 'register') { document.getElementById('registerBtn').click(); return; }
       var email = document.getElementById('email').value.trim();
       var password = document.getElementById('password').value;
-      if (!email || !password) {
+      if (!email) {
         var authEl = document.getElementById('auth-message');
-        if (authEl) { authEl.textContent = 'Preencha e-mail e senha.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
+        if (authEl) { authEl.textContent = 'Preencha o e-mail.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
+        return;
+      }
+      if (isGmail(email)) {
+        document.getElementById('googleBtn').click();
+        return;
+      }
+      if (!password) {
+        var authEl2 = document.getElementById('auth-message');
+        if (authEl2) { authEl2.textContent = 'Preencha a senha.'; authEl2.className = 'auth-msg error'; authEl2.style.display = 'block'; }
         return;
       }
       doLogin(email, password);
@@ -1159,12 +1181,6 @@
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function() { if (txt) txt.textContent = 'Entrar'; if (btn) btn.disabled = false; })
         .catch(function(err) {
-          if ((err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password') && isGmail(email)) {
-            if (authEl) { authEl.textContent = 'Esta conta foi criada com Google. Clique em "Entrar com Google" para acessar.'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
-            if (txt) txt.textContent = 'Entrar';
-            if (btn) btn.disabled = false;
-            return;
-          }
           var msg = err.code === 'auth/invalid-credential' ? 'E-mail ou senha incorretos. Se não tem conta, clique em "Criar agora".'
             : err.code === 'auth/user-not-found' ? 'Nenhuma conta encontrada com este e-mail. Criar conta primeiro.'
             : err.code === 'auth/wrong-password' ? 'Senha incorreta. Tente novamente.'
