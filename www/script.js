@@ -491,20 +491,7 @@ if (isLoginPage()) {
       setAuthMsg('Conectando ao Google...', 'info');
       if (googleBtn) googleBtn.disabled = true;
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).then(() => {
-        if (googleBtn) googleBtn.disabled = false;
-      }).catch(err => {
-        if (err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-allowed') {
-          setAuthMsg('Redirecionando para Google...', 'info');
-          auth.signInWithRedirect(provider);
-        } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
-          setAuthMsg('', '');
-          if (googleBtn) googleBtn.disabled = false;
-        } else {
-          setAuthMsg(translateAuthError(err), 'error');
-          if (googleBtn) googleBtn.disabled = false;
-        }
-      });
+      auth.signInWithRedirect(provider);
     });
   }
 }
