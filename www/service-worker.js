@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pulso-v9';
+const CACHE_NAME = 'pulso-v10';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -33,14 +33,12 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const url = event.request.url;
-  // Nunca cachear respostas do Firebase / RTDB / CDNs (dados sensíveis e dinâmicos)
-  if (url.includes('firebase') ||
-      url.includes('gstatic') ||
-      url.includes('googleapis') ||
-      url.includes('fontawesome') ||
-      url.includes('cdnjs') ||
-      url.includes('jsdelivr') ||
-      url.includes('cdn.jsdelivr')) {
+  // Nunca interceptar cross-origin (CDNs, Firebase, Google avatares, etc.)
+  try {
+    if (new URL(url).origin !== location.origin) return;
+  } catch (_) {}
+  // Nunca cachear Firebase/RTDB
+  if (url.includes('firebase') || url.includes('firestore') || url.includes('firebasestorage')) {
     return;
   }
 
