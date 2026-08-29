@@ -1,7 +1,7 @@
 {
   "appId": "com.pulso.financeiro",
   "appName": "Pulso",
-  "webDir": "www",
+  "webDir": ".",
   "server": {
     "androidScheme": "https"
   },

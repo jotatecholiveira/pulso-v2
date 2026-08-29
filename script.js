@@ -3,7 +3,7 @@
 // v2.0 — Script consolidado e limpo
 // ============================================================
 
-// 1. CONFIGURAÇÃO FIREBASE
+// 1. CONFIGURAÇÃO FIREBASE (única fonte de verdade — API key é pública por design)
 const firebaseConfig = {
   apiKey: "AIzaSyC9wJ371-nfGGHjRK4lg21RP7MOfQbtjzY",
   authDomain: "planejamento-familiar-b3a1c.firebaseapp.com",
@@ -323,8 +323,8 @@ function attachRtdbListener(uid) {
       if ((!profile || !profile.template) && !localTemplate && !(profile && profile.onboardingDone)) {
         showOnboarding();
       }
-    }).catch(() => {
-      // Firebase failed — check localStorage only
+    }).catch((e) => {
+      console.warn('[Pulso] Falha ao carregar profile do Firebase:', e);
       const localTemplate = localStorage.getItem(storageKey() + '_template');
       if (!localTemplate) showOnboarding();
     });
@@ -965,7 +965,7 @@ function saveProfile() {
 
   // Then try Firebase in background
   if (auth && typeof auth.updateProfile === 'function') {
-    auth.updateProfile(updates).catch(() => {});
+    auth.updateProfile(updates).catch((e) => { console.warn('[Pulso] updateProfile falhou:', e); });
   }
   if (db && storageMode === 'rtdb') {
     const uid = currentUser.uid;
@@ -973,7 +973,7 @@ function saveProfile() {
       displayName: newName,
       photoURL: updates.photoURL || null,
       updatedAt: new Date().toISOString()
-    }).catch(() => {});
+    }).catch((e) => { console.warn('[Pulso] profile update RTDB falhou:', e); });
   }
 }
 
@@ -2875,7 +2875,7 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarLimitesGastos();
   
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+    navigator.serviceWorker.register('/service-worker.js').catch((e) => { console.warn('[Pulso] serviceWorker registro falhou:', e); });
   }
 });
 
@@ -3253,7 +3253,7 @@ function renderSharedMembers() {
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <span class="share-member-role">${roleLabel}</span>
-        <button type="button" class="share-member-remove" onclick="removeSharedMember(${idx})" title="Remover">
+        <button type="button" class="share-member-remove" data-idx="${idx}" title="Remover">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -3261,6 +3261,12 @@ function renderSharedMembers() {
   });
   
   container.innerHTML = html;
+  container.querySelectorAll('.share-member-remove[data-idx]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = parseInt(btn.getAttribute('data-idx'), 10);
+      if (!isNaN(i)) removeSharedMember(i);
+    });
+  });
 }
 
 function sendShareInvite() {
@@ -3404,9 +3410,16 @@ function renderCategoriesList(type) {
     const isDefault = defaults.includes(c);
     return '<span class="cat-tag ' + (isDefault ? 'default' : '') + '">' +
       escapeHTML(c) +
-      (isDefault ? '' : '<button type="button" class="cat-remove" onclick="removeCategory(\'' + type + '\', \'' + escapeHTML(c).replace(/'/g, "\\'") + '\')"><i class="fa-solid fa-xmark"></i></button>') +
+      (isDefault ? '' : '<button type="button" class="cat-remove" data-cat-type="' + escapeHTML(type) + '" data-cat-name="' + escapeHTML(c) + '"><i class="fa-solid fa-xmark"></i></button>') +
     '</span>';
   }).join('');
+  container.querySelectorAll('.cat-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const t = btn.getAttribute('data-cat-type');
+      const n = btn.getAttribute('data-cat-name');
+      if (t && n) removeCategory(t, n);
+    });
+  });
 }
 
 function addCategory(type) {
