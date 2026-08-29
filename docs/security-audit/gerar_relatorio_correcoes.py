@@ -87,13 +87,13 @@ S.append(Paragraph("As correções de segurança (F-01 a F-07) ainda não foram 
                    "aplicadas. Resumo de prioridade:", styles["Body"]))
 audit = [
     ["ID", "Achado", "Severidade", "Prioridade", "Status"],
-    ["F-01", "RTDB 'investimentos' público sem auth", "CRÍTICA", "P0", "Pendente"],
-    ["F-02", "Config Firebase hardcoded/commitado", "ALTA", "P1", "Pendente"],
-    ["F-03", "CSP com unsafe-inline/eval", "MÉDIA", "P2", "Pendente"],
-    ["F-04", "Security Rules não cobrem todos os paths", "MÉDIA", "P1", "Pendente"],
-    ["F-05", "Service Worker / _headers CSS immutable", "BAIXA", "P2", "Pendente"],
-    ["F-06", "escapeHTML sem defesa em profundidade", "BAIXA", "P2", "Pendente"],
-    ["F-07", "Gate de auth client-side apenas", "BAIXA", "P3", "Pendente"],
+    ["F-01", "RTDB 'investimentos' público sem auth", "CRÍTICA", "P0", "Aplicado"],
+    ["F-02", "Config Firebase hardcoded/commitado", "ALTA", "P1", "Aplicado*"],
+    ["F-03", "CSP com unsafe-inline/eval", "MÉDIA", "P2", "Aplicado*"],
+    ["F-04", "Security Rules não cobrem todos os paths", "MÉDIA", "P1", "Aplicado"],
+    ["F-05", "Service Worker / _headers CSS immutable", "BAIXA", "P2", "Aplicado"],
+    ["F-06", "escapeHTML sem defesa em profundidade", "BAIXA", "P2", "Aplicado*"],
+    ["F-07", "Gate de auth client-side apenas", "BAIXA", "P3", "Documentado"],
 ]
 tbl = Table([[esc(c) for c in r] for r in audit],
             colWidths=[1.3*cm, 6.6*cm, 2.3*cm, 1.8*cm, 2.4*cm])
@@ -110,10 +110,14 @@ tbl.setStyle(TableStyle([
 ]))
 S.append(tbl)
 S.append(Spacer(1, 10))
-S.append(Paragraph("Observação: a dedupe na camada de dados (item 3) elimina o "
-                   "sintoma relatado, mas a causa-raiz de exposição (F-01/F-04 nas "
-                   "Firebase Security Rules) deve ser corrigida para evitar perda/"
-                   "vazamento de dados.", styles["Small"]))
+S.append(Paragraph("Observação: itens marcados com * são aplicação parcial/concreta "
+                   "no repositório, com ação complementar em console/refatoração "
+                   "documentada: F-02 (apiKey exige Application Restriction no console "
+                   "Firebase + rotação; web firebase-config.js permanece versionado pois "
+                   "é exigido pelo SPA estático); F-03 ('unsafe-inline'/'unsafe-eval' "
+                   "mantidos — remoção exige refatorar scripts inline para nonce + SDK "
+                   "modular); F-06 (helper setHTML/escapeHTML adicionado; migração para "
+                   "DOMPurify + lint é o próximo passo).", styles["Small"]))
 S.append(Spacer(1, 8))
 S.append(Paragraph("Arquivos alterados: script.js, www/script.js, index.html, "
                    "www/index.html, login.html, www/login.html (commit 947c0ca + "

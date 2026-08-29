@@ -56,6 +56,14 @@ function escapeHTML(value) {
   }[ch]));
 }
 
+// Defesa em profundidade: use setHTML() sempre que for inserir HTML derivado
+// de dados do usuário. Hoje aplica escapeHTML (suficiente para os fluxos atuais).
+// Recomendado (P2): migrar para DOMPurify + eslint-plugin-no-unsanitized e
+// chamar setHTML(el, DOMPurify.sanitize(str)).
+function setHTML(el, str) {
+  if (el) el.innerHTML = escapeHTML(str);
+}
+
 // 3. TOAST NOTIFICATION SYSTEM
 function showToast(message, type = 'info', duration = 3000) {
   const existing = document.querySelectorAll('.toast-notification');
