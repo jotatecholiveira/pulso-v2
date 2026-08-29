@@ -1090,6 +1090,22 @@ function openModal(type) {
     submitBtn.className = 'modal-submit tipo-receita';
   }
 
+  // Categoria padrão coerente com o tipo (evita Salário em despesas)
+  updateTransactionModalCategories();
+  const catSelect = document.getElementById('m-cat');
+  if (catSelect) {
+    const isSaida = type === 'saida';
+    const list = isSaida ? customCategories.expense : customCategories.income;
+    const fallback = isSaida ? 'Gastos Essenciais' : 'Salário';
+    const def = (list && list.length) ? list[0] : fallback;
+    if ([...catSelect.options].some(o => o.value === def)) catSelect.value = def;
+    // Opcional: esconde optgroup irrelevante para não confundir
+    const incG = catSelect.querySelector('optgroup[label="Entradas"]');
+    const expG = catSelect.querySelector('optgroup[label="Saídas"]');
+    if (incG) incG.style.display = isSaida ? 'none' : '';
+    if (expG) expG.style.display = isSaida ? '' : 'none';
+  }
+
   // Data atual
   const dateInput = document.getElementById('m-date');
   if (dateInput) {
