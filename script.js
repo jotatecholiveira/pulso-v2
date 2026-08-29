@@ -24,7 +24,19 @@ let storageMode = 'local';
 let dbListener = null;
 let planoListener = null;
 let connectionListener = null;
+let contasListener = null;
+let cartoesListener = null;
+let contasPagarListener = null;
+let contasReceberListener = null;
 let planoCache = null;
+
+function detachRtdbListener() {
+  [dbListener, planoListener, connectionListener, contasListener, cartoesListener, contasPagarListener, contasReceberListener].forEach(l => {
+    if (l) { try { l.off('value'); } catch (e) {} }
+  });
+  dbListener = planoListener = connectionListener = null;
+  contasListener = cartoesListener = contasPagarListener = contasReceberListener = null;
+}
 
 try {
   if (window.firebase) {
@@ -163,8 +175,16 @@ function saveToLocal() {
 
 function snapshotToArray(snapVal) {
   if (!snapVal) return [];
-  if (Array.isArray(snapVal)) return snapVal.map(item => ({ ...sanitize(item), key: item?.key }));
-  return Object.keys(snapVal).map(key => ({ ...sanitize(snapVal[key]), key }));
+  let arr;
+  if (Array.isArray(snapVal)) arr = snapVal;
+  else arr = Object.keys(snapVal).map(key => ({ ...snapVal[key], key }));
+  const seen = new Set();
+  return arr.map(item => ({ ...sanitize(item), key: item?.key })).filter(o => {
+    const id = o.key || o.id;
+    if (!id || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
 }
 
 function setStatus(mode, text) {
@@ -196,9 +216,7 @@ function migrateLegacyToRtdb(uid) {
 function fallbackToLocal(msg) {
   storageMode = 'local';
   hideAuthLoader();
-  if (dbListener) { try { dbListener.off('value'); } catch (e) {} dbListener = null; }
-  if (planoListener) { try { planoListener.off('value'); } catch (e) {} planoListener = null; }
-  if (connectionListener) { try { connectionListener.off('value'); } catch (e) {} connectionListener = null; }
+  detachRtdbListener();
   loadFromLocal();
   loadPlanoFromCache();
   setStatus('local', msg || 'Modo local');
@@ -212,6 +230,7 @@ function loadPlanoFromCache() {
 
 function attachRtdbListener(uid) {
   if (!db) { fallbackToLocal('Banco de dados não configurado'); return; }
+  detachRtdbListener();
   try {
     storageMode = 'rtdb';
     dbListener = db.ref('users/' + uid + '/transactions');
@@ -232,25 +251,29 @@ function attachRtdbListener(uid) {
     });
 
     // Listeners para novos dados
-    db.ref('users/' + uid + '/contas').on('value', snap => {
+    contasListener = db.ref('users/' + uid + '/contas');
+    contasListener.on('value', snap => {
       contas = snap.val() || [];
       if (!Array.isArray(contas)) contas = [];
       renderDashContas();
     });
 
-    db.ref('users/' + uid + '/cartoes').on('value', snap => {
+    cartoesListener = db.ref('users/' + uid + '/cartoes');
+    cartoesListener.on('value', snap => {
       cartoes = snap.val() || [];
       if (!Array.isArray(cartoes)) cartoes = [];
       renderDashCartoes();
     });
 
-    db.ref('users/' + uid + '/contasPagar').on('value', snap => {
+    contasPagarListener = db.ref('users/' + uid + '/contasPagar');
+    contasPagarListener.on('value', snap => {
       contasPagar = snap.val() || [];
       if (!Array.isArray(contasPagar)) contasPagar = [];
       renderDashContasPagar();
     });
 
-    db.ref('users/' + uid + '/contasReceber').on('value', snap => {
+    contasReceberListener = db.ref('users/' + uid + '/contasReceber');
+    contasReceberListener.on('value', snap => {
       contasReceber = snap.val() || [];
       if (!Array.isArray(contasReceber)) contasReceber = [];
       renderDashContasReceber();
@@ -314,7 +337,8 @@ function addTransaction(t) {
     const ref = db.ref('users/' + currentUser.uid + '/transactions').push();
     clean.key = ref.key;
     ref.set(clean);
-    transactions.unshift(clean);
+    // Em modo RTDB o listener `value` é a única fonte de verdade:
+    // não fazemos unshift local para evitar lançamento duplicado.
   } else {
     transactions.unshift(clean);
     saveToLocal();
@@ -1110,6 +1134,12 @@ const modalForm = document.getElementById('modalTransactionForm');
 if (modalForm) {
   modalForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    // Evita lançamento duplicado (duplo clique / Enter repetido)
+    if (modalForm.dataset.submitting === '1') return;
+    modalForm.dataset.submitting = '1';
+    const submitBtn = document.getElementById('modal-submit-btn');
+    if (submitBtn) submitBtn.disabled = true;
+    try {
 
     const type = document.getElementById('m-type').value;
     const desc = document.getElementById('m-desc').value.trim();
@@ -1156,6 +1186,10 @@ if (modalForm) {
     }
 
     closeModal();
+    } finally {
+      delete modalForm.dataset.submitting;
+      if (submitBtn) submitBtn.disabled = false;
+    }
   });
 }
 
