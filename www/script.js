@@ -57,11 +57,17 @@ function escapeHTML(value) {
 }
 
 // Defesa em profundidade: use setHTML() sempre que for inserir HTML derivado
-// de dados do usuário. Hoje aplica escapeHTML (suficiente para os fluxos atuais).
-// Recomendado (P2): migrar para DOMPurify + eslint-plugin-no-unsanitized e
-// chamar setHTML(el, DOMPurify.sanitize(str)).
+// de dados do usuário. Aplica DOMPurify quando disponível (carregado via CDN)
+// e cai para escapeHTML() como fallback. Combine com eslint-plugin-no-unsanitized.
 function setHTML(el, str) {
-  if (el) el.innerHTML = escapeHTML(str);
+  if (!el) return;
+  const sanitized = (window.DOMPurify ? DOMPurify.sanitize(String(str ?? '')) : escapeHTML(str));
+  el.innerHTML = sanitized;
+}
+
+// Sanitiza uma string que será interpolada dentro de um template innerHTML maior.
+function safe(str) {
+  return window.DOMPurify ? DOMPurify.sanitize(String(str ?? '')) : escapeHTML(str);
 }
 
 // 3. TOAST NOTIFICATION SYSTEM

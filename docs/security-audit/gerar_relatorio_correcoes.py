@@ -92,7 +92,7 @@ audit = [
     ["F-03", "CSP com unsafe-inline/eval", "MÉDIA", "P2", "Aplicado*"],
     ["F-04", "Security Rules não cobrem todos os paths", "MÉDIA", "P1", "Aplicado"],
     ["F-05", "Service Worker / _headers CSS immutable", "BAIXA", "P2", "Aplicado"],
-    ["F-06", "escapeHTML sem defesa em profundidade", "BAIXA", "P2", "Aplicado*"],
+    ["F-06", "escapeHTML sem defesa em profundidade", "BAIXA", "P2", "Aplicado"],
     ["F-07", "Gate de auth client-side apenas", "BAIXA", "P3", "Documentado"],
 ]
 tbl = Table([[esc(c) for c in r] for r in audit],
@@ -114,10 +114,12 @@ S.append(Paragraph("Observação: itens marcados com * são aplicação parcial/
                    "no repositório, com ação complementar em console/refatoração "
                    "documentada: F-02 (apiKey exige Application Restriction no console "
                    "Firebase + rotação; web firebase-config.js permanece versionado pois "
-                   "é exigido pelo SPA estático); F-03 ('unsafe-inline'/'unsafe-eval' "
-                   "mantidos — remoção exige refatorar scripts inline para nonce + SDK "
-                   "modular); F-06 (helper setHTML/escapeHTML adicionado; migração para "
-                   "DOMPurify + lint é o próximo passo).", styles["Small"]))
+                   "é exigido pelo SPA estático); F-03 ('unsafe-inline' mantido — a "
+                   "remoção exige refatorar os handlers inline onclick/oninput para "
+                   "addEventListener + SDK modular para retirar 'unsafe-eval'; é o "
+                   "próximo passo P2). F-06 concluído: DOMPurify carregado via CDN e "
+                   "integrado em setHTML()/safe(), com .eslintrc.json reforçando "
+                   "no-unsanitized.", styles["Small"]))
 S.append(Spacer(1, 8))
 S.append(Paragraph("Arquivos alterados: script.js, www/script.js, index.html, "
                    "www/index.html, login.html, www/login.html (commit 947c0ca + "
