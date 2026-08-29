@@ -782,7 +782,11 @@ function renderHeaderUser() {
     if (!img) {
       img = document.createElement('img');
       img.alt = 'Foto de perfil';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:14px;';
+      img.onerror = () => { img.remove(); const ic = ensureIconElement(avatarHeader,'user-avatar-icon'); if(ic){ ic.className='fa-solid fa-user'; ic.style.display='block'; } };
       avatarHeader.prepend(img);
+    } else {
+      img.onerror = () => { img.remove(); const ic = ensureIconElement(avatarHeader,'user-avatar-icon'); if(ic){ ic.className='fa-solid fa-user'; ic.style.display='block'; } };
     }
     img.src = photoURL;
     const avatarIcon = document.getElementById('user-avatar-icon');
@@ -793,11 +797,20 @@ function renderHeaderUser() {
       sideImg = document.createElement('img');
       sideImg.alt = 'Foto de perfil';
       sideImg.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:14px;';
+      sideImg.onerror = () => { sideImg.remove(); const ic = ensureIconElement(sidebarAvatar,'sidebar-avatar-icon'); if(ic){ ic.className='fa-solid fa-user'; ic.style.display='block'; } };
       sidebarAvatar.prepend(sideImg);
+    } else if (sideImg) {
+      sideImg.onerror = () => { sideImg.remove(); const ic = ensureIconElement(sidebarAvatar,'sidebar-avatar-icon'); if(ic){ ic.className='fa-solid fa-user'; ic.style.display='block'; } };
     }
     if (sideImg) sideImg.src = photoURL;
     const sidebarIcon = document.getElementById('sidebar-avatar-icon');
     if (sidebarIcon) sidebarIcon.style.display = 'none';
+  } else if (avatarHeader) {
+    // Sem foto: garante ícone visível
+    const img = avatarHeader.querySelector('img'); if (img) img.remove();
+    const sideImg = sidebarAvatar ? sidebarAvatar.querySelector('img') : null; if (sideImg) sideImg.remove();
+    const ic1 = ensureIconElement(avatarHeader,'user-avatar-icon'); if(ic1){ ic1.className='fa-solid fa-user'; ic1.style.display='block'; }
+    const ic2 = ensureIconElement(sidebarAvatar,'sidebar-avatar-icon'); if(ic2){ ic2.className='fa-solid fa-user'; ic2.style.display='block'; }
   }
 }
 
