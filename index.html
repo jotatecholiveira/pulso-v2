@@ -17,7 +17,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.11/dist/purify.min.js" crossorigin="anonymous" defer></script>
-  <script src="script.js?v=3.1.8" defer></script>
+  <script src="script.js?v=3.1.9" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/regular.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
@@ -78,7 +78,7 @@
             <a href="https://github.com/jotatecholiveira/pulso-v2" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
           </div>
           <p class="sidebar-thanks">Obrigado por usar o Pulso!</p>
-          <p class="sidebar-version">v3.1.8</p>
+          <p class="sidebar-version">v3.1.9</p>
           <div class="sidebar-legal">
             <a href="privacidade.html" target="_blank">Privacidade</a>
             <span class="sidebar-legal-sep">·</span>
@@ -998,12 +998,12 @@
   </div>
 </div>
 
-<!-- UPDATE MODAL v3.1.8 -->
+<!-- UPDATE MODAL v3.1.9 -->
 <div class="form-modal-overlay" id="update-modal-overlay" onclick="closeUpdateModal()">
   <div class="form-modal update-modal" onclick="event.stopPropagation()">
     <div style="text-align:center;margin-bottom:16px;">
       <div style="width:48px;height:48px;background:linear-gradient(135deg,#6c7cff,#FF6B6B);border-radius:14px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:22px;">✨</div>
-      <h3 style="margin-top:12px;">Pulso v3.1.8 — Atualizado!</h3>
+      <h3 style="margin-top:12px;">Pulso v3.1.9 — Atualizado!</h3>
       <p style="color:var(--text-secondary);font-size:0.88rem;margin-top:4px;">Obrigado por usar o Pulso. Veja o que melhorou:</p>
     </div>
     <ul style="text-align:left;font-size:0.88rem;line-height:1.6;color:var(--text-secondary);padding-left:18px;margin:0 0 16px 0;">
@@ -1012,6 +1012,7 @@
       <li>📂 Categorias: <b>Salário</b> agora só em receitas</li>
       <li>🖼️ Fotos de perfil com fallback (sem “Foto de” quebrado)</li>
       <li>⚡ Cache e Service Worker mais rápido e estável</li>
+      <li>🐛 Ao adicionar receita/despesa não duplica mais o lançamento</li>
     </ul>
     <p style="text-align:center;font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;">Gostou? <b>Deixe seu feedback</b> — ajuda muito o projeto!</p>
     <div class="form-modal-actions">

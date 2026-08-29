@@ -2914,10 +2914,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// — Update modal v3.1.8 (aparece 1x) —
+// — Update modal v3.1.9 (aparece 1x) —
 function maybeShowUpdateModal() {
   if (isLoginPage()) return;
-  const KEY = 'pulso-update-3.1.8-seen';
+  const KEY = 'pulso-update-3.1.9-seen';
   if (localStorage.getItem(KEY)) return;
   setTimeout(() => {
     const el = document.getElementById('update-modal-overlay');
@@ -2927,7 +2927,7 @@ function maybeShowUpdateModal() {
 function closeUpdateModal() {
   const el = document.getElementById('update-modal-overlay');
   if (el) el.classList.remove('active');
-  localStorage.setItem('pulso-update-3.1.8-seen', '1');
+  localStorage.setItem('pulso-update-3.1.9-seen', '1');
 }
 
 // — Feedback —
@@ -2952,7 +2952,7 @@ function submitFeedback() {
     email: currentUser ? (currentUser.email || '') : '',
     photoURL: currentUser ? (currentUser.photoURL || '') : '',
     message: msg,
-    version: '3.1.8',
+    version: '3.1.9',
     createdAt: new Date().toISOString(),
     userAgent: navigator.userAgent.slice(0,300)
   };
