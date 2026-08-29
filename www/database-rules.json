@@ -11,6 +11,13 @@
     "investimentos": {
       ".read": true,
       ".write": false
+    },
+    "feedbacks": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$pushId": {
+        ".validate": "newData.hasChildren(['uid','message','createdAt']) && newData.child('message').isString() && newData.child('message').val().length > 0 && newData.child('message').val().length <= 1000"
+      }
     }
   }
 }

@@ -2902,11 +2902,92 @@ function configurarListenerInvestimentos() {
 document.addEventListener('DOMContentLoaded', () => {
   configurarListenerInvestimentos();
   carregarLimitesGastos();
+  maybeShowUpdateModal();
+  const fbText = document.getElementById('feedback-text');
+  if (fbText) fbText.addEventListener('input', () => {
+    const c = document.getElementById('feedback-counter');
+    if (c) c.textContent = fbText.value.length;
+  });
   
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js').catch((e) => { console.warn('[Pulso] serviceWorker registro falhou:', e); });
   }
 });
+
+// — Update modal v3.1.8 (aparece 1x) —
+function maybeShowUpdateModal() {
+  if (isLoginPage()) return;
+  const KEY = 'pulso-update-3.1.8-seen';
+  if (localStorage.getItem(KEY)) return;
+  setTimeout(() => {
+    const el = document.getElementById('update-modal-overlay');
+    if (el) el.classList.add('active');
+  }, 800);
+}
+function closeUpdateModal() {
+  const el = document.getElementById('update-modal-overlay');
+  if (el) el.classList.remove('active');
+  localStorage.setItem('pulso-update-3.1.8-seen', '1');
+}
+
+// — Feedback —
+function openFeedbackModal() {
+  const el = document.getElementById('feedback-modal-overlay');
+  if (el) { el.classList.add('active'); setTimeout(() => document.getElementById('feedback-text')?.focus(), 100); }
+}
+function closeFeedbackModal() {
+  const el = document.getElementById('feedback-modal-overlay');
+  if (el) el.classList.remove('active');
+}
+function submitFeedback() {
+  const ta = document.getElementById('feedback-text');
+  const btn = document.getElementById('feedback-submit-btn');
+  const msg = ta ? ta.value.trim() : '';
+  if (!msg) { showToast('Escreva seu feedback primeiro.', 'warning'); return; }
+  if (msg.length > 1000) { showToast('Máximo 1000 caracteres.', 'warning'); return; }
+  if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+  const payload = {
+    uid: currentUser ? currentUser.uid : 'anon',
+    displayName: currentUser ? (currentUser.displayName || '') : '',
+    email: currentUser ? (currentUser.email || '') : '',
+    photoURL: currentUser ? (currentUser.photoURL || '') : '',
+    message: msg,
+    version: '3.1.8',
+    createdAt: new Date().toISOString(),
+    userAgent: navigator.userAgent.slice(0,300)
+  };
+  const done = () => {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar'; }
+    if (ta) ta.value = '';
+    const c = document.getElementById('feedback-counter'); if (c) c.textContent = '0';
+    closeFeedbackModal();
+    showToast('Obrigado pelo feedback! 💜', 'success');
+  };
+  const fail = (e) => {
+    console.warn('[Pulso] feedback falhou:', e);
+    showToast('Falha ao enviar. Tente novamente.', 'error');
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar'; }
+  };
+  try {
+    if (db && currentUser && storageMode === 'rtdb') {
+      db.ref('feedbacks').push(payload).then(done).catch(fail);
+    } else if (db && currentUser) {
+      // sem RTDB mas com auth: tenta mesmo assim
+      db.ref('feedbacks').push(payload).then(done).catch(() => {
+        // fallback local
+        const arr = JSON.parse(localStorage.getItem('pulso-feedbacks') || '[]');
+        arr.push(payload); localStorage.setItem('pulso-feedbacks', JSON.stringify(arr));
+        done();
+      });
+    } else {
+      const arr = JSON.parse(localStorage.getItem('pulso-feedbacks') || '[]');
+      arr.push(payload); localStorage.setItem('pulso-feedbacks', JSON.stringify(arr));
+      // tenta RTDB anonimizado se houver db
+      if (db) db.ref('feedbacks').push(payload).catch(()=>{});
+      done();
+    }
+  } catch(e) { fail(e); }
+}
 
 // ============================================================
 // LIMITES DE GASTOS POR CATEGORIA

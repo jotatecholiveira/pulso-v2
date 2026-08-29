@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pulso-v10';
+const CACHE_NAME = 'pulso-v11';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

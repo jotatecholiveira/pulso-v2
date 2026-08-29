@@ -415,6 +415,29 @@ body.light-theme .nav-link.active {
   transition-delay: 0.1s;
 }
 
+.feedback-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(108,124,255,0.18), rgba(108,124,255,0.08));
+  color: #6c7cff;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(108,124,255,0.25);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+}
+.feedback-btn:hover {
+  background: #6c7cff;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(108,124,255,0.3);
+}
 .kofi-btn {
   display: inline-flex;
   align-items: center;
