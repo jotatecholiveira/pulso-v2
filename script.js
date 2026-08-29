@@ -451,20 +451,40 @@ if (isLoginPage()) {
       if (googleBtn) googleBtn.disabled = true;
       showAuthLoader();
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).then(() => {
-        hideAuthLoader();
-        if (googleBtn) googleBtn.disabled = false;
-      }).catch(err => {
-        hideAuthLoader();
-        if (err.code === 'auth/popup-blocked') {
-          setAuthMsg('Popup bloqueado pelo navegador. Permita popups para este site.', 'error');
-        } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
-          setAuthMsg('', '');
-        } else {
-          setAuthMsg(translateAuthError(err), 'error');
-        }
-        if (googleBtn) googleBtn.disabled = false;
-      });
+      provider.setCustomParameters({ prompt: 'select_account' });
+      auth.signInWithPopup(provider)
+        .then(() => { hideAuthLoader(); if (googleBtn) googleBtn.disabled = false; })
+        .catch(err => {
+          hideAuthLoader();
+          if (err.code === 'auth/popup-blocked') {
+            setAuthMsg('Popup bloqueado pelo navegador. Permita popups para este site.', 'error');
+          } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+            setAuthMsg('', '');
+          } else if (err.code === 'auth/network-request-failed') {
+            setAuthMsg('Sem conexão com a internet. Verifique sua rede e tente novamente.', 'error');
+          } else if (err.code === 'auth/unauthorized-domain') {
+            setAuthMsg('Domínio não autorizado no Firebase. Adicione este domínio em Authentication → Settings.', 'error');
+          } else if (err.code === 'auth/operation-not-allowed') {
+            setAuthMsg('Login com Google não está ativo no Firebase. Habilite em Authentication → Sign-in method.', 'error');
+          } else {
+            setAuthMsg(translateAuthError(err), 'error');
+          }
+          if (googleBtn) googleBtn.disabled = false;
+        });
+    });
+  }
+
+  // Navegação por teclado no formulário de login
+  const emailEl = document.getElementById('email');
+  const passEl = document.getElementById('password');
+  if (emailEl) {
+    emailEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); if (passEl) passEl.focus(); }
+    });
+  }
+  if (passEl) {
+    passEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); if (typeof handleAuth === 'function') handleAuth(); }
     });
   }
 }
@@ -473,11 +493,18 @@ function showAuthLoader() {
   if (document.getElementById('auth-loader')) return;
   const overlay = document.createElement('div');
   overlay.id = 'auth-loader';
-  overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:var(--bg-primary,#0b1220);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .4s';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0b1220;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .4s';
   overlay.innerHTML = '<div class="brand-mark" style="width:64px;height:64px;font-size:28px;border-radius:20px;display:flex;align-items:center;justify-content:center;background:var(--accent-primary,#6c7cff);color:#fff;font-weight:700;animation:pulse 1.5s ease-in-out infinite">P</div><p style="color:var(--text-secondary,#94a3b8);font-size:14px;letter-spacing:.5px">Verificando acesso...</p><style>@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.8}}</style>';
   document.body.appendChild(overlay);
+  // Proteção: nunca deixa o loader travado (tela em branco) se algo falhar
+  if (window.__authLoaderSafety) clearTimeout(window.__authLoaderSafety);
+  window.__authLoaderSafety = setTimeout(() => {
+    const el = document.getElementById('auth-loader');
+    if (el) { el.style.opacity = '0'; setTimeout(() => el.remove(), 400); }
+  }, 8000);
 }
 function hideAuthLoader() {
+  if (window.__authLoaderSafety) { clearTimeout(window.__authLoaderSafety); window.__authLoaderSafety = null; }
   const el = document.getElementById('auth-loader');
   if (el) { el.style.opacity = '0'; setTimeout(() => el.remove(), 400); }
 }
@@ -485,6 +512,7 @@ if (!isLoginPage()) showAuthLoader();
 
 if (auth) {
   let authInitialized = false;
+  let authResolved = false;
   let authTimeout = null;
 
   auth.getRedirectResult().catch(err => {
@@ -493,6 +521,7 @@ if (auth) {
 
   auth.onAuthStateChanged(user => {
     currentUser = user;
+    if (user) authResolved = true;
     if (isLoginPage()) {
       if (user) window.location.href = 'index.html';
       return;
@@ -500,11 +529,12 @@ if (auth) {
     if (!user) {
       if (!authInitialized) {
         if (authTimeout) clearTimeout(authTimeout);
+        // Aguarda mais tempo para acomodar restauração lenta de sessão (ex.: login Google)
         authTimeout = setTimeout(() => {
-          if (!currentUser && !authInitialized) {
+          if (!currentUser && !authInitialized && !authResolved) {
             window.location.href = 'login.html';
           }
-        }, 1000);
+        }, 5000);
         return;
       }
       window.location.href = 'login.html';
@@ -512,23 +542,29 @@ if (auth) {
     }
     if (authTimeout) clearTimeout(authTimeout);
     authInitialized = true;
-    hideAuthLoader();
-    renderHeaderUser();
-    updateStatusBadge();
-    resetSessionTimer();
-    loadFromLocal();
-    loadCategories();
-    loadPlanoFromCache();
-    loadMetasPlano();
-    loadContas();
-    loadCartoes();
-    loadContasPagar();
-    loadContasReceber();
-    if (db) {
-      try { migrateLegacyToRtdb(user.uid); } catch (e) {}
-      attachRtdbListener(user.uid);
-    } else {
-      fallbackToLocal('Modo local');
+    try {
+      hideAuthLoader();
+      renderHeaderUser();
+      updateStatusBadge();
+      resetSessionTimer();
+      loadFromLocal();
+      loadCategories();
+      loadPlanoFromCache();
+      loadMetasPlano();
+      loadContas();
+      loadCartoes();
+      loadContasPagar();
+      loadContasReceber();
+      if (db) {
+        try { migrateLegacyToRtdb(user.uid); } catch (e) {}
+        attachRtdbListener(user.uid);
+      } else {
+        fallbackToLocal('Modo local');
+      }
+    } catch (err) {
+      console.error('Erro ao inicializar app após login:', err);
+      hideAuthLoader();
+      showToast('Ocorreu um erro ao carregar o app. Tente novamente.', 'error');
     }
   });
 } else {
