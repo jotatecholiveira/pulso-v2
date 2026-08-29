@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pulso-v8';
+const CACHE_NAME = 'pulso-v9';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -38,7 +38,9 @@ self.addEventListener('fetch', (event) => {
       url.includes('gstatic') ||
       url.includes('googleapis') ||
       url.includes('fontawesome') ||
-      url.includes('cdnjs')) {
+      url.includes('cdnjs') ||
+      url.includes('jsdelivr') ||
+      url.includes('cdn.jsdelivr')) {
     return;
   }
 
@@ -52,13 +54,14 @@ self.addEventListener('fetch', (event) => {
 
   event.respondWith(
     fetch(event.request).then((response) => {
-      if (url.endsWith('.js') || url.endsWith('.css')) {
+      // Só cacheia respostas válidas
+      if (response && response.ok && (url.endsWith('.js') || url.endsWith('.css'))) {
         const clone = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
       }
       return response;
     }).catch(() => {
-      return caches.match(event.request);
+      return caches.match(event.request).then(cached => cached || fetch(event.request));
     })
   );
 });
