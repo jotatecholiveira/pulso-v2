@@ -483,6 +483,14 @@ if (isLoginPage()) {
       handleAuth();
     });
 
+    const submitBtnLogin = document.getElementById('submitBtn');
+    if (submitBtnLogin) {
+      submitBtnLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (typeof handleAuth === 'function') handleAuth();
+      });
+    }
+
     googleBtn.addEventListener('click', () => {
       if (!auth) { setAuthMsg('Sem conexão — o Firebase não carregou.', 'error'); return; }
       setAuthMsg('Conectando ao Google...', 'info');
