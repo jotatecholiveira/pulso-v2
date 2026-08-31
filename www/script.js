@@ -2929,6 +2929,13 @@ function closeUpdateModal() {
   if (el) el.classList.remove('active');
   localStorage.setItem('pulso-update-3.1.9-seen', '1');
 }
+// fechar modal de update com ESC também marca como visto
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const upd = document.getElementById('update-modal-overlay');
+    if (upd && upd.classList.contains('active')) closeUpdateModal();
+  }
+});
 
 // — Feedback —
 function openFeedbackModal() {

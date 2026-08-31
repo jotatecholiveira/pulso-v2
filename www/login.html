@@ -1248,15 +1248,15 @@
       }
       var email = document.getElementById('email').value.trim();
       var password = document.getElementById('password').value;
+      var authEl = document.getElementById('auth-message');
       if (!email) {
-        var authEl = document.getElementById('auth-message');
         if (authEl) { authEl.textContent = 'Preencha o e-mail.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
         return;
       }
       if (isGmail(email)) {
         var g = document.getElementById('googleBtn');
-        if (g) g.focus();
-        if (authEl) { authEl.textContent = 'Contas Gmail usam o botão "Continuar com Google" abaixo.'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+        if (g) g.click();
+        if (authEl) { authEl.textContent = 'Redirecionando para o Google...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
         return;
       }
       if (!password) {
