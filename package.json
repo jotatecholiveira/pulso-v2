@@ -1,7 +1,7 @@
 {
   "name": "pulso",
-  "version": "1.0.0",
-  "description": "Pulso - Controle financeiro pessoal e familiar. Dashboard interativo, gráficos, sincronização Firebase e importação de planilhas.",
+  "version": "3.1.9-beta.0",
+  "description": "Pulso Beta — controle financeiro pessoal e familiar com dashboard interativo, gráficos, sincronização Firebase e importação de planilhas.",
   "main": "index.html",
   "scripts": {
     "start": "http-server . -p 8000 -c-1",

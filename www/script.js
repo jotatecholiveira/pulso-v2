@@ -18,6 +18,283 @@ let auth = null;
 let db = null;
 let firebaseAvailable = false;
 let transactions = [];
+
+const pulsoTranslations = {
+  pt: {
+    appName: 'Pulso',
+    welcome: 'Bem-vindo ao Pulso',
+    loginTagline: 'Seu dinheiro, seu controle.',
+    enter: 'Entrar',
+    register: 'Criar conta',
+    google: 'Continuar com Google',
+    or: 'ou',
+    fullName: 'Nome completo',
+    email: 'E-mail',
+    password: 'Senha',
+    createPassword: 'Crie uma senha',
+    remember: 'Lembrar-me',
+    forgot: 'Esqueci minha senha',
+    noAccount: 'Não tem conta?',
+    createNow: 'Criar agora',
+    alreadyHave: 'Já tem conta?',
+    loginGoogleHint: 'Conta Gmail detectada — será feito login com Google automaticamente.',
+    gmailRegisterHint: 'Contas Gmail só podem ser criadas com Google. Use "Continuar com Google" acima.',
+    redirectGoogle: 'Redirecionando para o Google...',
+    loginGoogleBtn: 'Entrar com Google',
+    emailRequired: 'Preencha o e-mail.',
+    passwordRequired: 'Preencha a senha.',
+    emailReset: 'Digite seu e-mail primeiro para redefinir a senha.',
+    resetSent: 'E-mail de redefinição enviado para ',
+    passwordsMin: 'Senha precisa de no mínimo 6 caracteres.',
+    createAccount: 'Criando conta...',
+    createAccountBtn: 'Criar conta',
+    creating: 'Criando...',
+    entering: 'Entrando...',
+    logout: 'Sair',
+    myAccount: 'Minha Conta',
+    share: 'Compartilhar',
+    balance: 'Saldo disponível',
+    showHide: 'Mostrar/ocultar valores',
+    dashboard: 'Dashboard',
+    extract: 'Extrato',
+    bankExtract: 'Extrato Bancário',
+    totalIn: 'Total Entradas',
+    totalOut: 'Total Saídas',
+    periodBalance: 'Saldo do Período',
+    all: 'Todos',
+    income: 'Entradas',
+    expense: 'Saídas',
+    searchPlaceholder: 'Buscar por descrição...',
+    allCategories: 'Todas as categorias',
+    allUsers: 'Todos os usuários',
+    newExpense: 'Nova Despesa',
+    newIncome: 'Nova Receita',
+    privacy: 'Privacidade',
+    encrypted: 'Criptografado',
+    https: 'HTTPS',
+    language: 'Idioma',
+    greetingNight: 'Boa noite',
+    greetingMorning: 'Bom dia',
+    greetingAfternoon: 'Boa tarde',
+    greetingEvening: 'Boa noite'
+  },
+  en: {
+    appName: 'Pulso',
+    welcome: 'Welcome to Pulso',
+    loginTagline: 'Your money, your control.',
+    enter: 'Log in',
+    register: 'Create account',
+    google: 'Continue with Google',
+    or: 'or',
+    fullName: 'Full name',
+    email: 'Email',
+    password: 'Password',
+    createPassword: 'Create a password',
+    remember: 'Remember me',
+    forgot: 'Forgot password',
+    noAccount: 'Don’t have an account?',
+    createNow: 'Create now',
+    alreadyHave: 'Already have an account?',
+    loginGoogleHint: 'Gmail account detected — Google sign-in will be used automatically.',
+    gmailRegisterHint: 'Gmail accounts can only be created with Google. Use "Continue with Google" above.',
+    redirectGoogle: 'Redirecting to Google...',
+    loginGoogleBtn: 'Log in with Google',
+    emailRequired: 'Please enter your email.',
+    passwordRequired: 'Please enter your password.',
+    emailReset: 'Type your email first to reset your password.',
+    resetSent: 'Password reset email sent to ',
+    passwordsMin: 'Password must be at least 6 characters long.',
+    createAccount: 'Creating account...',
+    createAccountBtn: 'Create account',
+    creating: 'Creating...',
+    entering: 'Signing in...',
+    logout: 'Log out',
+    myAccount: 'My Account',
+    share: 'Share',
+    balance: 'Available balance',
+    showHide: 'Show/hide values',
+    dashboard: 'Dashboard',
+    extract: 'Statement',
+    bankExtract: 'Bank Statement',
+    totalIn: 'Total Income',
+    totalOut: 'Total Expenses',
+    periodBalance: 'Period Balance',
+    all: 'All',
+    income: 'Income',
+    expense: 'Expenses',
+    searchPlaceholder: 'Search by description...',
+    allCategories: 'All categories',
+    allUsers: 'All users',
+    newExpense: 'New Expense',
+    newIncome: 'New Income',
+    privacy: 'Privacy',
+    encrypted: 'Encrypted',
+    https: 'HTTPS',
+    language: 'Language',
+    greetingNight: 'Good evening',
+    greetingMorning: 'Good morning',
+    greetingAfternoon: 'Good afternoon',
+    greetingEvening: 'Good evening'
+  },
+  es: {
+    appName: 'Pulso',
+    welcome: 'Bienvenido a Pulso',
+    loginTagline: 'Tu dinero, tu control.',
+    enter: 'Iniciar sesión',
+    register: 'Crear cuenta',
+    google: 'Continuar con Google',
+    or: 'o',
+    fullName: 'Nombre completo',
+    email: 'Correo',
+    password: 'Contraseña',
+    createPassword: 'Crea una contraseña',
+    remember: 'Recordarme',
+    forgot: 'Olvidé mi contraseña',
+    noAccount: '¿No tienes cuenta?',
+    createNow: 'Crear ahora',
+    alreadyHave: '¿Ya tienes cuenta?',
+    loginGoogleHint: 'Cuenta de Gmail detectada: se usará el acceso con Google automáticamente.',
+    gmailRegisterHint: 'Las cuentas de Gmail solo pueden crearse con Google. Usa "Continuar con Google" arriba.',
+    redirectGoogle: 'Redirigiendo a Google...',
+    loginGoogleBtn: 'Iniciar con Google',
+    emailRequired: 'Completa tu correo.',
+    passwordRequired: 'Completa tu contraseña.',
+    emailReset: 'Escribe tu correo primero para restablecer la contraseña.',
+    resetSent: 'Correo de restablecimiento enviado a ',
+    passwordsMin: 'La contraseña debe tener al menos 6 caracteres.',
+    createAccount: 'Creando cuenta...',
+    createAccountBtn: 'Crear cuenta',
+    creating: 'Creando...',
+    entering: 'Iniciando sesión...',
+    logout: 'Cerrar sesión',
+    myAccount: 'Mi cuenta',
+    share: 'Compartir',
+    balance: 'Saldo disponible',
+    showHide: 'Mostrar/ocultar valores',
+    dashboard: 'Panel',
+    extract: 'Extracto',
+    bankExtract: 'Extracto bancario',
+    totalIn: 'Total entradas',
+    totalOut: 'Total salidas',
+    periodBalance: 'Saldo del período',
+    all: 'Todos',
+    income: 'Entradas',
+    expense: 'Salidas',
+    searchPlaceholder: 'Buscar por descripción...',
+    allCategories: 'Todas las categorías',
+    allUsers: 'Todos los usuarios',
+    newExpense: 'Nuevo gasto',
+    newIncome: 'Nuevo ingreso',
+    privacy: 'Privacidad',
+    encrypted: 'Cifrado',
+    https: 'HTTPS',
+    language: 'Idioma',
+    greetingNight: 'Buenas noches',
+    greetingMorning: 'Buenos días',
+    greetingAfternoon: 'Buenas tardes',
+    greetingEvening: 'Buenas noches'
+  }
+};
+
+window.PulsoI18n = {
+  locale: 'pt',
+  dictionary: pulsoTranslations,
+  getPreferredLanguage() {
+    const stored = localStorage.getItem('pulso-lang');
+    if (stored && pulsoTranslations[stored]) return stored;
+    const browserLang = (navigator.language || 'pt').toLowerCase();
+    const match = Object.keys(pulsoTranslations).find(key => browserLang.startsWith(key));
+    return match || 'pt';
+  },
+  t(key, fallback = '') {
+    const lang = this.dictionary[this.locale] ? this.locale : 'pt';
+    return this.dictionary[lang][key] || fallback || key;
+  },
+  setLanguage(lang) {
+    if (!pulsoTranslations[lang]) return this.locale;
+    this.locale = lang;
+    localStorage.setItem('pulso-lang', lang);
+    this.apply();
+    return lang;
+  },
+  apply() {
+    const lang = this.locale || this.getPreferredLanguage();
+    this.locale = pulsoTranslations[lang] ? lang : 'pt';
+    document.documentElement.lang = this.locale;
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.dataset.i18n;
+      const value = this.dictionary[this.locale][key];
+      if (!value) return;
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        if (el.type === 'submit' || el.type === 'button') {
+          el.value = value;
+        } else {
+          el.placeholder = value;
+        }
+      } else {
+        el.textContent = value;
+      }
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+      const key = el.dataset.i18nPlaceholder;
+      const value = this.dictionary[this.locale][key];
+      if (value) el.setAttribute('placeholder', value);
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+      const key = el.dataset.i18nAria;
+      const value = this.dictionary[this.locale][key];
+      if (value) el.setAttribute('aria-label', value);
+    });
+    const select = document.getElementById('languageSelect');
+    if (select) select.value = this.locale;
+    const topbarGreeting = document.getElementById('topbar-greeting');
+    if (topbarGreeting) {
+      const hour = new Date().getHours();
+      const greetingKey = hour < 12 ? 'greetingMorning' : hour < 18 ? 'greetingAfternoon' : 'greetingNight';
+      topbarGreeting.textContent = this.dictionary[this.locale][greetingKey] || this.dictionary[this.locale].greetingNight;
+    }
+    updateLanguageSwitchButton();
+  }
+};
+window.PulsoI18n.locale = window.PulsoI18n.getPreferredLanguage();
+
+const languageCycleOrder = ['pt', 'en', 'es'];
+
+function getLanguageMeta(locale) {
+  const labels = { pt: 'Português (Brasil)', en: 'English', es: 'Español' };
+  const flags = { pt: '🇧🇷', en: '🇺🇸', es: '🇪🇸' };
+  return {
+    label: labels[locale] || 'Português (Brasil)',
+    flag: flags[locale] || '🇧🇷'
+  };
+}
+
+function updateLanguageSwitchButton() {
+  const button = document.getElementById('languageSwitchBtn');
+  if (!button) return;
+  const locale = window.PulsoI18n && window.PulsoI18n.locale ? window.PulsoI18n.locale : 'pt';
+  const { flag, label } = getLanguageMeta(locale);
+  const flagEl = button.querySelector('.language-flag');
+  if (flagEl) flagEl.textContent = flag;
+  button.setAttribute('aria-label', `Idioma atual: ${label}`);
+  button.setAttribute('title', `Idioma atual: ${label}`);
+}
+
+function cycleLanguage() {
+  const locale = window.PulsoI18n && window.PulsoI18n.locale ? window.PulsoI18n.locale : 'pt';
+  const currentIndex = languageCycleOrder.indexOf(locale);
+  const nextLocale = languageCycleOrder[(currentIndex + 1) % languageCycleOrder.length];
+  if (window.PulsoI18n && typeof window.PulsoI18n.setLanguage === 'function') {
+    window.PulsoI18n.setLanguage(nextLocale);
+  }
+  updateLanguageSwitchButton();
+}
+
+const languageSwitchBtn = document.getElementById('languageSwitchBtn');
+if (languageSwitchBtn) {
+  languageSwitchBtn.addEventListener('click', cycleLanguage);
+}
+
 let currentFilter = 'all';
 let currentUser = null;
 let storageMode = 'local';
@@ -40,8 +317,13 @@ function detachRtdbListener() {
 
 try {
   if (window.firebase) {
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps || !firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     auth = firebase.auth();
+    if (auth && typeof auth.setPersistence === 'function') {
+      auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
+    }
     db = firebase.database();
     firebaseAvailable = true;
   }
@@ -169,7 +451,10 @@ function sanitize(t) {
     cat: String(t.cat || 'Outros').slice(0, 60),
     date: t.date || new Date().toISOString(),
     parcela: t.parcela || null,
-    totalParcelas: t.totalParcelas || null
+    totalParcelas: t.totalParcelas || null,
+    paymentMethod: t.paymentMethod === 'credito' ? 'credito' : 'debito',
+    cardName: String(t.cardName || '').slice(0, 80),
+    dueDay: Math.min(31, Math.max(1, parseInt(t.dueDay, 10) || 0)) || null
   };
 }
 
@@ -491,33 +776,34 @@ if (isLoginPage()) {
       });
     }
 
-    googleBtn.addEventListener('click', () => {
-      if (!auth) { setAuthMsg('Sem conexão — o Firebase não carregou.', 'error'); return; }
-      setAuthMsg('Conectando ao Google...', 'info');
-      if (googleBtn) googleBtn.disabled = true;
-      showAuthLoader();
-      const provider = new firebase.auth.GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-      auth.signInWithPopup(provider)
-        .then(() => { hideAuthLoader(); if (googleBtn) googleBtn.disabled = false; })
-        .catch(err => {
-          hideAuthLoader();
-          if (err.code === 'auth/popup-blocked') {
-            setAuthMsg('Popup bloqueado pelo navegador. Permita popups para este site.', 'error');
-          } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
-            setAuthMsg('', '');
-          } else if (err.code === 'auth/network-request-failed') {
-            setAuthMsg('Sem conexão com a internet. Verifique sua rede e tente novamente.', 'error');
-          } else if (err.code === 'auth/unauthorized-domain') {
-            setAuthMsg('Domínio não autorizado no Firebase. Adicione este domínio em Authentication → Settings.', 'error');
-          } else if (err.code === 'auth/operation-not-allowed') {
-            setAuthMsg('Login com Google não está ativo no Firebase. Habilite em Authentication → Sign-in method.', 'error');
-          } else {
-            setAuthMsg(translateAuthError(err), 'error');
-          }
-          if (googleBtn) googleBtn.disabled = false;
-        });
-    });
+    if (googleBtn) {
+      googleBtn.addEventListener('click', () => {
+        if (!auth) { setAuthMsg('Sem conexão — o Firebase não carregou.', 'error'); return; }
+        setAuthMsg('Conectando ao Google...', 'info');
+        googleBtn.disabled = true;
+        showAuthLoader();
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+          .then(() => { hideAuthLoader(); googleBtn.disabled = false; })
+          .catch(err => {
+            hideAuthLoader();
+            googleBtn.disabled = false;
+            if (err.code === 'auth/popup-blocked') {
+              setAuthMsg('Popup bloqueado pelo navegador. Permita popups para este site.', 'error');
+            } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+              setAuthMsg('Login com Google cancelado. Tente novamente quando quiser.', 'info');
+            } else if (err.code === 'auth/network-request-failed') {
+              setAuthMsg('Sem conexão com a internet. Verifique sua rede e tente novamente.', 'error');
+            } else if (err.code === 'auth/unauthorized-domain') {
+              setAuthMsg('Domínio não autorizado no Firebase. Adicione este domínio em Authentication → Settings.', 'error');
+            } else if (err.code === 'auth/operation-not-allowed') {
+              setAuthMsg('Login com Google não está ativo no Firebase. Habilite em Authentication → Sign-in method.', 'error');
+            } else {
+              setAuthMsg(translateAuthError(err), 'error');
+            }
+          });
+      });
+    }
   }
 
   // Navegação por teclado no formulário de login
@@ -1085,6 +1371,67 @@ function toggleCategoryBars() {
 
 
 // 9. MODAL DE LANÇAMENTO
+function clampDueDay(v) {
+  return Math.min(31, Math.max(1, parseInt(v, 10) || 10));
+}
+
+function isCreditExpense(tx) {
+  return tx.type === 'saida' && tx.paymentMethod === 'credito';
+}
+
+function impactsBalance(tx) {
+  return !(tx.type === 'saida' && tx.paymentMethod === 'credito');
+}
+
+function getInvoiceDueDate(baseDateStr, dueDay, installmentIndex) {
+  const base = new Date(baseDateStr + 'T12:00:00');
+  const normalizedDueDay = clampDueDay(dueDay);
+  const firstDueOffset = base.getDate() > normalizedDueDay ? 1 : 0;
+  const due = new Date(base.getFullYear(), base.getMonth() + firstDueOffset + installmentIndex, 1, 12, 0, 0, 0);
+  const lastDay = new Date(due.getFullYear(), due.getMonth() + 1, 0).getDate();
+  due.setDate(Math.min(normalizedDueDay, lastDay));
+  return due.toISOString();
+}
+
+function populateCartaoSelect() {
+  const cardSelect = document.getElementById('m-cartao');
+  if (!cardSelect) return;
+  loadCartoes();
+  if (cartoes.length === 0) {
+    cardSelect.innerHTML = '<option value="">Nenhum cartão cadastrado</option>';
+    return;
+  }
+  cardSelect.innerHTML = cartoes.map((c, idx) =>
+    '<option value="' + idx + '">' + escapeHTML(c.nome || ('Cartão ' + (idx + 1))) + '</option>'
+  ).join('');
+}
+
+function syncCreditFieldsFromCard() {
+  const cardSelect = document.getElementById('m-cartao');
+  const dueInput = document.getElementById('m-dia-vencimento');
+  if (!cardSelect || !dueInput) return;
+  const idx = parseInt(cardSelect.value, 10);
+  if (Number.isNaN(idx) || !cartoes[idx]) return;
+  dueInput.value = clampDueDay(cartoes[idx].diaVencimento || dueInput.value || 10);
+}
+
+function updatePaymentFields() {
+  const type = document.getElementById('m-type')?.value;
+  const pagamento = document.getElementById('m-pagamento')?.value || 'debito';
+  const pagamentoGroup = document.getElementById('pagamento-group');
+  const cardGroup = document.getElementById('cartao-group');
+  const dueGroup = document.getElementById('vencimento-group');
+  const parcelasGroup = document.getElementById('parcelas-group');
+  const isExpense = type === 'saida';
+  const isCredit = isExpense && pagamento === 'credito';
+
+  if (pagamentoGroup) pagamentoGroup.style.display = isExpense ? '' : 'none';
+  if (cardGroup) cardGroup.style.display = isCredit ? '' : 'none';
+  if (dueGroup) dueGroup.style.display = isCredit ? '' : 'none';
+  if (parcelasGroup) parcelasGroup.style.display = isCredit ? 'flex' : 'none';
+  updateParcelaInfo();
+}
+
 function openModal(type) {
   const overlay = document.getElementById('modal-overlay');
   const title = document.getElementById('modal-title');
@@ -1126,6 +1473,16 @@ function openModal(type) {
     dateInput.value = today.toISOString().split('T')[0];
   }
 
+  const pagamentoInput = document.getElementById('m-pagamento');
+  const parcelasInput = document.getElementById('m-parcelas');
+  const dueInput = document.getElementById('m-dia-vencimento');
+  if (pagamentoInput) pagamentoInput.value = 'debito';
+  if (parcelasInput) parcelasInput.value = '1';
+  if (dueInput) dueInput.value = '10';
+  populateCartaoSelect();
+  syncCreditFieldsFromCard();
+  updatePaymentFields();
+
   overlay.classList.add('modal-open');
   document.body.style.overflow = 'hidden';
 
@@ -1144,20 +1501,25 @@ function closeModal() {
   const form = document.getElementById('modalTransactionForm');
   if (form) form.reset();
 
+  const pagamentoInput = document.getElementById('m-pagamento');
+  if (pagamentoInput) pagamentoInput.value = 'debito';
+  const parcelasInput = document.getElementById('m-parcelas');
+  if (parcelasInput) parcelasInput.value = '1';
+  const dueInput = document.getElementById('m-dia-vencimento');
+  if (dueInput) dueInput.value = '10';
+
   const parcelasGroup = document.getElementById('parcelas-group');
   if (parcelasGroup) parcelasGroup.style.display = 'none';
+  const cardGroup = document.getElementById('cartao-group');
+  if (cardGroup) cardGroup.style.display = 'none';
+  const dueGroup = document.getElementById('vencimento-group');
+  if (dueGroup) dueGroup.style.display = 'none';
 }
 
 // Toggle parcelas
 const pagamentoSelect = document.getElementById('m-pagamento');
 if (pagamentoSelect) {
-  pagamentoSelect.addEventListener('change', () => {
-    const parcelasGroup = document.getElementById('parcelas-group');
-    if (parcelasGroup) {
-      parcelasGroup.style.display = pagamentoSelect.value === 'parcelado' ? 'flex' : 'none';
-      updateParcelaInfo();
-    }
-  });
+  pagamentoSelect.addEventListener('change', updatePaymentFields);
 }
 
 const parcelasInput = document.getElementById('m-parcelas');
@@ -1170,13 +1532,39 @@ if (valorInput) {
   valorInput.addEventListener('input', updateParcelaInfo);
 }
 
+const cardInput = document.getElementById('m-cartao');
+if (cardInput) {
+  cardInput.addEventListener('change', () => {
+    syncCreditFieldsFromCard();
+    updateParcelaInfo();
+  });
+}
+
+const dueDayInput = document.getElementById('m-dia-vencimento');
+if (dueDayInput) {
+  dueDayInput.addEventListener('input', () => {
+    dueDayInput.value = String(clampDueDay(dueDayInput.value));
+    updateParcelaInfo();
+  });
+}
+
 function updateParcelaInfo() {
   const valor = parseFloat(document.getElementById('m-val')?.value) || 0;
-  const parcelas = parseInt(document.getElementById('m-parcelas')?.value) || 1;
+  const parcelasRaw = parseInt(document.getElementById('m-parcelas')?.value, 10) || 1;
+  const parcelas = Math.min(12, Math.max(1, parcelasRaw));
+  const parcelasField = document.getElementById('m-parcelas');
+  if (parcelasField) parcelasField.value = String(parcelas);
+  const pagamento = document.getElementById('m-pagamento')?.value || 'debito';
+  const isCredit = pagamento === 'credito';
   const info = document.getElementById('parcela-info');
   if (info) {
     const valorParcela = valor / Math.max(parcelas, 1);
-    info.textContent = 'de R$ ' + valorParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    const futuros = Math.max(0, parcelas - 1);
+    if (!isCredit) {
+      info.textContent = 'Débito: sem lançamentos futuros';
+      return;
+    }
+    info.textContent = 'de R$ ' + valorParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + ' · ' + futuros + ' lançamentos futuros';
   }
 }
 
@@ -1198,31 +1586,55 @@ if (modalForm) {
     const date = document.getElementById('m-date').value;
     const cat = document.getElementById('m-cat').value;
     const pagamento = document.getElementById('m-pagamento').value;
-    const parcelas = parseInt(document.getElementById('m-parcelas')?.value) || 1;
+    const parcelas = Math.min(12, Math.max(1, parseInt(document.getElementById('m-parcelas')?.value, 10) || 1));
+    const cardIdx = parseInt(document.getElementById('m-cartao')?.value, 10);
+    const dueDay = clampDueDay(document.getElementById('m-dia-vencimento')?.value);
 
     if (!desc || !val || !date) {
       showToast('Preencha todos os campos obrigatórios.', 'warning');
       return;
     }
 
-    if (pagamento === 'parcelado' && parcelas > 1) {
+    if (type === 'saida' && pagamento === 'credito') {
+      if (Number.isNaN(cardIdx) || !cartoes[cardIdx]) {
+        showToast('Selecione um cartão para lançamento no crédito.', 'warning');
+        return;
+      }
+      const card = cartoes[cardIdx];
       const valorParcela = val / parcelas;
       for (let i = 0; i < parcelas; i++) {
-        const parcelaDate = new Date(date);
-        parcelaDate.setMonth(parcelaDate.getMonth() + i);
+        const dueDateIso = getInvoiceDueDate(date, dueDay, i);
+        const parcelaDesc = desc + (parcelas > 1 ? ' (' + (i + 1) + '/' + parcelas + ')' : '');
         addTransaction({
           id: Date.now() + i + Math.random(),
           type: type,
           user: 'Compartilhado',
-          desc: desc + ' (' + (i + 1) + '/' + parcelas + ')',
+          desc: parcelaDesc,
           val: valorParcela,
           cat: cat,
-          date: parcelaDate.toISOString(),
+          date: dueDateIso,
           parcela: i + 1,
-          totalParcelas: parcelas
+          totalParcelas: parcelas,
+          paymentMethod: 'credito',
+          cardName: card.nome || '',
+          dueDay
+        });
+
+        contasPagar.push({
+          descricao: 'Fatura ' + (card.nome || 'Cartão') + ' — ' + parcelaDesc,
+          valor: valorParcela,
+          vencimento: dueDateIso,
+          pago: false,
+          recorrencia: 'unico',
+          origem: 'cartao',
+          cartaoNome: card.nome || '',
+          criadoEm: new Date().toISOString()
         });
       }
-      showToast(parcelas + ' parcelas salvas com sucesso!', 'success');
+      saveContasPagar();
+      renderDashContasPagar();
+      renderDashCartoes();
+      showToast('Lançamento no crédito salvo (' + parcelas + 'x).', 'success');
     } else {
       addTransaction({
         id: Date.now(),
@@ -1231,7 +1643,8 @@ if (modalForm) {
         desc: desc,
         val: val,
         cat: cat,
-        date: new Date(date).toISOString()
+        date: new Date(date + 'T12:00:00').toISOString(),
+        paymentMethod: 'debito'
       });
       showToast('Lançamento salvo com sucesso!', 'success');
     }
@@ -1288,6 +1701,11 @@ function renderHistory() {
     const sign = isEntrada ? '+' : '-';
     const color = isEntrada ? 'var(--accent-success)' : 'var(--accent-danger)';
     const parcelaTag = t.totalParcelas ? ' <span class="t-user-tag">' + t.parcela + '/' + t.totalParcelas + '</span>' : '';
+    const payTag = isEntrada
+      ? ''
+      : ' • ' + (t.paymentMethod === 'credito'
+        ? ('Crédito' + (t.cardName ? (' (' + escapeHTML(t.cardName) + ')') : ''))
+        : 'Débito');
     const deleteBtn = (t.key || (storageMode === 'local'))
       ? '<button class="btn-delete" data-tx-id="' + t.id + '" data-tx-key="' + escapeHTML(t.key || '') + '" title="Excluir" aria-label="Excluir lançamento">🗑️</button>'
       : '';
@@ -1297,7 +1715,7 @@ function renderHistory() {
         '<div class="t-icon ' + typeClass + '">' + icon + '</div>' +
         '<div class="t-details">' +
           '<h4>' + escapeHTML(t.desc) + parcelaTag + '</h4>' +
-          '<p>' + escapeHTML(t.cat) + ' • ' + escapeHTML(dateFormatted) + '</p>' +
+          '<p>' + escapeHTML(t.cat) + payTag + ' • ' + escapeHTML(dateFormatted) + '</p>' +
         '</div>' +
       '</div>' +
       '<div class="t-amount" style="color: ' + color + ';">' +
@@ -1318,6 +1736,7 @@ function updateUI() {
 
   let totalIncome = 0;
   let totalExpense = 0;
+  let totalExpenseCash = 0;
   let lastIncome = null;
   let lastExpense = null;
   const categories = {};
@@ -1337,6 +1756,7 @@ function updateUI() {
       if (!lastIncome) lastIncome = t;
     } else {
       totalExpense += t.val;
+      if (impactsBalance(t)) totalExpenseCash += t.val;
       if (!lastExpense) lastExpense = t;
       categories[t.cat] = (categories[t.cat] || 0) + t.val;
       if (t.cat === 'Investimento' || t.cat === 'Investimentos') {
@@ -1381,7 +1801,7 @@ function updateUI() {
   }
 
   // Stats gerais
-  const balance = totalIncome - totalExpense;
+  const balance = totalIncome - totalExpenseCash;
   const patrimonioLiquido = balance + investimentoTotal;
 
   const dashIncome = document.getElementById('dash-income');
@@ -1556,6 +1976,7 @@ function updateUI() {
   renderMetasUI();
   renderHistory();
   renderLancamentos();
+  configureComparativoControls();
   renderComparativo();
 }
 
@@ -1603,12 +2024,54 @@ function renderResumoMensal(totalIncome, totalExpense, balance) {
 // ============================================================
 // 12B. COMPARATIVO MENSAL + VISÃO ANUAL
 // ============================================================
+const comparativoState = {
+  view: 'year',
+  referenceMonth: new Date().getMonth(),
+  currentMonth: new Date().getMonth(),
+  year: new Date().getFullYear()
+};
+
+function configureComparativoControls() {
+  const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+  const monthFull = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+  const refSelect = document.getElementById('comp-reference-month');
+  const curSelect = document.getElementById('comp-current-month');
+  if (!refSelect || !curSelect) return;
+
+  const options = monthFull.map((label, index) => '<option value="' + index + '">' + label + '</option>').join('');
+  refSelect.innerHTML = options;
+  curSelect.innerHTML = options;
+  refSelect.value = String(comparativoState.referenceMonth);
+  curSelect.value = String(comparativoState.currentMonth);
+
+  refSelect.onchange = (event) => {
+    comparativoState.referenceMonth = Number(event.target.value);
+    renderComparativo();
+  };
+
+  curSelect.onchange = (event) => {
+    comparativoState.currentMonth = Number(event.target.value);
+    renderComparativo();
+  };
+
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    const isActive = btn.dataset.view === comparativoState.view;
+    btn.classList.toggle('active', isActive);
+    btn.onclick = () => {
+      comparativoState.view = btn.dataset.view;
+      document.querySelectorAll('.view-btn').forEach(item => item.classList.toggle('active', item.dataset.view === comparativoState.view));
+      renderComparativo();
+    };
+  });
+}
+
 function renderComparativo() {
   const now = new Date();
-  const curMonth = now.getMonth();
-  const curYear = now.getFullYear();
+  const curMonth = Number(comparativoState.currentMonth ?? now.getMonth());
+  const refMonth = Number(comparativoState.referenceMonth ?? (curMonth === 0 ? 11 : curMonth - 1));
+  const curYear = Number(comparativoState.year ?? now.getFullYear());
 
-  // Helper: sum income/expense for a given month/year
   function monthTotals(month, year) {
     let income = 0, expense = 0;
     transactions.forEach(t => {
@@ -1621,28 +2084,61 @@ function renderComparativo() {
     return { income, expense, balance: income - expense };
   }
 
-  // Previous month (handle January → December)
-  const prevMonth = curMonth === 0 ? 11 : curMonth - 1;
-  const prevYear = curMonth === 0 ? curYear - 1 : curYear;
+  function buildCarryBalanceSeries() {
+    const byMonth = new Map();
+    for (let year = curYear - 1; year <= curYear; year++) {
+      for (let month = 0; month < 12; month++) {
+        const totals = monthTotals(month, year);
+        byMonth.set(year + '-' + month, {
+          year,
+          month,
+          ...totals,
+          openingBalance: 0,
+          closingBalance: 0
+        });
+      }
+    }
 
-  const prev = monthTotals(prevMonth, prevYear);
+    const ordered = [...byMonth.values()].sort((a, b) => {
+      if (a.year !== b.year) return a.year - b.year;
+      return a.month - b.month;
+    });
+
+    let running = 0;
+    ordered.forEach(item => {
+      item.openingBalance = running;
+      item.closingBalance = running + item.balance;
+      running = item.closingBalance;
+    });
+
+    return ordered;
+  }
+
+  const carrySeries = buildCarryBalanceSeries();
+  const currentCarry = carrySeries.find(item => item.year === curYear && item.month === curMonth) || carrySeries[carrySeries.length - 1] || { openingBalance: 0, closingBalance: 0 };
+  const refCarry = carrySeries.find(item => item.year === curYear && item.month === refMonth) || { openingBalance: 0, closingBalance: 0 };
+  const avgMonthlyNet = carrySeries.length ? carrySeries.reduce((sum, item) => sum + item.balance, 0) / carrySeries.length : 0;
+  const projectedBalance = currentCarry.closingBalance + (avgMonthlyNet * 3);
+
+  const prev = monthTotals(refMonth, curYear);
   const cur = monthTotals(curMonth, curYear);
-
   const formatCurrency = v => 'R$ ' + Math.abs(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
-  // Month names
   const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
   const monthFull = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  const viewLabel = document.getElementById('comp-view-label');
+  if (viewLabel) {
+    const labels = { quarter: 'trimestral', half: 'semestral', year: 'anual' };
+    viewLabel.textContent = labels[comparativoState.view] || 'anual';
+  }
 
-  // Labels
   const prevLabel = document.getElementById('comp-prev-label');
   const curLabel = document.getElementById('comp-cur-label');
   const yearLabel = document.getElementById('annual-year');
-  if (prevLabel) prevLabel.textContent = monthFull[prevMonth] + (prevYear !== curYear ? ' ' + prevYear : '');
+  if (prevLabel) prevLabel.textContent = monthFull[refMonth];
   if (curLabel) curLabel.textContent = monthFull[curMonth];
   if (yearLabel) yearLabel.textContent = curYear;
 
-  // Previous month values
   const prevIncome = document.getElementById('comp-prev-income');
   const prevExpense = document.getElementById('comp-prev-expense');
   const prevBalance = document.getElementById('comp-prev-balance');
@@ -1653,7 +2149,6 @@ function renderComparativo() {
     prevBalance.className = 'comp-row-value ' + (prev.balance >= 0 ? 'positive' : 'negative');
   }
 
-  // Current month values
   const curIncome = document.getElementById('comp-cur-income');
   const curExpense = document.getElementById('comp-cur-expense');
   const curBalance = document.getElementById('comp-cur-balance');
@@ -1664,7 +2159,13 @@ function renderComparativo() {
     curBalance.className = 'comp-row-value ' + (cur.balance >= 0 ? 'positive' : 'negative');
   }
 
-  // Deltas — invert=true means up=good(green), down=bad(red)
+  const openingBalanceEl = document.getElementById('comp-opening-balance');
+  const closingBalanceEl = document.getElementById('comp-closing-balance');
+  const projectionBalanceEl = document.getElementById('comp-projection-balance');
+  if (openingBalanceEl) openingBalanceEl.textContent = (refCarry.openingBalance < 0 ? '- ' : '') + formatCurrency(refCarry.openingBalance);
+  if (closingBalanceEl) closingBalanceEl.textContent = (currentCarry.closingBalance < 0 ? '- ' : '') + formatCurrency(currentCarry.closingBalance);
+  if (projectionBalanceEl) projectionBalanceEl.textContent = (projectedBalance < 0 ? '- ' : '') + formatCurrency(projectedBalance);
+
   function renderDelta(elId, prevVal, curVal, invert) {
     const el = document.getElementById(elId);
     if (!el) return;
@@ -1683,8 +2184,7 @@ function renderComparativo() {
     const sign = pct > 0 ? '+' : '';
     el.textContent = sign + pct.toFixed(1) + '%';
     const isUp = pct > 0;
-    // invert=false (default): up=red(bad), down=green(good) — for income/expenses
-    // invert=true: up=green(good), down=red(bad) — for balance
+
     if (invert) {
       el.className = 'comp-row-delta ' + (isUp ? 'down' : pct < 0 ? 'up' : 'neutral');
     } else {
@@ -1696,31 +2196,42 @@ function renderComparativo() {
   renderDelta('comp-delta-expense', prev.expense, cur.expense, false);
   renderDelta('comp-delta-balance', prev.balance, cur.balance, true);
 
-  // --- VISÃO ANUAL ---
   const annualChart = document.getElementById('annual-chart');
   if (!annualChart) return;
 
-  // Collect monthly totals for the year
+  const viewLength = comparativoState.view === 'quarter' ? 3 : comparativoState.view === 'half' ? 6 : 12;
   const months = [];
-  for (let m = 0; m < 12; m++) {
-    months.push(monthTotals(m, curYear));
+  for (let i = viewLength - 1; i >= 0; i--) {
+    let monthIndex = curMonth - i;
+    let yearIndex = curYear;
+    while (monthIndex < 0) {
+      monthIndex += 12;
+      yearIndex -= 1;
+    }
+    while (monthIndex > 11) {
+      monthIndex -= 12;
+      yearIndex += 1;
+    }
+    months.push({ month: monthIndex, year: yearIndex });
   }
 
-  const allVals = months.flatMap(m => [m.income, m.expense]);
-  const maxVal = Math.max(...allVals, 1);
+  const values = months.flatMap(m => {
+    const totals = monthTotals(m.month, m.year);
+    return [totals.income, totals.expense];
+  });
+  const maxVal = Math.max(...values, 1);
 
-  annualChart.innerHTML = months.map((m, i) => {
-    const incomeH = (m.income / maxVal) * 100;
-    const expenseH = (m.expense / maxVal) * 100;
-    const isCurrent = i === curMonth;
-    const isPast = i < curMonth;
-    const opacity = isPast ? '1' : (isCurrent ? '1' : '0.35');
-    return '<div class="annual-month ' + (isCurrent ? 'current' : '') + '" style="opacity:' + opacity + '">' +
+  annualChart.innerHTML = months.map((m) => {
+    const totals = monthTotals(m.month, m.year);
+    const incomeH = (totals.income / maxVal) * 100;
+    const expenseH = (totals.expense / maxVal) * 100;
+    const isCurrent = m.month === curMonth && m.year === curYear;
+    return '<div class="annual-month ' + (isCurrent ? 'current' : '') + '" style="opacity:' + (isCurrent ? '1' : '0.9') + '">' +
       '<div class="annual-bars">' +
         '<div class="annual-bar income" style="height:' + incomeH + '%"></div>' +
         '<div class="annual-bar expense" style="height:' + expenseH + '%"></div>' +
       '</div>' +
-      '<span class="annual-month-label">' + monthNames[i] + '</span>' +
+      '<span class="annual-month-label">' + monthNames[m.month] + '</span>' +
     '</div>';
   }).join('');
 }
@@ -1904,7 +2415,123 @@ function showFormModal({ title, fields, onSubmit }) {
   });
 }
 
-function openContaModal() {
+function openContaModal(options = {}) {
+  const { editIndex = null, manager = undefined } = options;
+
+  if (editIndex !== null) {
+    const conta = contas[editIndex];
+    if (!conta) return;
+
+    showFormModal({
+      title: 'Editar conta bancária',
+      fields: [
+        { id: 'fc-nome', label: 'Nome da conta', type: 'text', placeholder: 'Ex: Nubank, Itaú' },
+        { id: 'fc-saldo', label: 'Saldo atual (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
+        { id: 'fc-tipo', label: 'Tipo', type: 'select', options: ['Conta corrente', 'Poupança', 'Investimento', 'Carteira'] }
+      ],
+      onSubmit(values) {
+        const nome = values['fc-nome'];
+        if (!nome) return;
+        conta.nome = nome;
+        conta.saldo = parseFloat(values['fc-saldo']) || 0;
+        conta.tipo = values['fc-tipo'] || conta.tipo || 'Conta corrente';
+        saveContas();
+        renderDashContas();
+        showToast('Conta "' + nome + '" atualizada!', 'success');
+      }
+    });
+
+    setTimeout(() => {
+      const nomeEl = document.getElementById('fc-nome');
+      const saldoEl = document.getElementById('fc-saldo');
+      const tipoEl = document.getElementById('fc-tipo');
+      if (nomeEl) nomeEl.value = conta.nome || '';
+      if (saldoEl) saldoEl.value = String(conta.saldo || 0);
+      if (tipoEl) tipoEl.value = conta.tipo || 'Conta corrente';
+    }, 20);
+    return;
+  }
+
+  if (manager === true || (manager === undefined && contas.length > 0)) {
+    const overlay = document.createElement('div');
+    overlay.className = 'form-modal-overlay active';
+
+    overlay.innerHTML = '<div class="form-modal manage-modal">' +
+      '<h3>Gerenciar contas</h3>' +
+      '<div class="manage-list">' + contas.map((conta, index) =>
+        '<div class="manage-list-item">' +
+          '<div class="manage-list-info">' +
+            '<div class="manage-list-icon"><i class="fa-solid fa-building-columns"></i></div>' +
+            '<div>' +
+              '<strong>' + escapeHTML(conta.nome || 'Conta') + '</strong>' +
+              '<small>' + escapeHTML(conta.tipo || 'Conta corrente') + '</small>' +
+            '</div>' +
+          '</div>' +
+          '<div class="manage-list-actions">' +
+            '<button type="button" class="manage-inline-action primary" data-manage-kind="conta-edit" data-index="' + index + '">Editar</button>' +
+            '<button type="button" class="manage-inline-action danger" data-manage-kind="conta-delete" data-index="' + index + '">Excluir</button>' +
+          '</div>' +
+        '</div>'
+      ).join('') + '</div>' +
+      '<div class="form-modal-actions manage-actions-row">' +
+        '<button type="button" class="form-modal-cancel">Fechar</button>' +
+        '<button type="button" class="form-modal-submit" id="manage-add-conta">+ Nova conta</button>' +
+      '</div>' +
+    '</div>';
+
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) overlay.remove();
+      const actionBtn = event.target.closest('[data-manage-kind]');
+      if (!actionBtn) return;
+      const idx = Number(actionBtn.dataset.index);
+      const kind = actionBtn.dataset.manageKind;
+      if (kind === 'conta-edit') {
+        overlay.remove();
+        openContaModal({ editIndex: idx });
+      }
+      if (kind === 'conta-delete') {
+        const item = contas[idx];
+        if (!item) return;
+        if (!confirm('Deseja excluir a conta "' + item.nome + '"?')) return;
+        contas.splice(idx, 1);
+        saveContas();
+        renderDashContas();
+        overlay.remove();
+        if (contas.length === 0) {
+          openContaModal();
+        } else {
+          openContaModal();
+        }
+      }
+    });
+
+    overlay.querySelector('.form-modal-cancel')?.addEventListener('click', () => overlay.remove());
+    overlay.querySelector('#manage-add-conta')?.addEventListener('click', () => {
+      overlay.remove();
+      showFormModal({
+        title: 'Nova conta bancária',
+        fields: [
+          { id: 'fc-nome', label: 'Nome da conta', type: 'text', placeholder: 'Ex: Nubank, Itaú' },
+          { id: 'fc-saldo', label: 'Saldo atual (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
+          { id: 'fc-tipo', label: 'Tipo', type: 'select', options: ['Conta corrente', 'Poupança', 'Investimento', 'Carteira'] }
+        ],
+        onSubmit(values) {
+          const nome = values['fc-nome'];
+          if (!nome) return;
+          const saldo = parseFloat(values['fc-saldo']) || 0;
+          const tipo = values['fc-tipo'] || 'Conta corrente';
+          contas.push({ nome, saldo, tipo, criadoEm: new Date().toISOString() });
+          saveContas();
+          renderDashContas();
+          showToast('Conta "' + nome + '" adicionada!', 'success');
+        }
+      });
+    });
+    return;
+  }
+
   showFormModal({
     title: 'Nova conta bancária',
     fields: [
@@ -1946,6 +2573,7 @@ function renderDashCartoes() {
   const container = document.getElementById('cartoes-list');
   if (!container) return;
   loadCartoes();
+  loadContasPagar();
 
   const mesAtual = document.getElementById('faturas-mes-atual');
   if (mesAtual) {
@@ -1958,13 +2586,22 @@ function renderDashCartoes() {
   }
 
   const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  const now = new Date();
   container.innerHTML = cartoes.map(c => {
-    const faturaAtual = c.faturaAtual || 0;
+    const faturaAtual = contasPagar
+      .filter(cp => !cp.pago && cp.origem === 'cartao' && (cp.cartaoNome || '') === (c.nome || ''))
+      .filter(cp => {
+        const d = new Date(cp.vencimento);
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      })
+      .reduce((sum, cp) => sum + (parseFloat(cp.valor) || 0), 0);
+    const diaVencimento = clampDueDay(c.diaVencimento || 10);
     return '<div class="cartao-item">' +
       '<div class="cartao-info">' +
         '<div class="cartao-icon"><i class="fa-solid fa-credit-card"></i></div>' +
         '<div>' +
           '<div class="cartao-nome">' + escapeHTML(c.nome) + ' <span class="cartao-badge">' + escapeHTML(c.bandeira || 'Manual') + '</span></div>' +
+          '<div class="cartao-tipo">Vencimento dia ' + diaVencimento + '</div>' +
         '</div>' +
       '</div>' +
     '</div>' +
@@ -1975,25 +2612,155 @@ function renderDashCartoes() {
   }).join('');
 
   // Atualizar total de faturas
-  const totalFaturas = cartoes.reduce((s, c) => s + (c.faturaAtual || 0), 0);
+  const totalFaturas = contasPagar
+    .filter(cp => !cp.pago && cp.origem === 'cartao')
+    .filter(cp => {
+      const d = new Date(cp.vencimento);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    })
+    .reduce((sum, cp) => sum + (parseFloat(cp.valor) || 0), 0);
   const faturasTotalEl = document.getElementById('dash-faturas-total');
   if (faturasTotalEl) faturasTotalEl.textContent = formatCurrency(totalFaturas);
 }
 
-function openCartaoModal() {
+function openCartaoModal(options = {}) {
+  const { editIndex = null, manager = undefined } = options;
+
+  if (editIndex !== null) {
+    const cartao = cartoes[editIndex];
+    if (!cartao) return;
+
+    showFormModal({
+      title: 'Editar cartão de crédito',
+      fields: [
+        { id: 'fc-nome', label: 'Nome do cartão', type: 'text', placeholder: 'Ex: Nubank, Inter' },
+        { id: 'fc-limite', label: 'Limite total (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
+        { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] },
+        { id: 'fc-vencimento', label: 'Dia de vencimento da fatura', type: 'number', placeholder: '10', min: '1' }
+      ],
+      onSubmit(values) {
+        const nome = values['fc-nome'];
+        if (!nome) return;
+        cartao.nome = nome;
+        cartao.limite = parseFloat(values['fc-limite']) || 0;
+        cartao.bandeira = values['fc-bandeira'] || cartao.bandeira || 'Manual';
+        cartao.diaVencimento = clampDueDay(values['fc-vencimento']);
+        saveCartoes();
+        renderDashCartoes();
+        showToast('Cartão "' + nome + '" atualizado!', 'success');
+      }
+    });
+
+    setTimeout(() => {
+      const nomeEl = document.getElementById('fc-nome');
+      const limiteEl = document.getElementById('fc-limite');
+      const bandeiraEl = document.getElementById('fc-bandeira');
+      const vencimentoEl = document.getElementById('fc-vencimento');
+      if (nomeEl) nomeEl.value = cartao.nome || '';
+      if (limiteEl) limiteEl.value = String(cartao.limite || 0);
+      if (bandeiraEl) bandeiraEl.value = cartao.bandeira || 'Outro';
+      if (vencimentoEl) vencimentoEl.value = String(clampDueDay(cartao.diaVencimento || 10));
+    }, 20);
+    return;
+  }
+
+  if (manager === true || (manager === undefined && cartoes.length > 0)) {
+    const overlay = document.createElement('div');
+    overlay.className = 'form-modal-overlay active';
+
+    overlay.innerHTML = '<div class="form-modal manage-modal">' +
+      '<h3>Gerenciar cartões</h3>' +
+      '<div class="manage-list">' + cartoes.map((cartao, index) =>
+        '<div class="manage-list-item">' +
+          '<div class="manage-list-info">' +
+            '<div class="manage-list-icon"><i class="fa-solid fa-credit-card"></i></div>' +
+            '<div>' +
+              '<strong>' + escapeHTML(cartao.nome || 'Cartão') + '</strong>' +
+              '<small>' + escapeHTML(cartao.bandeira || 'Manual') + '</small>' +
+            '</div>' +
+          '</div>' +
+          '<div class="manage-list-actions">' +
+            '<button type="button" class="manage-inline-action primary" data-manage-kind="cartao-edit" data-index="' + index + '">Editar</button>' +
+            '<button type="button" class="manage-inline-action danger" data-manage-kind="cartao-delete" data-index="' + index + '">Excluir</button>' +
+          '</div>' +
+        '</div>'
+      ).join('') + '</div>' +
+      '<div class="form-modal-actions manage-actions-row">' +
+        '<button type="button" class="form-modal-cancel">Fechar</button>' +
+        '<button type="button" class="form-modal-submit" id="manage-add-cartao">+ Novo cartão</button>' +
+      '</div>' +
+    '</div>';
+
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) overlay.remove();
+      const actionBtn = event.target.closest('[data-manage-kind]');
+      if (!actionBtn) return;
+      const idx = Number(actionBtn.dataset.index);
+      const kind = actionBtn.dataset.manageKind;
+      if (kind === 'cartao-edit') {
+        overlay.remove();
+        openCartaoModal({ editIndex: idx });
+      }
+      if (kind === 'cartao-delete') {
+        const item = cartoes[idx];
+        if (!item) return;
+        if (!confirm('Deseja excluir o cartão "' + item.nome + '"?')) return;
+        cartoes.splice(idx, 1);
+        saveCartoes();
+        renderDashCartoes();
+        overlay.remove();
+        if (cartoes.length === 0) {
+          openCartaoModal();
+        } else {
+          openCartaoModal();
+        }
+      }
+    });
+
+    overlay.querySelector('.form-modal-cancel')?.addEventListener('click', () => overlay.remove());
+    overlay.querySelector('#manage-add-cartao')?.addEventListener('click', () => {
+      overlay.remove();
+      showFormModal({
+        title: 'Novo cartão de crédito',
+        fields: [
+          { id: 'fc-nome', label: 'Nome do cartão', type: 'text', placeholder: 'Ex: Nubank, Inter' },
+          { id: 'fc-limite', label: 'Limite total (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
+          { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] },
+          { id: 'fc-vencimento', label: 'Dia de vencimento da fatura', type: 'number', placeholder: '10', min: '1' }
+        ],
+        onSubmit(values) {
+          const nome = values['fc-nome'];
+          if (!nome) return;
+          const limite = parseFloat(values['fc-limite']) || 0;
+          const bandeira = values['fc-bandeira'] || 'Manual';
+          const diaVencimento = clampDueDay(values['fc-vencimento']);
+          cartoes.push({ nome, limite, bandeira, diaVencimento, faturaAtual: 0, criadoEm: new Date().toISOString() });
+          saveCartoes();
+          renderDashCartoes();
+          showToast('Cartão "' + nome + '" adicionado!', 'success');
+        }
+      });
+    });
+    return;
+  }
+
   showFormModal({
     title: 'Novo cartão de crédito',
     fields: [
       { id: 'fc-nome', label: 'Nome do cartão', type: 'text', placeholder: 'Ex: Nubank, Inter' },
       { id: 'fc-limite', label: 'Limite total (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
-      { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] }
+      { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] },
+      { id: 'fc-vencimento', label: 'Dia de vencimento da fatura', type: 'number', placeholder: '10', min: '1' }
     ],
     onSubmit(values) {
       const nome = values['fc-nome'];
       if (!nome) return;
       const limite = parseFloat(values['fc-limite']) || 0;
       const bandeira = values['fc-bandeira'] || 'Manual';
-      cartoes.push({ nome, limite, bandeira, faturaAtual: 0, criadoEm: new Date().toISOString() });
+      const diaVencimento = clampDueDay(values['fc-vencimento']);
+      cartoes.push({ nome, limite, bandeira, diaVencimento, faturaAtual: 0, criadoEm: new Date().toISOString() });
       saveCartoes();
       renderDashCartoes();
       showToast('Cartão "' + nome + '" adicionado!', 'success');
@@ -2038,10 +2805,13 @@ function renderDashContasPagar() {
     const badgeRec = c.recorrencia === 'fixo'
       ? '<span class="bill-badge-rec" style="background: var(--accent-primary); color: #fff;">Fixo</span>'
       : '';
+    const badgeCartao = c.origem === 'cartao'
+      ? '<span class="bill-badge-rec" style="background: rgba(255,193,7,0.15); color: #ffcc66;">Cartão' + (c.cartaoNome ? (' · ' + escapeHTML(c.cartaoNome)) : '') + '</span>'
+      : '';
     return '<div class="bill-item">' +
       '<div class="bill-info">' +
         '<div class="bill-icon pagar"><i class="fa-solid fa-file-invoice-dollar"></i></div>' +
-        '<div><div class="bill-nome">' + escapeHTML(c.descricao) + ' ' + badgeRec + '</div><div class="bill-venc" style="color: ' + (isAtrasado ? 'var(--accent-danger)' : 'var(--text-secondary)') + ';">Venc. ' + diaVenc + '</div></div>' +
+        '<div><div class="bill-nome">' + escapeHTML(c.descricao) + ' ' + badgeRec + ' ' + badgeCartao + '</div><div class="bill-venc" style="color: ' + (isAtrasado ? 'var(--accent-danger)' : 'var(--text-secondary)') + ';">Venc. ' + diaVenc + '</div></div>' +
       '</div>' +
       '<span class="bill-valor" style="color: var(--accent-danger);">- ' + formatCurrency(c.valor) + '</span>' +
     '</div>';
@@ -3753,11 +4523,15 @@ function renderLancamentos() {
   // Calculate totals
   let totalEntradas = 0;
   let totalSaidas = 0;
+  let totalSaidasNoSaldo = 0;
   filtered.forEach(t => {
     if (t.type === 'entrada') totalEntradas += t.val;
-    else totalSaidas += t.val;
+    else {
+      totalSaidas += t.val;
+      if (impactsBalance(t)) totalSaidasNoSaldo += t.val;
+    }
   });
-  const saldoPeriodo = totalEntradas - totalSaidas;
+  const saldoPeriodo = totalEntradas - totalSaidasNoSaldo;
 
   // Update summary stats
   const entradasEl = document.getElementById('lanc-total-entradas');
@@ -3845,6 +4619,11 @@ function renderLancamentos() {
       const catColor = getCategoryColor(t.cat);
       const sign = isEntrada ? '+' : '-';
       const parcelaTag = t.totalParcelas ? ' <span class="t-user-tag">' + t.parcela + '/' + t.totalParcelas + '</span>' : '';
+      const payMeta = !isEntrada
+        ? '<span>' + (t.paymentMethod === 'credito'
+          ? ('Crédito' + (t.cardName ? (' · ' + escapeHTML(t.cardName)) : ''))
+          : 'Débito') + '</span>'
+        : '';
 
       html += '<div class="lanc-item">';
       html += '<div class="lanc-item-icon ' + typeClass + '"><i class="' + icon + '"></i></div>';
@@ -3852,6 +4631,7 @@ function renderLancamentos() {
       html += '<div class="lanc-item-desc">' + escapeHTML(t.desc) + parcelaTag + '</div>';
       html += '<div class="lanc-item-meta">';
       html += '<span class="cat-badge" style="background:' + catColor.bg + ';color:' + catColor.fg + ';">' + escapeHTML(t.cat) + '</span>';
+      html += payMeta;
       html += '<span>' + escapeHTML(t.user) + '</span>';
       html += '</div>';
       html += '</div>';

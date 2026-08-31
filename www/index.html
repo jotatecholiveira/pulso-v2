@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pulso — Controle Financeiro</title>
-  <meta name="description" content="Pulso - Seu controle financeiro pessoal e familiar. Acompanhe receitas, despesas, investimentos e metas em um só lugar.">
+  <title>Pulso</title>
+  <meta name="description" content="Pulso">
   <meta name="theme-color" content="#6c7cff">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; upgrade-insecure-requests; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://kit.fontawesome.com https://apis.google.com https://*.firebaseio.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://kit.fontawesome.com https://cdnjs.cloudflare.com; connect-src 'self' https://*.firebaseio.com wss://*.firebaseio.com https://*.googleapis.com https://accounts.google.com https://*.google.com; frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.firebaseio.com; img-src 'self' data: https:; base-uri 'self'; form-action 'self' https://accounts.google.com https://*.google.com;">
   <link rel="manifest" href="manifest.json">
@@ -15,7 +15,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js" integrity="sha384-lI+CxEx/bCvWP1b0OK13j5HTrTZP7yf1xle8TVOFq2smz6KC1RChTarRV/RHP5PP" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js" integrity="sha384-M6AmjBRXEjkdGzRN1Y94xtkmblFbYBSLkqzyZ8rPvpRM2c48nhjIRFXVvUM/VATL" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.11/dist/purify.min.js" crossorigin="anonymous" defer></script>
   <script src="script.js?v=3.1.9" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -72,13 +72,17 @@
           <a href="https://ko-fi.com/" target="_blank" rel="noopener" class="kofi-btn" title="Apoie o Pulso no Ko-fi">
             <i class="fa-solid fa-mug-hot"></i> <span class="kofi-label">Apoie o Pulso</span>
           </a>
+          <div class="sdg-block" aria-label="Objetivos de desenvolvimento sustentável">
+            <span class="sdg-label">SDG</span>
+            <span class="sdg-icons" aria-hidden="true">🌍 🤝 💙</span>
+          </div>
           <div class="sidebar-social">
-            <a href="https://instagram.com/" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://linkedin.com/" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://www.instagram.com/jpf.do/" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/jotaoliveiratech/" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
             <a href="https://github.com/jotatecholiveira/pulso-v2" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
           </div>
           <p class="sidebar-thanks">Obrigado por usar o Pulso!</p>
-          <p class="sidebar-version">v3.1.9</p>
+          <p class="sidebar-version">Beta v3.1.9</p>
           <div class="sidebar-legal">
             <a href="privacidade.html" target="_blank">Privacidade</a>
             <span class="sidebar-legal-sep">·</span>
@@ -112,6 +116,9 @@
             </button>
           </div>
   <div class="header-controls">
+    <button type="button" class="language-switch-btn" id="languageSwitchBtn" aria-label="Alternar idioma" title="Alternar idioma">
+      <span class="language-flag" aria-hidden="true">🇧🇷</span>
+    </button>
     <button type="button" class="global-eye-btn" id="globalEyeBtn" onclick="toggleAllValuesVisibility()" title="Mostrar/ocultar valores">
       <i class="fa-solid fa-eye" id="global-eye-icon"></i>
     </button>
@@ -248,8 +255,25 @@
             </div>
           </div>
 
+          <div class="comparativo-controls">
+            <div class="comparativo-selects">
+              <label class="comparativo-select">
+                <span>Referência</span>
+                <select id="comp-reference-month" aria-label="Mês de referência"></select>
+              </label>
+              <label class="comparativo-select">
+                <span>Atual</span>
+                <select id="comp-current-month" aria-label="Mês atual"></select>
+              </label>
+            </div>
+            <div class="comparativo-view-switch" aria-label="Visão temporal">
+              <button type="button" class="view-btn" data-view="quarter">Trimestral</button>
+              <button type="button" class="view-btn" data-view="half">Semestral</button>
+              <button type="button" class="view-btn active" data-view="year">Anual</button>
+            </div>
+          </div>
+
           <div class="comparativo-grid">
-            <!-- MÊS ANTERIOR -->
             <div class="comp-card">
               <div class="comp-card-header">
                 <span class="comp-label" id="comp-prev-label">Mês anterior</span>
@@ -269,7 +293,6 @@
               </div>
             </div>
 
-            <!-- VARIAÇÃO -->
             <div class="comp-card comp-card-variation">
               <div class="comp-card-header">
                 <span class="comp-label">Variação</span>
@@ -289,7 +312,6 @@
               </div>
             </div>
 
-            <!-- MÊS ATUAL -->
             <div class="comp-card">
               <div class="comp-card-header">
                 <span class="comp-label" id="comp-cur-label">Este mês</span>
@@ -310,10 +332,24 @@
             </div>
           </div>
 
-          <!-- VISÃO ANUAL -->
+          <div class="comparison-summary">
+            <div class="summary-pill">
+              <span class="summary-label">Saldo anterior</span>
+              <strong id="comp-opening-balance">R$ 0,00</strong>
+            </div>
+            <div class="summary-pill accent">
+              <span class="summary-label">Saldo atual</span>
+              <strong id="comp-closing-balance">R$ 0,00</strong>
+            </div>
+            <div class="summary-pill">
+              <span class="summary-label">Projeção 3M</span>
+              <strong id="comp-projection-balance">R$ 0,00</strong>
+            </div>
+          </div>
+
           <div class="annual-section">
             <div class="annual-header">
-              <h4 class="dash-section-title" style="border:none;padding:0;margin:0;">Visão anual — <span id="annual-year"></span></h4>
+              <h4 class="dash-section-title" style="border:none;padding:0;margin:0;">Visão <span id="comp-view-label">anual</span> — <span id="annual-year"></span></h4>
             </div>
             <div class="annual-chart" id="annual-chart"></div>
             <div class="annual-legend">
@@ -336,10 +372,10 @@
               <div class="empty-state-small">
                 <i class="fa-solid fa-building-columns"></i>
                 <p>Adicione suas contas bancárias para ter uma visão completa do seu patrimônio.</p>
-                <button type="button" class="btn-manage" onclick="openContaModal()" style="margin-top:8px;">+ Adicionar conta</button>
+                <button type="button" class="btn-manage" onclick="openContaModal({ manager: false })" style="margin-top:8px;">+ Adicionar conta</button>
               </div>
             </div>
-            <button type="button" class="btn-manage" onclick="openContaModal()">Gerenciar contas</button>
+            <button type="button" class="btn-manage" onclick="openContaModal({ manager: true })">Gerenciar contas</button>
           </div>
 
           <div class="panel dash-faturas-panel">
@@ -353,10 +389,10 @@
               <div class="empty-state-small">
                 <i class="fa-solid fa-credit-card"></i>
                 <p>Registre seus cartões para acompanhar faturas e gastos.</p>
-                <button type="button" class="btn-manage" onclick="openCartaoModal()" style="margin-top:8px;">+ Adicionar cartão</button>
+                <button type="button" class="btn-manage" onclick="openCartaoModal({ manager: false })" style="margin-top:8px;">+ Adicionar cartão</button>
               </div>
             </div>
-            <button type="button" class="btn-manage" onclick="openCartaoModal()">Gerenciar cartões</button>
+            <button type="button" class="btn-manage" onclick="openCartaoModal({ manager: true })">Gerenciar cartões</button>
           </div>
         </div>
 
@@ -809,20 +845,30 @@
             </optgroup>
           </select>
           </div>
-          <div class="modal-field">
-            <label for="m-pagamento">Pagamento</label>
+          <div class="modal-field" id="pagamento-group">
+            <label for="m-pagamento">Forma</label>
             <select class="modal-input" id="m-pagamento">
-              <option value="avista">À vista</option>
-              <option value="parcelado">Parcelado</option>
+              <option value="debito">Débito (usa saldo)</option>
+              <option value="credito">Crédito (lança na fatura)</option>
             </select>
           </div>
+        </div>
+
+        <div class="modal-field" id="cartao-group" style="display: none;">
+          <label for="m-cartao">Cartão</label>
+          <select class="modal-input" id="m-cartao"></select>
+        </div>
+
+        <div class="modal-field" id="vencimento-group" style="display: none;">
+          <label for="m-dia-vencimento">Dia de vencimento da fatura</label>
+          <input type="number" min="1" max="31" class="modal-input" id="m-dia-vencimento" value="10">
         </div>
 
         <div class="modal-field" id="parcelas-group" style="display: none;">
           <label for="m-parcelas">Parcelas</label>
           <div class="modal-row">
-            <input type="number" min="2" max="60" class="modal-input" id="m-parcelas" placeholder="2" value="2">
-            <div class="parcela-info" id="parcela-info">de R$ 0,00</div>
+            <input type="number" min="1" max="12" class="modal-input" id="m-parcelas" placeholder="1" value="1">
+            <div class="parcela-info" id="parcela-info">de R$ 0,00 · 0 lançamentos futuros</div>
           </div>
         </div>
 
@@ -998,23 +1044,22 @@
   </div>
 </div>
 
-<!-- UPDATE MODAL v3.1.9 -->
+<!-- UPDATE MODAL Beta v3.1.9 -->
 <div class="form-modal-overlay" id="update-modal-overlay" onclick="closeUpdateModal()">
   <div class="form-modal update-modal" onclick="event.stopPropagation()">
     <div style="text-align:center;margin-bottom:16px;">
       <div style="width:48px;height:48px;background:linear-gradient(135deg,#6c7cff,#FF6B6B);border-radius:14px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:22px;">✨</div>
-      <h3 style="margin-top:12px;">Pulso v3.1.9 — Atualizado!</h3>
-      <p style="color:var(--text-secondary);font-size:0.88rem;margin-top:4px;">Obrigado por usar o Pulso. Veja o que melhorou:</p>
+      <h3 style="margin-top:12px;">Pulso Beta v3.1.9 — Atualizado!</h3>
+      <p style="color:var(--text-secondary);font-size:0.88rem;margin-top:4px;">Mais estabilidade, melhorias visuais e ajustes de segurança para a versão beta do Pulso.</p>
     </div>
     <ul style="text-align:left;font-size:0.88rem;line-height:1.6;color:var(--text-secondary);padding-left:18px;margin:0 0 16px 0;">
-      <li>✅ Login com Google e botão <b>Entrar</b> corrigidos (Enter + clique)</li>
-      <li>🔒 Segurança reforçada — regras do banco, CSP, DOMPurify</li>
-      <li>📂 Categorias: <b>Salário</b> agora só em receitas</li>
-      <li>🖼️ Fotos de perfil com fallback (sem “Foto de” quebrado)</li>
-      <li>⚡ Cache e Service Worker mais rápido e estável</li>
-      <li>🐛 Ao adicionar receita/despesa não duplica mais o lançamento</li>
+      <li>✅ Login com Google, idioma e aviso de atualização refinados</li>
+      <li>🔒 Hardening de segurança e sanitização de dados</li>
+      <li>📊 Projeção de saldo e comparativo financeiro melhorados</li>
+      <li>🧭 Sidebar, idioma e branding alinhados à versão beta</li>
+      <li>📄 Páginas de privacidade, cookies e termos concluídas</li>
     </ul>
-    <p style="text-align:center;font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;">Gostou? <b>Deixe seu feedback</b> — ajuda muito o projeto!</p>
+    <p style="text-align:center;font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;">Sua opinião conta — <b>deixe seu feedback</b> para melhorar ainda mais a experiência.</p>
     <div class="form-modal-actions">
       <button type="button" class="form-modal-cancel" onclick="closeUpdateModal()">Ok</button>
       <button type="button" class="form-modal-submit" onclick="closeUpdateModal(); openFeedbackModal();"><i class="fa-solid fa-comment-dots"></i> Deixar feedback</button>

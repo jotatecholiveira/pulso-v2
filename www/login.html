@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Pulso — Entrar</title>
-  <meta name="description" content="Pulso - Acesse seu controle financeiro">
+  <title>Pulso</title>
+  <meta name="description" content="Pulso">
   <meta name="theme-color" content="#0f0a2e">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; upgrade-insecure-requests; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://kit.fontawesome.com https://apis.google.com https://*.firebaseio.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://kit.fontawesome.com https://cdnjs.cloudflare.com; connect-src 'self' https://*.firebaseio.com wss://*.firebaseio.com https://*.googleapis.com https://accounts.google.com https://*.google.com; frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.firebaseio.com; img-src 'self' data: https:; base-uri 'self'; form-action 'self' https://accounts.google.com https://*.google.com;">
   <link rel="manifest" href="manifest.json">
@@ -264,6 +264,22 @@
     .trust-item { display: flex; align-items: center; gap: 5px; font-size: 0.72rem; color: #adb5bd; transition: color 0.5s ease; }
     body.dark-mode .trust-item { color: #484f58; }
     .trust-item i { color: #51cf66; font-size: 0.65rem; }
+
+    .user-notice {
+      display: none; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,107,107,0.18);
+      background: linear-gradient(135deg, rgba(255,107,107,0.09), rgba(255,173,90,0.08));
+      color: #5a3e2b; font-size: 0.76rem; line-height: 1.45; margin-bottom: 16px;
+    }
+    body.dark-mode .user-notice {
+      color: #f6d9c6; border-color: rgba(255,146,112,0.24); background: rgba(72, 34, 18, 0.34);
+    }
+    .user-notice.visible { display: flex; }
+    .user-notice strong { font-weight: 700; }
+    .user-notice button {
+      flex-shrink: 0; border: none; background: rgba(255,255,255,0.35); color: inherit;
+      width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: 1rem; line-height: 1;
+    }
 
     /* === RIGHT PANEL — LANDSCAPE === */
     .login-right {
@@ -569,6 +585,10 @@
         <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Criar conta</button>
       </div>
 
+      <div id="userNotice" class="user-notice" aria-live="polite">
+        <span><strong>Aviso:</strong> você só verá essa mensagem uma vez por navegador.</span>
+        <button type="button" id="dismissNotice" aria-label="Fechar aviso">×</button>
+      </div>
       <div id="auth-message" class="auth-msg" style="display:none" aria-live="polite"></div>
 
       <button type="button" id="googleBtn" class="btn-google-new">
@@ -694,6 +714,7 @@
       const ctx = canvas.getContext('2d');
 
       const LW = 320, LH = 180;
+      const ANIMATION_SPEED = 0.22;
       let frame = 0;
       let fadeAlpha = 0;
 
@@ -774,7 +795,7 @@
       }
 
       function drawBird(x, y, time) {
-        const wingUp = Math.sin(time * 0.15 + x * 0.1) > 0;
+        const wingUp = Math.sin(time * 0.08 + x * 0.1) > 0;
         if (wingUp) {
           px(x-2,y-1, 60,40,50); px(x-1,y, 60,40,50); px(x,y, 60,40,50);
           px(x+1,y, 60,40,50); px(x+2,y-1, 60,40,50);
@@ -869,8 +890,8 @@
         for (let y = HORIZON; y < LH - 20; y++) {
           const depth = (y - HORIZON) / (LH - 20 - HORIZON);
           for (let x = 0; x < LW; x++) {
-            const wave1 = Math.sin((x + time * 0.5) * 0.08) * 1.5;
-            const wave2 = Math.sin((x + time * 0.3) * 0.12) * 1;
+            const wave1 = Math.sin((x + time * 0.26) * 0.08) * 1.5;
+            const wave2 = Math.sin((x + time * 0.18) * 0.12) * 1;
             const waveY = y + wave1 + wave2;
             if (waveY < HORIZON) continue;
             const t = depth;
@@ -1104,7 +1125,7 @@
       // =================== RENDER ===================
 
       function render() {
-        frame++;
+        frame += ANIMATION_SPEED;
         ctx.clearRect(0, 0, LW, LH);
 
         if (isNight()) {
@@ -1127,8 +1148,8 @@
           drawSunCloud(30, 15, 40);
           drawSunCloud(240, 22, 35);
           drawSunCloud(120, 8, 25);
-          drawBird(95 + Math.sin(frame*0.06)*20, 36, frame);
-          drawBird(230 + Math.sin(frame*0.05)*16, 40, frame);
+          drawBird(95 + Math.sin(frame*0.035)*18, 36, frame);
+          drawBird(230 + Math.sin(frame*0.029)*14, 40, frame);
           drawMountain([[0,HORIZON],[50,HORIZON-25],[100,HORIZON-15],[150,HORIZON-30],[200,HORIZON-10],[260,HORIZON-22],[320,HORIZON]], 55,40,70);
           drawMountain([[0,HORIZON],[40,HORIZON-15],[90,HORIZON-35],[160,HORIZON-18],[220,HORIZON-28],[300,HORIZON-12],[320,HORIZON]], 45,35,60);
           drawPalmTree(25, HORIZON + 50, false);
@@ -1156,6 +1177,23 @@
 
     let currentTab = 'login';
 
+    const tr = (key, fallback = '') => (window.PulsoI18n ? window.PulsoI18n.t(key, fallback) : fallback);
+
+    const userNotice = document.getElementById('userNotice');
+    const dismissNotice = document.getElementById('dismissNotice');
+    if (userNotice) {
+      const seen = localStorage.getItem('pulso-login-notice-seen') === 'true';
+      if (!seen) {
+        userNotice.classList.add('visible');
+      }
+      if (dismissNotice) {
+        dismissNotice.addEventListener('click', () => {
+          userNotice.classList.remove('visible');
+          localStorage.setItem('pulso-login-notice-seen', 'true');
+        });
+      }
+    }
+
     function switchAuthTab(tab) {
       currentTab = tab;
       const indicator = document.getElementById('tabIndicator');
@@ -1169,7 +1207,6 @@
       const passLabel = document.querySelector('label[for="password"]');
       const passGroup = document.getElementById('passwordGroup');
       const hint = document.getElementById('gmailHint');
-      const email = document.getElementById('email').value.trim();
 
       if (hint) hint.style.display = 'none';
       if (passGroup) passGroup.style.display = '';
@@ -1181,18 +1218,18 @@
         tabRegister.classList.add('active');
         registerFields.classList.add('show');
         if (loginOptions) loginOptions.style.display = 'none';
-        submitText.textContent = 'Criar conta';
-        passLabel.textContent = 'Crie uma senha';
-        bottomText.innerHTML = 'Já tem conta? <strong onclick="switchAuthTab(\'login\')">Entrar</strong>';
+        submitText.textContent = tr('createAccountBtn', 'Criar conta');
+        passLabel.textContent = tr('createPassword', 'Crie uma senha');
+        bottomText.innerHTML = `Já tem conta? <strong onclick="switchAuthTab('login')">${tr('enter', 'Entrar')}</strong>`;
       } else {
         indicator.classList.remove('right');
         tabRegister.classList.remove('active');
         tabLogin.classList.add('active');
         registerFields.classList.remove('show');
         if (loginOptions) loginOptions.style.display = 'flex';
-        submitText.textContent = 'Entrar';
-        passLabel.textContent = 'Senha';
-        bottomText.innerHTML = 'Não tem conta? <strong onclick="switchAuthTab(\'register\')">Criar agora</strong>';
+        submitText.textContent = tr('enter', 'Entrar');
+        passLabel.textContent = tr('password', 'Senha');
+        bottomText.innerHTML = `Não tem conta? <strong onclick="switchAuthTab('register')">${tr('createNow', 'Criar agora')}</strong>`;
       }
       checkGmailHint();
     }
@@ -1216,22 +1253,22 @@
       if (currentTab === 'register') {
         if (hint) hint.style.display = 'none';
         if (passGroup) passGroup.style.display = '';
-        if (submitBtn) { submitBtn.textContent = 'Criar conta'; submitBtn.style.background = ''; submitBtn.disabled = false; submitBtn.style.opacity = ''; }
+        if (submitBtn) { submitBtn.textContent = tr('createAccountBtn', 'Criar conta'); submitBtn.style.background = ''; submitBtn.disabled = false; submitBtn.style.opacity = ''; }
         if (isGmail(email)) {
-          if (hint) { hint.textContent = 'Contas Gmail só podem ser criadas com Google. Use "Continuar com Google" acima.'; hint.style.display = 'block'; hint.className = 'auth-msg info'; }
+          if (hint) { hint.textContent = tr('gmailRegisterHint', 'Contas Gmail só podem ser criadas com Google. Use "Continuar com Google" acima.'); hint.style.display = 'block'; hint.className = 'auth-msg info'; }
           if (passGroup) passGroup.style.display = 'none';
-          if (submitBtn) { submitBtn.textContent = 'Criar conta'; submitBtn.style.background = ''; submitBtn.disabled = true; submitBtn.style.opacity = '0.5'; }
+          if (submitBtn) { submitBtn.textContent = tr('createAccountBtn', 'Criar conta'); submitBtn.style.background = ''; submitBtn.disabled = true; submitBtn.style.opacity = '0.5'; }
         }
         return;
       }
       if (isGmail(email)) {
-        if (hint) { hint.textContent = 'Conta Gmail detectada — será feito login com Google automaticamente.'; hint.style.display = 'block'; hint.className = 'auth-msg info'; }
+        if (hint) { hint.textContent = tr('loginGoogleHint', 'Conta Gmail detectada — será feito login com Google automaticamente.'); hint.style.display = 'block'; hint.className = 'auth-msg info'; }
         if (passGroup) passGroup.style.display = 'none';
-        if (submitBtn) { submitBtn.textContent = 'Entrar com Google'; submitBtn.style.background = '#4285f4'; }
+        if (submitBtn) { submitBtn.textContent = tr('loginGoogleBtn', 'Entrar com Google'); submitBtn.style.background = '#4285f4'; }
       } else {
         if (hint) hint.style.display = 'none';
         if (passGroup) passGroup.style.display = '';
-        if (submitBtn) { submitBtn.textContent = 'Entrar'; submitBtn.style.background = ''; }
+        if (submitBtn) { submitBtn.textContent = tr('enter', 'Entrar'); submitBtn.style.background = ''; }
       }
     }
 
@@ -1249,18 +1286,18 @@
       var password = document.getElementById('password').value;
       var authEl = document.getElementById('auth-message');
       if (!email) {
-        if (authEl) { authEl.textContent = 'Preencha o e-mail.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
+        if (authEl) { authEl.textContent = tr('emailRequired', 'Preencha o e-mail.'); authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
         return;
       }
       if (isGmail(email)) {
         var g = document.getElementById('googleBtn');
         if (g) g.click();
-        if (authEl) { authEl.textContent = 'Redirecionando para o Google...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+        if (authEl) { authEl.textContent = tr('redirectGoogle', 'Redirecionando para o Google...'); authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
         return;
       }
       if (!password) {
         var authEl2 = document.getElementById('auth-message');
-        if (authEl2) { authEl2.textContent = 'Preencha a senha.'; authEl2.className = 'auth-msg error'; authEl2.style.display = 'block'; }
+        if (authEl2) { authEl2.textContent = tr('passwordRequired', 'Preencha a senha.'); authEl2.className = 'auth-msg error'; authEl2.style.display = 'block'; }
         return;
       }
       doLogin(email, password);
@@ -1274,14 +1311,14 @@
       var btn = document.getElementById('submitBtn');
       var txt = document.getElementById('submitText');
 
-      if (!email) { if (authEl) { authEl.textContent = 'Preencha o e-mail.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
-      if (isGmail(email)) { if (authEl) { authEl.textContent = 'Contas Gmail usam "Continuar com Google".'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
-      if (!password) { if (authEl) { authEl.textContent = 'Preencha a senha.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
-      if (password.length < 6) { if (authEl) { authEl.textContent = 'Senha precisa de no mínimo 6 caracteres.'; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
+      if (!email) { if (authEl) { authEl.textContent = tr('emailRequired', 'Preencha o e-mail.'); authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
+      if (isGmail(email)) { if (authEl) { authEl.textContent = tr('gmailRegisterHint', 'Contas Gmail só podem ser criadas com Google. Use "Continuar com Google" acima.'); authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
+      if (!password) { if (authEl) { authEl.textContent = tr('passwordRequired', 'Preencha a senha.'); authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
+      if (password.length < 6) { if (authEl) { authEl.textContent = tr('passwordsMin', 'Senha precisa de no mínimo 6 caracteres.'); authEl.className = 'auth-msg error'; authEl.style.display = 'block'; } return; }
 
       if (btn) btn.disabled = true;
-      if (txt) txt.textContent = 'Criando...';
-      if (authEl) { authEl.textContent = 'Criando conta...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+      if (txt) txt.textContent = tr('creating', 'Criando...');
+      if (authEl) { authEl.textContent = tr('createAccount', 'Criando conta...'); authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
 
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function(result) {
@@ -1296,17 +1333,17 @@
           }
         })
         .then(function() {
-          if (txt) txt.textContent = 'Criar conta';
+          if (txt) txt.textContent = tr('createAccountBtn', 'Criar conta');
           if (btn) btn.disabled = false;
         })
         .catch(function(err) {
-          var msg = err.code === 'auth/email-already-in-use' ? 'Este e-mail já foi cadastrado. Faça login.'
-            : err.code === 'auth/weak-password' ? 'Senha fraca (mínimo 6 caracteres).'
-            : err.code === 'auth/invalid-email' ? 'E-mail inválido.'
-            : err.code === 'auth/network-request-failed' ? 'Sem conexão com a internet.'
-            : (err.message || 'Erro ao criar conta. Tente novamente.');
+          var msg = err.code === 'auth/email-already-in-use' ? tr('emailAlreadyExists', 'Este e-mail já foi cadastrado. Faça login.')
+            : err.code === 'auth/weak-password' ? tr('weakPassword', 'Senha fraca (mínimo 6 caracteres).')
+            : err.code === 'auth/invalid-email' ? tr('invalidEmail', 'E-mail inválido.')
+            : err.code === 'auth/network-request-failed' ? tr('networkIssue', 'Sem conexão com a internet.')
+            : (err.message || tr('registerError', 'Erro ao criar conta. Tente novamente.'));
           if (authEl) { authEl.textContent = msg; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
-          if (txt) txt.textContent = 'Criar conta';
+          if (txt) txt.textContent = tr('createAccountBtn', 'Criar conta');
           if (btn) btn.disabled = false;
         });
     }
@@ -1316,32 +1353,39 @@
       var btn = document.getElementById('submitBtn');
       var txt = document.getElementById('submitText');
       if (btn) btn.disabled = true;
-      if (txt) txt.textContent = 'Entrando...';
-      if (authEl) { authEl.textContent = 'Entrando...'; authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
+      if (txt) txt.textContent = tr('entering', 'Entrando...');
+      if (authEl) { authEl.textContent = tr('entering', 'Entrando...'); authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
       firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function() { if (txt) txt.textContent = 'Entrar'; if (btn) btn.disabled = false; })
+        .then(function() { if (txt) txt.textContent = tr('enter', 'Entrar'); if (btn) btn.disabled = false; })
         .catch(function(err) {
-          var msg = err.code === 'auth/invalid-credential' ? 'E-mail ou senha incorretos. Se não tem conta, clique em "Criar agora".'
-            : err.code === 'auth/user-not-found' ? 'Nenhuma conta encontrada com este e-mail. Criar conta primeiro.'
-            : err.code === 'auth/wrong-password' ? 'Senha incorreta. Tente novamente.'
-            : err.code === 'auth/too-many-requests' ? 'Muitas tentativas. Aguarde alguns minutos.'
-            : err.code === 'auth/invalid-email' ? 'E-mail inválido.'
-            : err.code === 'auth/network-request-failed' ? 'Sem conexão com a internet.'
-            : (err.message || 'Erro ao entrar. Tente novamente.');
+          var msg = err.code === 'auth/invalid-credential' ? tr('invalidCredentials', 'E-mail ou senha incorretos. Se não tem conta, clique em "Criar agora".')
+            : err.code === 'auth/user-not-found' ? tr('userNotFound', 'Nenhuma conta encontrada com este e-mail. Criar conta primeiro.')
+            : err.code === 'auth/wrong-password' ? tr('wrongPassword', 'Senha incorreta. Tente novamente.')
+            : err.code === 'auth/too-many-requests' ? tr('tooManyAttempts', 'Muitas tentativas. Aguarde alguns minutos.')
+            : err.code === 'auth/invalid-email' ? tr('invalidEmail', 'E-mail inválido.')
+            : err.code === 'auth/network-request-failed' ? tr('networkIssue', 'Sem conexão com a internet.')
+            : (err.message || tr('loginError', 'Erro ao entrar. Tente novamente.'));
           if (authEl) { authEl.textContent = msg; authEl.className = 'auth-msg error'; authEl.style.display = 'block'; }
-          if (txt) txt.textContent = 'Entrar';
+          if (txt) txt.textContent = tr('enter', 'Entrar');
           if (btn) btn.disabled = false;
         });
     }
 
     function handleForgot() {
       const email = document.getElementById('email').value.trim();
-      if (!email) { alert('Digite seu e-mail primeiro para redefinir a senha.'); document.getElementById('email').focus(); return; }
+      if (!email) { alert(tr('emailReset', 'Digite seu e-mail primeiro para redefinir a senha.')); document.getElementById('email').focus(); return; }
       if (typeof firebase !== 'undefined' && firebase.auth) {
         firebase.auth().sendPasswordResetEmail(email)
-          .then(() => alert('E-mail de redefinição enviado para ' + email))
+          .then(() => alert(tr('resetSent', 'E-mail de redefinição enviado para ') + email))
           .catch(err => alert('Erro: ' + (err.message || 'Tente novamente.')));
       }
+    }
+
+    const languageSelect = document.getElementById('languageSelect');
+    if (languageSelect && window.PulsoI18n) {
+      languageSelect.addEventListener('change', (event) => window.PulsoI18n.setLanguage(event.target.value));
+      languageSelect.value = window.PulsoI18n.getPreferredLanguage();
+      window.PulsoI18n.setLanguage(languageSelect.value);
     }
 
     // Theme initial apply (listeners handled by script.js)
