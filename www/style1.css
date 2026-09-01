@@ -6649,3 +6649,21 @@ body.light-theme .mobile-bottom-nav {
   .cmp-content { flex-direction: column; text-align: center; }
   .cmp-actions { width: 100%; justify-content: center; }
 }
+
+/* ============================================================
+   ADSENSE AD CONTAINERS
+   ============================================================ */
+.ad-container {
+  margin: 16px 0;
+  text-align: center;
+  min-height: 90px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--bg-soft, rgba(255,255,255,0.02));
+}
+.ad-container ins {
+  border-radius: 12px;
+}
+@media (max-width: 640px) {
+  .ad-container { margin: 12px -4px; border-radius: 8px; }
+}
