@@ -6474,3 +6474,178 @@ body.light-theme .mobile-bottom-nav {
   margin-bottom: 16px;
 }
 .trust-badge i { font-size: 0.7rem; }
+
+/* ============================================================
+   COLLAPSIBLE SECTIONS
+   ============================================================ */
+.collapsible-card .card-title {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.collapsible-icon {
+  font-size: 0.7rem;
+  transition: transform 0.25s ease;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.collapsible-card.collapsed .collapsible-icon {
+  transform: rotate(180deg);
+}
+.collapsible-body {
+  overflow: hidden;
+  max-height: 2000px;
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.25s ease;
+  opacity: 1;
+}
+.collapsible-card.collapsed .collapsible-body {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   DINHEIRO TAG (cash payment badge)
+   ============================================================ */
+.pay-tag-dinheiro {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(76,175,80,0.12);
+  color: var(--accent-success);
+}
+
+/* ============================================================
+   CMP — CONSENT BANNER
+   ============================================================ */
+.cmp-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background: var(--bg-panel, #1a1a2e);
+  border-top: 1px solid var(--border-color, rgba(255,255,255,0.08));
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.3);
+  animation: cmpSlideUp 0.4s ease;
+}
+@keyframes cmpSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.cmp-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 960px;
+  width: 100%;
+}
+.cmp-text h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.cmp-text p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.cmp-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.cmp-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.cmp-btn-accept {
+  background: var(--accent-primary, #6c7cff);
+  color: #fff;
+}
+.cmp-btn-accept:hover { opacity: 0.85; }
+.cmp-btn-reject {
+  background: transparent;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.15));
+  color: var(--text-secondary);
+}
+.cmp-btn-reject:hover { border-color: var(--text-secondary); }
+.cmp-btn-settings {
+  background: transparent;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.15));
+  color: var(--text-secondary);
+}
+.cmp-btn-settings:hover { border-color: var(--text-secondary); }
+.cmp-settings-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cmp-settings-modal {
+  background: var(--bg-panel, #1a1a2e);
+  border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 420px;
+  width: 90%;
+}
+.cmp-settings-modal h4 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+.cmp-settings-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0 0 16px;
+}
+.cmp-setting-row {
+  padding: 12px;
+  background: var(--bg-soft, rgba(255,255,255,0.03));
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.cmp-setting-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.cmp-setting-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 6px 0 0;
+}
+.cmp-settings-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+@media (max-width: 640px) {
+  .cmp-content { flex-direction: column; text-align: center; }
+  .cmp-actions { width: 100%; justify-content: center; }
+}

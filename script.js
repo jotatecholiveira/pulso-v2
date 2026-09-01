@@ -461,7 +461,7 @@ function sanitize(t) {
     date: t.date || new Date().toISOString(),
     parcela: t.parcela || null,
     totalParcelas: t.totalParcelas || null,
-    paymentMethod: t.paymentMethod === 'credito' ? 'credito' : 'debito',
+    paymentMethod: ['credito', 'dinheiro'].includes(t.paymentMethod) ? t.paymentMethod : 'debito',
     cardName: String(t.cardName || '').slice(0, 80),
     dueDay: Math.min(31, Math.max(1, parseInt(t.dueDay, 10) || 0)) || null
   };
@@ -1426,7 +1426,7 @@ function syncCreditFieldsFromCard() {
 
 function updatePaymentFields() {
   const type = document.getElementById('m-type')?.value;
-  const pagamento = document.getElementById('m-pagamento')?.value || 'debito';
+  const pagamento = document.getElementById('m-pagamento')?.value || 'dinheiro';
   const pagamentoGroup = document.getElementById('pagamento-group');
   const cardGroup = document.getElementById('cartao-group');
   const dueGroup = document.getElementById('vencimento-group');
@@ -1485,7 +1485,7 @@ function openModal(type) {
   const pagamentoInput = document.getElementById('m-pagamento');
   const parcelasInput = document.getElementById('m-parcelas');
   const dueInput = document.getElementById('m-dia-vencimento');
-  if (pagamentoInput) pagamentoInput.value = 'debito';
+  if (pagamentoInput) pagamentoInput.value = 'dinheiro';
   if (parcelasInput) parcelasInput.value = '1';
   if (dueInput) dueInput.value = '10';
   populateCartaoSelect();
@@ -1511,7 +1511,7 @@ function closeModal() {
   if (form) form.reset();
 
   const pagamentoInput = document.getElementById('m-pagamento');
-  if (pagamentoInput) pagamentoInput.value = 'debito';
+  if (pagamentoInput) pagamentoInput.value = 'dinheiro';
   const parcelasInput = document.getElementById('m-parcelas');
   if (parcelasInput) parcelasInput.value = '1';
   const dueInput = document.getElementById('m-dia-vencimento');
@@ -1653,7 +1653,7 @@ if (modalForm) {
         val: val,
         cat: cat,
         date: new Date(date + 'T12:00:00').toISOString(),
-        paymentMethod: 'debito'
+        paymentMethod: pagamento
       });
       showToast('Lançamento salvo com sucesso!', 'success');
     }
@@ -4644,7 +4644,7 @@ function renderLancamentos() {
       const payMeta = !isEntrada
         ? '<span>' + (t.paymentMethod === 'credito'
           ? ('Crédito' + (t.cardName ? (' · ' + escapeHTML(t.cardName)) : ''))
-          : 'Débito') + '</span>'
+          : t.paymentMethod === 'dinheiro' ? 'Dinheiro' : 'Débito') + '</span>'
         : '';
 
       html += '<div class="lanc-item">';
@@ -4704,4 +4704,9 @@ function setLancUserFilter(user) {
 function onLancSearch(query) {
   lancSearch = query.trim();
   renderLancamentos();
+}
+
+function toggleCollapsible(card) {
+  if (!card) return;
+  card.classList.toggle('collapsed');
 }

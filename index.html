@@ -22,6 +22,32 @@
   <script src="script.js?v=3.1.9" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/regular.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <!-- Google Consent Mode v2 — defaults to denied -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    (function() {
+      var consent = localStorage.getItem('pulso_consent');
+      var adStorage = consent === 'granted' ? 'granted' : 'denied';
+      var adUserData = consent === 'granted' ? 'granted' : 'denied';
+      gtag('consent', 'default', {
+        'ad_storage': adStorage,
+        'ad_user_data': adUserData,
+        'analytics_storage': 'denied',
+        'wait_for_update': 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    })();
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
 </head>
 <body>
   <div class="app-shell">
@@ -228,9 +254,14 @@
               </button>
             </div>
 
-            <div class="card">
-              <h2 class="card-title">Últimas Movimentações</h2>
-              <div class="movimentacoes-list" id="movimentacoes-list"></div>
+            <div class="card collapsible-card" data-collapsible>
+              <h2 class="card-title" onclick="toggleCollapsible(this.parentElement)">
+                Últimas Movimentações
+                <i class="fa-solid fa-chevron-up collapsible-icon"></i>
+              </h2>
+              <div class="collapsible-body">
+                <div class="movimentacoes-list" id="movimentacoes-list"></div>
+              </div>
             </div>
           </div>
 
@@ -509,26 +540,36 @@
         </div>
 
         <!-- SEÇÕES EXTRAS (mantidas do dashboard original) -->
-        <div class="dash-two-col">
-          <div class="card">
-            <h2 class="card-title">Fundo de Emergência</h2>
-            <div class="dash-card-info">
-              <span id="emergencia-atual">R$ 0,00</span>
-              <span id="emergencia-pct">0%</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="emergencia-bar" style="width: 0%;"></div>
+          <div class="dash-two-col">
+          <div class="card collapsible-card" data-collapsible>
+            <h2 class="card-title" onclick="toggleCollapsible(this.parentElement)">
+              Fundo de Emergência
+              <i class="fa-solid fa-chevron-up collapsible-icon"></i>
+            </h2>
+            <div class="collapsible-body">
+              <div class="dash-card-info">
+                <span id="emergencia-atual">R$ 0,00</span>
+                <span id="emergencia-pct">0%</span>
               </div>
+              <div class="progress-container">
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill" id="emergencia-bar" style="width: 0%;"></div>
+                </div>
+              </div>
+              <p class="dash-card-subtitle">Meta: 6 meses de custos fixos (R$ <span id="emergencia-meta">0,00</span>)</p>
             </div>
-            <p class="dash-card-subtitle">Meta: 6 meses de custos fixos (R$ <span id="emergencia-meta">0,00</span>)</p>
           </div>
 
-          <div class="card">
-            <h2 class="card-title">Carteira de Investimentos</h2>
-            <div class="dash-card-value-lg" id="invest-total">R$ 0,00</div>
-            <p class="dash-card-sub">ETF: 15% da renda (Projeção: <span>+12% a.a.</span>)</p>
-            <svg class="mini-chart" id="invest-chart" viewBox="0 0 100 30"></svg>
+          <div class="card collapsible-card" data-collapsible>
+            <h2 class="card-title" onclick="toggleCollapsible(this.parentElement)">
+              Carteira de Investimentos
+              <i class="fa-solid fa-chevron-up collapsible-icon"></i>
+            </h2>
+            <div class="collapsible-body">
+              <div class="dash-card-value-lg" id="invest-total">R$ 0,00</div>
+              <p class="dash-card-sub">ETF: 15% da renda (Projeção: <span>+12% a.a.</span>)</p>
+              <svg class="mini-chart" id="invest-chart" viewBox="0 0 100 30"></svg>
+            </div>
           </div>
         </div>
 
@@ -846,6 +887,7 @@
           <div class="modal-field" id="pagamento-group">
             <label for="m-pagamento">Forma</label>
             <select class="modal-input" id="m-pagamento">
+              <option value="dinheiro">Dinheiro (à vista)</option>
               <option value="debito">Débito (usa saldo)</option>
               <option value="credito">Crédito (lança na fatura)</option>
             </select>
@@ -1123,6 +1165,81 @@
       if(e.key === 'Escape') closeSidebarDrawer();
     });
   }
+</script>
+
+<!-- Google CMP — Consent Banner -->
+<div id="cmp-banner" class="cmp-banner" style="display:none;">
+  <div class="cmp-content">
+    <div class="cmp-text">
+      <h4>Privacidade e Anuncios</h4>
+      <p>Utilizamos cookies e tecnologias de anuncios personalizados para manter o Pulso gratuito. Ao aceitar, voce concorda com o uso de dados para anuncios. Voce pode alterar suas preferencias a qualquer momento.</p>
+    </div>
+    <div class="cmp-actions">
+      <button class="cmp-btn cmp-btn-settings" onclick="cmpManage()">Gerenciar</button>
+      <button class="cmp-btn cmp-btn-reject" onclick="cmpReject()">Recusar</button>
+      <button class="cmp-btn cmp-btn-accept" onclick="cmpAccept()">Aceitar tudo</button>
+    </div>
+  </div>
+</div>
+
+<!-- CMP Settings Modal -->
+<div id="cmp-settings-overlay" class="cmp-settings-overlay" style="display:none;">
+  <div class="cmp-settings-modal">
+    <h4>Preferencias de Privacidade</h4>
+    <p class="cmp-settings-desc">Escolha como deseja que seus dados sejam utilizados:</p>
+    <div class="cmp-setting-row">
+      <label>
+        <input type="checkbox" id="cmp-ad-storage" checked disabled>
+        <span>Anuncios Personalizados</span>
+      </label>
+      <p class="cmp-setting-desc">Permite exibir anuncios relevantes baseados no seu uso do site.</p>
+    </div>
+    <div class="cmp-settings-actions">
+      <button class="cmp-btn cmp-btn-reject" onclick="cmpSaveSettings(false)">Salvar sem anuncios</button>
+      <button class="cmp-btn cmp-btn-accept" onclick="cmpSaveSettings(true)">Salvar com anuncios</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var consent = localStorage.getItem('pulso_consent');
+  if (!consent) {
+    setTimeout(function() {
+      var banner = document.getElementById('cmp-banner');
+      if (banner) banner.style.display = 'flex';
+    }, 3000);
+  }
+})();
+
+function cmpAccept() {
+  localStorage.setItem('pulso_consent', 'granted');
+  gtag('consent', 'update', { 'ad_storage': 'granted', 'ad_user_data': 'granted' });
+  var banner = document.getElementById('cmp-banner');
+  if (banner) banner.style.display = 'none';
+}
+function cmpReject() {
+  localStorage.setItem('pulso_consent', 'denied');
+  gtag('consent', 'update', { 'ad_storage': 'denied', 'ad_user_data': 'denied' });
+  var banner = document.getElementById('cmp-banner');
+  if (banner) banner.style.display = 'none';
+}
+function cmpManage() {
+  var consent = localStorage.getItem('pulso_consent');
+  var checkbox = document.getElementById('cmp-ad-storage');
+  if (checkbox) checkbox.checked = consent === 'granted';
+  document.getElementById('cmp-settings-overlay').style.display = 'flex';
+}
+function cmpSaveSettings(granted) {
+  localStorage.setItem('pulso_consent', granted ? 'granted' : 'denied');
+  gtag('consent', 'update', {
+    'ad_storage': granted ? 'granted' : 'denied',
+    'ad_user_data': granted ? 'granted' : 'denied'
+  });
+  document.getElementById('cmp-settings-overlay').style.display = 'none';
+  var banner = document.getElementById('cmp-banner');
+  if (banner) banner.style.display = 'none';
+}
 </script>
 
 </body>
