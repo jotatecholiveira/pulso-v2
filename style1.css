@@ -2461,6 +2461,31 @@ body.light-theme .auth-shell {
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.comp-status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+  background: var(--border-color);
+  transition: background 0.3s ease;
+}
+
+.comp-status-bar.status-positive {
+  background: var(--accent-success);
+}
+
+.comp-status-bar.status-negative {
+  background: var(--accent-danger);
+}
+
+.comp-status-bar.status-neutral {
+  background: var(--text-secondary);
 }
 
 .comp-card-variation {

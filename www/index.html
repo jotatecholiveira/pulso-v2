@@ -69,7 +69,7 @@
           <button type="button" class="feedback-btn" onclick="openFeedbackModal()" title="Enviar feedback">
             <i class="fa-solid fa-comment-dots"></i> Deixe seu feedback
           </button>
-          <a href="https://ko-fi.com/" target="_blank" rel="noopener" class="kofi-btn" title="Apoie o Pulso no Ko-fi">
+          <a href="https://ko-fi.com/" target="_blank" rel="noopener" class="kofi-btn" id="kofiBtn" title="Apoie o Pulso no Ko-fi">
             <i class="fa-solid fa-mug-hot"></i> <span class="kofi-label">Apoie o Pulso</span>
           </a>
           <div class="sdg-block" aria-label="Objetivos de desenvolvimento sustentável">
@@ -274,7 +274,8 @@
           </div>
 
           <div class="comparativo-grid">
-            <div class="comp-card">
+            <div class="comp-card" id="comp-card-prev">
+              <div class="comp-status-bar" id="comp-status-prev"></div>
               <div class="comp-card-header">
                 <span class="comp-label" id="comp-prev-label">Mês anterior</span>
                 <i class="fa-regular fa-calendar"></i>
@@ -293,7 +294,8 @@
               </div>
             </div>
 
-            <div class="comp-card comp-card-variation">
+            <div class="comp-card comp-card-variation" id="comp-card-variation">
+              <div class="comp-status-bar" id="comp-status-variation"></div>
               <div class="comp-card-header">
                 <span class="comp-label">Variação</span>
                 <i class="fa-solid fa-chart-line"></i>
@@ -312,7 +314,8 @@
               </div>
             </div>
 
-            <div class="comp-card">
+            <div class="comp-card" id="comp-card-cur">
+              <div class="comp-status-bar" id="comp-status-cur"></div>
               <div class="comp-card-header">
                 <span class="comp-label" id="comp-cur-label">Este mês</span>
                 <i class="fa-solid fa-calendar-check"></i>

@@ -597,10 +597,7 @@
         <button type="button" class="auth-tab" id="tabRegister" data-i18n="register" onclick="switchAuthTab('register')">Criar conta</button>
       </div>
 
-      <div id="userNotice" class="user-notice" aria-live="polite">
-        <span><strong>Aviso:</strong> você só verá essa mensagem uma vez por navegador.</span>
-        <button type="button" id="dismissNotice" aria-label="Fechar aviso">×</button>
-      </div>
+      <div id="userNotice" class="user-notice" aria-live="polite" style="display:none"></div>
       <div id="auth-message" class="auth-msg" style="display:none" aria-live="polite"></div>
 
       <button type="button" id="googleBtn" class="btn-google-new" data-i18n="google">
@@ -1199,20 +1196,7 @@
 
     const tr = (key, fallback = '') => (window.PulsoI18n ? window.PulsoI18n.t(key, fallback) : fallback);
 
-    const userNotice = document.getElementById('userNotice');
-    const dismissNotice = document.getElementById('dismissNotice');
-    if (userNotice) {
-      const seen = localStorage.getItem('pulso-login-notice-seen') === 'true';
-      if (!seen) {
-        userNotice.classList.add('visible');
-      }
-      if (dismissNotice) {
-        dismissNotice.addEventListener('click', () => {
-          userNotice.classList.remove('visible');
-          localStorage.setItem('pulso-login-notice-seen', 'true');
-        });
-      }
-    }
+    // userNotice removido — aviso não é mais necessário
 
     function switchAuthTab(tab) {
       currentTab = tab;
@@ -1340,7 +1324,9 @@
       if (txt) txt.textContent = tr('creating', 'Criando...');
       if (authEl) { authEl.textContent = tr('createAccount', 'Criando conta...'); authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
 
-      firebase.auth().createUserWithEmailAndPassword(email, password)
+      var a = firebase.auth();
+      a.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
+        return a.createUserWithEmailAndPassword(email, password);
         .then(function(result) {
           if (fullName && result.user) {
             return result.user.updateProfile({ displayName: fullName }).then(function() {
@@ -1375,8 +1361,10 @@
       if (btn) btn.disabled = true;
       if (txt) txt.textContent = tr('entering', 'Entrando...');
       if (authEl) { authEl.textContent = tr('entering', 'Entrando...'); authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function() { if (txt) txt.textContent = tr('enter', 'Entrar'); if (btn) btn.disabled = false; })
+      var a = firebase.auth();
+      a.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
+        return a.signInWithEmailAndPassword(email, password);
+      }).then(function() { if (txt) txt.textContent = tr('enter', 'Entrar'); if (btn) btn.disabled = false; })
         .catch(function(err) {
           var msg = err.code === 'auth/invalid-credential' ? tr('invalidCredentials', 'E-mail ou senha incorretos. Se não tem conta, clique em "Criar agora".')
             : err.code === 'auth/user-not-found' ? tr('userNotFound', 'Nenhuma conta encontrada com este e-mail. Criar conta primeiro.')

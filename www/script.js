@@ -257,6 +257,7 @@ window.PulsoI18n = {
   }
 };
 window.PulsoI18n.locale = window.PulsoI18n.getPreferredLanguage();
+updateKofiVisibility();
 
 const languageCycleOrder = ['pt', 'en', 'es'];
 
@@ -280,6 +281,13 @@ function updateLanguageSwitchButton() {
   button.setAttribute('title', `Idioma atual: ${label}`);
 }
 
+function updateKofiVisibility() {
+  const kofiBtn = document.getElementById('kofiBtn');
+  if (!kofiBtn) return;
+  const locale = window.PulsoI18n && window.PulsoI18n.locale ? window.PulsoI18n.locale : 'pt';
+  kofiBtn.style.display = locale === 'pt' ? 'none' : '';
+}
+
 function cycleLanguage() {
   const locale = window.PulsoI18n && window.PulsoI18n.locale ? window.PulsoI18n.locale : 'pt';
   const currentIndex = languageCycleOrder.indexOf(locale);
@@ -288,6 +296,7 @@ function cycleLanguage() {
     window.PulsoI18n.setLanguage(nextLocale);
   }
   updateLanguageSwitchButton();
+  updateKofiVisibility();
 }
 
 const languageSwitchBtn = document.getElementById('languageSwitchBtn');
@@ -2149,6 +2158,11 @@ function renderComparativo() {
     prevBalance.className = 'comp-row-value ' + (prev.balance >= 0 ? 'positive' : 'negative');
   }
 
+  const statusPrev = document.getElementById('comp-status-prev');
+  if (statusPrev) {
+    statusPrev.className = 'comp-status-bar ' + (prev.balance > 0 ? 'status-positive' : prev.balance < 0 ? 'status-negative' : 'status-neutral');
+  }
+
   const curIncome = document.getElementById('comp-cur-income');
   const curExpense = document.getElementById('comp-cur-expense');
   const curBalance = document.getElementById('comp-cur-balance');
@@ -2157,6 +2171,11 @@ function renderComparativo() {
   if (curBalance) {
     curBalance.textContent = (cur.balance < 0 ? '- ' : '') + formatCurrency(cur.balance);
     curBalance.className = 'comp-row-value ' + (cur.balance >= 0 ? 'positive' : 'negative');
+  }
+
+  const statusCur = document.getElementById('comp-status-cur');
+  if (statusCur) {
+    statusCur.className = 'comp-status-bar ' + (cur.balance > 0 ? 'status-positive' : cur.balance < 0 ? 'status-negative' : 'status-neutral');
   }
 
   const openingBalanceEl = document.getElementById('comp-opening-balance');
@@ -2196,6 +2215,12 @@ function renderComparativo() {
   renderDelta('comp-delta-expense', prev.expense, cur.expense, false);
   renderDelta('comp-delta-balance', prev.balance, cur.balance, true);
 
+  const statusVar = document.getElementById('comp-status-variation');
+  if (statusVar) {
+    const balanceChange = cur.balance - prev.balance;
+    statusVar.className = 'comp-status-bar ' + (balanceChange > 0 ? 'status-positive' : balanceChange < 0 ? 'status-negative' : 'status-neutral');
+  }
+
   const annualChart = document.getElementById('annual-chart');
   if (!annualChart) return;
 
@@ -2208,12 +2233,9 @@ function renderComparativo() {
       monthIndex += 12;
       yearIndex -= 1;
     }
-    while (monthIndex > 11) {
-      monthIndex -= 12;
-      yearIndex += 1;
-    }
     months.push({ month: monthIndex, year: yearIndex });
   }
+  months.sort((a, b) => a.year !== b.year ? a.year - b.year : a.month - b.month);
 
   const values = months.flatMap(m => {
     const totals = monthTotals(m.month, m.year);
