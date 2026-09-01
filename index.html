@@ -200,6 +200,96 @@
 
           <div class="lanc-list" id="lanc-list"></div>
 
+          <!-- MAIORES GASTOS -->
+          <div class="panel">
+            <h4 class="dash-section-title">Maiores gastos do mês atual</h4>
+            <div id="maiores-gastos-list" class="maiores-gastos-list">
+              <div class="empty-state-small">
+                <i class="fa-solid fa-receipt"></i>
+                <p>Sem gastos no período</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-two-col">
+            <div class="panel chart-panel">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Categorias</p>
+                  <h3>Gastos por categoria</h3>
+                </div>
+              </div>
+              <div id="category-bars" class="category-bars-collapsed"></div>
+              <button type="button" class="category-toggle-btn" id="categoryToggle" onclick="toggleCategoryBars()" style="display: none;">
+                <span id="category-toggle-text">Ver todas</span>
+                <i class="fa-solid fa-chevron-down" id="category-toggle-icon"></i>
+              </button>
+            </div>
+
+            <div class="card">
+              <h2 class="card-title">Últimas Movimentações</h2>
+              <div class="movimentacoes-list" id="movimentacoes-list"></div>
+            </div>
+          </div>
+
+          <div class="dash-two-col">
+            <div class="card panel-top">
+              <h2 class="card-title">Divisão de Gastos</h2>
+              <div class="donut-split-layout">
+                <div class="donut-split-chart">
+                  <canvas id="divisao-chart"></canvas>
+                  <div class="donut-split-center">
+                    <span class="donut-split-total-label">Total</span>
+                    <span class="donut-split-total-value" id="divisao-total">R$ 0,00</span>
+                  </div>
+                </div>
+                <div class="donut-split-legend" id="divisao-legend"></div>
+              </div>
+            </div>
+
+            <div class="card panel-top">
+              <h2 class="card-title">Receitas por Categoria</h2>
+              <div class="receitas-chart-wrap">
+                <canvas id="receitas-chart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- LIMITES DE GASTOS POR CATEGORIA -->
+          <div class="panel panel-top">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Orçamento</p>
+                <h3>Limites de gastos por categoria</h3>
+              </div>
+              <button type="button" class="btn-submit btn-sm" id="saveLimitesBtn" onclick="salvarLimitesGastos()">
+                <i class="fa-regular fa-floppy-disk"></i> Salvar
+              </button>
+            </div>
+            <p class="panel-text" style="margin-bottom: 12px;">Defina um limite mensal para cada categoria. Quando o gasto ultrapassar, aparece um alerta no dashboard.</p>
+            <div id="limites-categorias" class="limites-grid"></div>
+          </div>
+
+          <!-- CATEGORIAS CUSTOMIZÁVEIS -->
+          <div class="panel panel-top">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Personalizar</p>
+                <h3>Categorias</h3>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button type="button" class="btn-secondary" style="width:auto;padding:6px 14px;font-size:0.8rem;" onclick="showOnboarding()">
+                  <i class="fa-solid fa-palette"></i> Trocar template
+                </button>
+                <button type="button" class="btn-submit btn-sm" onclick="openCategoriesModal()">
+                  <i class="fa-solid fa-sliders"></i> Gerenciar
+                </button>
+              </div>
+            </div>
+            <p class="panel-text">Adicione, edite ou remova categorias de receitas e despesas. As categorias padrão podem ser ocultadas.</p>
+            <div id="categories-summary" class="categories-summary"></div>
+          </div>
+
           <div class="lanc-quick-actions">
             <button type="button" class="lanc-quick-btn lanc-quick-despesa" onclick="openModal('saida')">
               <i class="fa-solid fa-minus-circle"></i>
@@ -235,14 +325,6 @@
               <span id="hero-despesas">R$ 0,00</span>
               <span class="hero-meta-label">Despesas</span>
             </div>
-          </div>
-          <div class="hero-quick-actions">
-            <button type="button" class="hero-quick-btn" onclick="openModal('saida')">
-              <i class="fa-solid fa-minus"></i> Despesa
-            </button>
-            <button type="button" class="hero-quick-btn hero-quick-receita" onclick="openModal('entrada')">
-              <i class="fa-solid fa-plus"></i> Receita
-            </button>
           </div>
         </div>
 
@@ -424,17 +506,6 @@
           </div>
         </div>
 
-        <!-- MAIORES GASTOS -->
-        <div class="panel">
-          <h4 class="dash-section-title">Maiores gastos do mês atual</h4>
-          <div id="maiores-gastos-list" class="maiores-gastos-list">
-            <div class="empty-state-small">
-              <i class="fa-solid fa-receipt"></i>
-              <p>Sem gastos no período</p>
-            </div>
-          </div>
-        </div>
-
         <!-- SEÇÕES EXTRAS (mantidas do dashboard original) -->
         <div class="dash-two-col">
           <div class="card">
@@ -459,84 +530,6 @@
           </div>
         </div>
 
-        <div class="dash-two-col">
-          <div class="panel chart-panel">
-            <div class="panel-header">
-              <div>
-                <p class="eyebrow">Categorias</p>
-                <h3>Gastos por categoria</h3>
-              </div>
-            </div>
-            <div id="category-bars" class="category-bars-collapsed"></div>
-            <button type="button" class="category-toggle-btn" id="categoryToggle" onclick="toggleCategoryBars()" style="display: none;">
-              <span id="category-toggle-text">Ver todas</span>
-              <i class="fa-solid fa-chevron-down" id="category-toggle-icon"></i>
-            </button>
-          </div>
-
-          <div class="card">
-            <h2 class="card-title">Últimas Movimentações</h2>
-            <div class="movimentacoes-list" id="movimentacoes-list"></div>
-          </div>
-        </div>
-
-        <div class="dash-two-col">
-          <div class="card panel-top">
-            <h2 class="card-title">Divisão de Gastos</h2>
-            <div class="donut-split-layout">
-              <div class="donut-split-chart">
-                <canvas id="divisao-chart"></canvas>
-                <div class="donut-split-center">
-                  <span class="donut-split-total-label">Total</span>
-                  <span class="donut-split-total-value" id="divisao-total">R$ 0,00</span>
-                </div>
-              </div>
-              <div class="donut-split-legend" id="divisao-legend"></div>
-            </div>
-          </div>
-
-          <div class="card panel-top">
-            <h2 class="card-title">Receitas por Categoria</h2>
-            <div class="receitas-chart-wrap">
-              <canvas id="receitas-chart"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- LIMITES DE GASTOS POR CATEGORIA -->
-        <div class="panel panel-top">
-          <div class="panel-header">
-            <div>
-              <p class="eyebrow">Orçamento</p>
-              <h3>Limites de gastos por categoria</h3>
-            </div>
-            <button type="button" class="btn-submit btn-sm" id="saveLimitesBtn" onclick="salvarLimitesGastos()">
-              <i class="fa-regular fa-floppy-disk"></i> Salvar
-            </button>
-          </div>
-          <p class="panel-text" style="margin-bottom: 12px;">Defina um limite mensal para cada categoria. Quando o gasto ultrapassar, aparece um alerta no dashboard.</p>
-          <div id="limites-categorias" class="limites-grid"></div>
-        </div>
-
-        <!-- CATEGORIAS CUSTOMIZÁVEIS -->
-        <div class="panel panel-top">
-          <div class="panel-header">
-            <div>
-              <p class="eyebrow">Personalizar</p>
-              <h3>Categorias</h3>
-            </div>
-            <div style="display:flex;gap:8px;">
-              <button type="button" class="btn-secondary" style="width:auto;padding:6px 14px;font-size:0.8rem;" onclick="showOnboarding()">
-                <i class="fa-solid fa-palette"></i> Trocar template
-              </button>
-              <button type="button" class="btn-submit btn-sm" onclick="openCategoriesModal()">
-                <i class="fa-solid fa-sliders"></i> Gerenciar
-              </button>
-            </div>
-          </div>
-          <p class="panel-text">Adicione, edite ou remova categorias de receitas e despesas. As categorias padrão podem ser ocultadas.</p>
-          <div id="categories-summary" class="categories-summary"></div>
-        </div>
 
       </section>
 
