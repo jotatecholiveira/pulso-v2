@@ -6,6 +6,7 @@
   <title>Pulso</title>
   <meta name="description" content="Pulso">
   <meta name="theme-color" content="#0f0a2e">
+  <meta name="google-site-verification" content="DfsZ4EvUlvKRVvJ-QG7yAupX8bPEiZdmVQD8EbTZN4I">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; upgrade-insecure-requests; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://kit.fontawesome.com https://apis.google.com https://*.firebaseio.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://kit.fontawesome.com https://cdnjs.cloudflare.com; connect-src 'self' https://*.firebaseio.com wss://*.firebaseio.com https://*.googleapis.com https://accounts.google.com https://*.google.com; frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.firebaseio.com; img-src 'self' data: https:; base-uri 'self'; form-action 'self' https://accounts.google.com https://*.google.com;">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
@@ -264,6 +265,11 @@
     .trust-item { display: flex; align-items: center; gap: 5px; font-size: 0.72rem; color: #adb5bd; transition: color 0.5s ease; }
     body.dark-mode .trust-item { color: #484f58; }
     .trust-item i { color: #51cf66; font-size: 0.65rem; }
+
+    .login-toolbar { display: flex; justify-content: flex-end; margin-bottom: 18px; }
+    .language-select {
+      appearance: none; border: 1px solid #e9ecef; border-radius: 12px; background: #fff; color: #1a1a2e; padding: 8px 34px 8px 12px; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, #495057 50%), linear-gradient(135deg, #495057 50%, transparent 50%); background-position: calc(100% - 14px) calc(50% - 2px), calc(100% - 9px) calc(50% - 2px); background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+    body.dark-mode .language-select { background: #161b22; border-color: #30363d; color: #e9ecef; background-image: linear-gradient(45deg, transparent 50%, #e9ecef 50%), linear-gradient(135deg, #e9ecef 50%, transparent 50%); }
 
     .user-notice {
       display: none; align-items: center; justify-content: space-between; gap: 12px;
@@ -571,32 +577,36 @@
   <div class="login-split">
     <!-- LEFT — FORM -->
     <div class="login-left">
+      <div class="login-toolbar">
+        <select id="languageSelect" class="language-select" aria-label="Idioma">
+          <option value="pt">PT</option>
+          <option value="en">EN</option>
+          <option value="es">ES</option>
+        </select>
+      </div>
       <div class="login-brand">
         <div class="login-brand-icon">P</div>
-        <div class="login-brand-name">Pulso</div>
+        <div class="login-brand-name" data-i18n="appName">Pulso</div>
       </div>
-      <h1 class="login-heading">Bem-vindo ao Pulso</h1>
-      <p class="login-tagline">Seu dinheiro, seu controle.</p>
+      <h1 class="login-heading" data-i18n="welcome">Bem-vindo ao Pulso</h1>
+      <p class="login-tagline" data-i18n="loginTagline">Seu dinheiro, seu controle.</p>
       <p class="daily-quote" id="dailyQuote"></p>
 
       <div class="auth-tabs" aria-hidden="true">
         <div class="auth-tab-indicator" id="tabIndicator"></div>
-        <button type="button" class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Entrar</button>
-        <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Criar conta</button>
+        <button type="button" class="auth-tab active" id="tabLogin" data-i18n="enter" onclick="switchAuthTab('login')">Entrar</button>
+        <button type="button" class="auth-tab" id="tabRegister" data-i18n="register" onclick="switchAuthTab('register')">Criar conta</button>
       </div>
 
-      <div id="userNotice" class="user-notice" aria-live="polite">
-        <span><strong>Aviso:</strong> você só verá essa mensagem uma vez por navegador.</span>
-        <button type="button" id="dismissNotice" aria-label="Fechar aviso">×</button>
-      </div>
+      <div id="userNotice" class="user-notice" aria-live="polite" style="display:none"></div>
       <div id="auth-message" class="auth-msg" style="display:none" aria-live="polite"></div>
 
-      <button type="button" id="googleBtn" class="btn-google-new">
+      <button type="button" id="googleBtn" class="btn-google-new" data-i18n="google">
         <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.7l6.2 5.2C36.9 40.4 44 35 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
         Continuar com Google
       </button>
 
-      <div class="or-divider"><span>ou</span></div>
+      <div class="or-divider"><span data-i18n="or">ou</span></div>
 
       <form id="loginForm" onsubmit="event.preventDefault();">
         <div class="register-fields" id="registerFields">
@@ -871,16 +881,24 @@
         }
       }
 
+      function getShoreWave(x, time, baseY, amplitude = 2.5) {
+        return baseY + Math.sin((x + time * 0.8) * 0.085) * amplitude + Math.sin((x * 0.21) - time * 0.45) * 1.8;
+      }
+
       function drawSand(time) {
         for (let y = HORIZON + 55; y < LH; y++) {
           for (let x = 0; x < LW; x++) {
-            const wave = Math.sin(x * 0.08 + time * 0.02) * 2;
-            const edge = Math.sin(x * 0.15) * 3;
-            if (y > HORIZON + 55 + wave + edge) {
+            const shoreLine = getShoreWave(x, time, HORIZON + 58, 2.8);
+            const wash = Math.abs(y - (shoreLine + 1.2)) < 2.4 ? 1 : 0;
+            if (y > shoreLine) {
               const t = (y - HORIZON - 55) / (LH - HORIZON - 55);
-              const c = lerpColor([210,170,100], [190,150,85], t);
-              const noise = (Math.sin(x*7+y*3)*5);
-              px(x, y, c[0]+noise, c[1]+noise, c[2]+noise);
+              const base = lerpColor([210,170,100], [190,150,85], t);
+              const waveMix = wash ? 20 : 0;
+              const noise = Math.sin(x * 7 + y * 3 + time * 0.4) * 5;
+              px(x, y, base[0] + noise + waveMix, base[1] + noise + waveMix * 0.8, base[2] + noise * 0.5);
+            }
+            if (wash && Math.sin(x * 0.25 + time * 0.8) > 0.5) {
+              px(x, y, 235, 225, 195);
             }
           }
         }
@@ -1110,12 +1128,12 @@
       function drawNightShore(time) {
         for (let y = LH - 15; y < LH; y++) {
           for (let x = 0; x < LW; x++) {
-            const wave = Math.sin(x * 0.06 + time * 0.03) * 2;
-            if (y > LH - 12 + wave) {
+            const shoreLine = getShoreWave(x, time, LH - 12, 1.8);
+            const wash = Math.abs(y - (shoreLine + 0.8)) < 1.8 ? 1 : 0;
+            if (y > shoreLine) {
               px(x, y, 50, 48, 42);
             }
-            // Foam line
-            if (Math.abs(y - (LH - 12 + wave)) < 1.5 && Math.sin(x * 0.2 + time * 0.1) > 0) {
+            if (wash && Math.sin(x * 0.2 + time * 0.2) > 0.3) {
               px(x, y, 40, 55, 75);
             }
           }
@@ -1179,20 +1197,7 @@
 
     const tr = (key, fallback = '') => (window.PulsoI18n ? window.PulsoI18n.t(key, fallback) : fallback);
 
-    const userNotice = document.getElementById('userNotice');
-    const dismissNotice = document.getElementById('dismissNotice');
-    if (userNotice) {
-      const seen = localStorage.getItem('pulso-login-notice-seen') === 'true';
-      if (!seen) {
-        userNotice.classList.add('visible');
-      }
-      if (dismissNotice) {
-        dismissNotice.addEventListener('click', () => {
-          userNotice.classList.remove('visible');
-          localStorage.setItem('pulso-login-notice-seen', 'true');
-        });
-      }
-    }
+    // userNotice removido — aviso não é mais necessário
 
     function switchAuthTab(tab) {
       currentTab = tab;
@@ -1320,7 +1325,9 @@
       if (txt) txt.textContent = tr('creating', 'Criando...');
       if (authEl) { authEl.textContent = tr('createAccount', 'Criando conta...'); authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
 
-      firebase.auth().createUserWithEmailAndPassword(email, password)
+      var a = firebase.auth();
+      a.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
+        return a.createUserWithEmailAndPassword(email, password);
         .then(function(result) {
           if (fullName && result.user) {
             return result.user.updateProfile({ displayName: fullName }).then(function() {
@@ -1355,8 +1362,10 @@
       if (btn) btn.disabled = true;
       if (txt) txt.textContent = tr('entering', 'Entrando...');
       if (authEl) { authEl.textContent = tr('entering', 'Entrando...'); authEl.className = 'auth-msg info'; authEl.style.display = 'block'; }
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function() { if (txt) txt.textContent = tr('enter', 'Entrar'); if (btn) btn.disabled = false; })
+      var a = firebase.auth();
+      a.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
+        return a.signInWithEmailAndPassword(email, password);
+      }).then(function() { if (txt) txt.textContent = tr('enter', 'Entrar'); if (btn) btn.disabled = false; })
         .catch(function(err) {
           var msg = err.code === 'auth/invalid-credential' ? tr('invalidCredentials', 'E-mail ou senha incorretos. Se não tem conta, clique em "Criar agora".')
             : err.code === 'auth/user-not-found' ? tr('userNotFound', 'Nenhuma conta encontrada com este e-mail. Criar conta primeiro.')
