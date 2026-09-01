@@ -1327,7 +1327,7 @@
 
       var a = firebase.auth();
       a.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function() {
-        return a.createUserWithEmailAndPassword(email, password);
+        return a.createUserWithEmailAndPassword(email, password)
         .then(function(result) {
           if (fullName && result.user) {
             return result.user.updateProfile({ displayName: fullName }).then(function() {
