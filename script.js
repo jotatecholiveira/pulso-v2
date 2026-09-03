@@ -3042,11 +3042,25 @@ function clearData() {
   function confirm() {
     close();
     if (storageMode === 'rtdb' && db && currentUser) {
-      db.ref('users/' + currentUser.uid + '/transactions').remove();
+      const base = 'users/' + currentUser.uid + '/';
+      const paths = [
+        'transactions', 'contas', 'cartoes', 'contasPagar', 'contasReceber',
+        'planoInvestimento', 'metasInvestimento', 'patrimonio',
+        'meusAtivos', 'meusInvestimentos', 'limites_gastos', 'sharedWith'
+      ];
+      paths.forEach(p => db.ref(base + p).remove());
     } else {
       transactions = [];
+      contas = [];
+      cartoes = [];
+      contasPagar = [];
+      contasReceber = [];
       saveToLocal();
       updateUI();
+      renderContas();
+      renderCartoes();
+      renderContasPagar();
+      renderContasReceber();
     }
     showToast('Todos os dados foram limpos.', 'warning');
   }
