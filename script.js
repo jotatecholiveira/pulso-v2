@@ -3029,7 +3029,7 @@ function clearData() {
 
   input.value = '';
   okBtn.disabled = true;
-  overlay.style.display = 'flex';
+  overlay.classList.add('active');
   input.focus();
 
   function onInput() {
@@ -3065,7 +3065,7 @@ function clearData() {
     showToast('Todos os dados foram limpos.', 'warning');
   }
   function close() {
-    overlay.style.display = 'none';
+    overlay.classList.remove('active');
     input.value = '';
     input.removeEventListener('input', onInput);
     input.removeEventListener('keydown', onKeydown);
