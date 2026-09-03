@@ -76,7 +76,12 @@ const pulsoTranslations = {
     greetingNight: 'Boa noite',
     greetingMorning: 'Bom dia',
     greetingAfternoon: 'Boa tarde',
-    greetingEvening: 'Boa noite'
+    greetingEvening: 'Boa noite',
+    deleteConfirmTitle: 'Apagar todos os dados?',
+    deleteConfirmDesc: 'Esta ação é irreversível. Todas as transações serão deletadas permanentemente.',
+    deleteConfirmInputLabel: 'Digite DELETAR para confirmar',
+    deleteConfirmButton: 'Apagar tudo',
+    deleteConfirmCancel: 'Cancelar'
   },
   en: {
     appName: 'Pulso',
@@ -134,7 +139,12 @@ const pulsoTranslations = {
     greetingNight: 'Good evening',
     greetingMorning: 'Good morning',
     greetingAfternoon: 'Good afternoon',
-    greetingEvening: 'Good evening'
+    greetingEvening: 'Good evening',
+    deleteConfirmTitle: 'Delete all data?',
+    deleteConfirmDesc: 'This action is irreversible. All transactions will be permanently deleted.',
+    deleteConfirmInputLabel: 'Type DELETE to confirm',
+    deleteConfirmButton: 'Delete all',
+    deleteConfirmCancel: 'Cancel'
   },
   es: {
     appName: 'Pulso',
@@ -192,7 +202,12 @@ const pulsoTranslations = {
     greetingNight: 'Buenas noches',
     greetingMorning: 'Buenos días',
     greetingAfternoon: 'Buenas tardes',
-    greetingEvening: 'Buenas noches'
+    greetingEvening: 'Buenas noches',
+    deleteConfirmTitle: '¿Eliminar todos los datos?',
+    deleteConfirmDesc: 'Esta acción es irreversible. Todas las transacciones serán eliminadas permanentemente.',
+    deleteConfirmInputLabel: 'Escribe ELIMINAR para confirmar',
+    deleteConfirmButton: 'Eliminar todo',
+    deleteConfirmCancel: 'Cancelar'
   }
 };
 
@@ -748,14 +763,15 @@ function checkRateLimit() {
 }
 function resetRateLimit() { authRateLimit.attempts = 0; authRateLimit.lockedUntil = 0; }
 
-// SESSION TIMEOUT — auto-logout após 15min de inatividade
-const SESSION_TIMEOUT_MS = 15 * 60 * 1000;
+// SESSION TIMEOUT — auto-logout após 60min de inatividade
+const SESSION_TIMEOUT_MS = 60 * 60 * 1000;
 let sessionTimer = null;
 function resetSessionTimer() {
   if (sessionTimer) clearTimeout(sessionTimer);
   if (!currentUser) return;
   sessionTimer = setTimeout(() => {
     if (auth && auth.signOut) {
+      localStorage.removeItem('pulso_last_uid');
       auth.signOut().then(() => {
         showToast('Sessão expirada por inatividade.', 'info');
         setTimeout(() => { window.location.href = 'login.html'; }, 1000);
@@ -862,7 +878,10 @@ if (auth) {
 
   auth.onAuthStateChanged(user => {
     currentUser = user;
-    if (user) authResolved = true;
+    if (user) {
+      authResolved = true;
+      localStorage.setItem('pulso_last_uid', user.uid);
+    }
     if (isLoginPage()) {
       if (user) window.location.href = 'index.html';
       return;
@@ -870,12 +889,11 @@ if (auth) {
     if (!user) {
       if (!authInitialized) {
         if (authTimeout) clearTimeout(authTimeout);
-        // Aguarda mais tempo para acomodar restauração lenta de sessão (ex.: login Google)
         authTimeout = setTimeout(() => {
           if (!currentUser && !authInitialized && !authResolved) {
             window.location.href = 'login.html';
           }
-        }, 5000);
+        }, 15000);
         return;
       }
       window.location.href = 'login.html';
@@ -936,14 +954,15 @@ function logout() {
     auth.signOut().then(() => {
       const uid = currentUser ? currentUser.uid : null;
       if (uid) {
+        const preserve = ['pulso-theme', 'pulso_consent', 'pulso-lang'];
         const keys = [];
         for (let i = 0; i < localStorage.length; i++) {
           const k = localStorage.key(i);
-          if (k && k.includes(uid)) keys.push(k);
+          if (k && k.includes(uid) && !preserve.includes(k)) keys.push(k);
         }
-        keys.push('pulso-theme');
         keys.forEach(k => localStorage.removeItem(k));
       }
+      localStorage.removeItem('pulso_last_uid');
       currentUser = null;
       window.location.href = 'login.html';
     });
@@ -2305,7 +2324,17 @@ function renderDashMonthSummary(monthlyExpense) {
 }
 
 // Saldo geral
-let saldoVisivel = true;
+let saldoVisivel = localStorage.getItem('pulso_eye_hidden') !== '1';
+
+// Aplica estado inicial do olho
+if (!saldoVisivel) {
+  document.body.classList.add('values-hidden');
+  const cls = 'fa-solid fa-eye-slash';
+  const icon = document.getElementById('global-eye-icon');
+  const heroIcon = document.getElementById('hero-eye-icon');
+  if (icon) icon.className = cls;
+  if (heroIcon) heroIcon.className = cls;
+}
 
 function renderDashSaldoGeral(balance, investimentoTotal) {
   const saldoEl = document.getElementById('dash-saldo-geral');
@@ -2323,6 +2352,7 @@ function renderDashSaldoGeral(balance, investimentoTotal) {
 
 function toggleAllValuesVisibility() {
   saldoVisivel = !saldoVisivel;
+  localStorage.setItem('pulso_eye_hidden', saldoVisivel ? '0' : '1');
   const icon = document.getElementById('global-eye-icon');
   const heroIcon = document.getElementById('hero-eye-icon');
   const cls = saldoVisivel ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
@@ -2977,15 +3007,65 @@ function exportData() {
 }
 
 function clearData() {
-  if (!confirm('Tem certeza que deseja apagar TODOS os dados? Esta ação não pode ser desfeita.')) return;
-  if (storageMode === 'rtdb' && db && currentUser) {
-    db.ref('users/' + currentUser.uid + '/transactions').remove();
-  } else {
-    transactions = [];
-    saveToLocal();
-    updateUI();
+  const lang = window.PulsoI18n ? window.PulsoI18n.locale : 'pt';
+  const keywords = { pt: 'DELETAR', en: 'DELETE', es: 'ELIMINAR' };
+  const keyword = keywords[lang] || keywords.pt;
+
+  const overlay = document.getElementById('delete-confirm-overlay');
+  const title = document.getElementById('delete-confirm-title');
+  const desc = document.getElementById('delete-confirm-desc');
+  const label = document.getElementById('delete-confirm-label');
+  const input = document.getElementById('delete-confirm-input');
+  const okBtn = document.getElementById('delete-confirm-ok');
+  const cancelBtn = document.getElementById('delete-confirm-cancel');
+
+  if (!overlay || !title || !desc || !label || !input || !okBtn || !cancelBtn) return;
+
+  title.textContent = window.PulsoI18n.t('deleteConfirmTitle', 'Apagar todos os dados?');
+  desc.textContent = window.PulsoI18n.t('deleteConfirmDesc', 'Esta ação é irreversível.');
+  label.textContent = window.PulsoI18n.t('deleteConfirmInputLabel', 'Digite DELETAR para confirmar');
+  okBtn.textContent = window.PulsoI18n.t('deleteConfirmButton', 'Apagar tudo');
+  cancelBtn.textContent = window.PulsoI18n.t('deleteConfirmCancel', 'Cancelar');
+
+  input.value = '';
+  okBtn.disabled = true;
+  overlay.style.display = 'flex';
+  input.focus();
+
+  function onInput() {
+    okBtn.disabled = input.value.toUpperCase() !== keyword;
   }
-  showToast('Todos os dados foram limpos.', 'warning');
+  function onKeydown(e) {
+    if (e.key === 'Escape') close();
+    if (e.key === 'Enter' && !okBtn.disabled) confirm();
+  }
+  function confirm() {
+    close();
+    if (storageMode === 'rtdb' && db && currentUser) {
+      db.ref('users/' + currentUser.uid + '/transactions').remove();
+    } else {
+      transactions = [];
+      saveToLocal();
+      updateUI();
+    }
+    showToast('Todos os dados foram limpos.', 'warning');
+  }
+  function close() {
+    overlay.style.display = 'none';
+    input.value = '';
+    input.removeEventListener('input', onInput);
+    input.removeEventListener('keydown', onKeydown);
+    okBtn.removeEventListener('click', confirm);
+    cancelBtn.removeEventListener('click', close);
+    overlay.removeEventListener('click', onOverlayClick);
+  }
+  function onOverlayClick(e) { if (e.target === overlay) close(); }
+
+  input.addEventListener('input', onInput);
+  input.addEventListener('keydown', onKeydown);
+  okBtn.addEventListener('click', confirm);
+  cancelBtn.addEventListener('click', close);
+  overlay.addEventListener('click', onOverlayClick);
 }
 
 // 14. IMPORTADOR DE PLANILHAS
@@ -3745,10 +3825,12 @@ function submitFeedback() {
   if (!msg) { showToast('Escreva seu feedback primeiro.', 'warning'); return; }
   if (msg.length > 1000) { showToast('Máximo 1000 caracteres.', 'warning'); return; }
   if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+  const userName = currentUser ? (currentUser.displayName || currentUser.email || 'Usuário') : 'Anônimo';
+  const userEmail = currentUser ? (currentUser.email || '') : '';
   const payload = {
     uid: currentUser ? currentUser.uid : 'anon',
     displayName: currentUser ? (currentUser.displayName || '') : '',
-    email: currentUser ? (currentUser.email || '') : '',
+    email: userEmail,
     photoURL: currentUser ? (currentUser.photoURL || '') : '',
     message: msg,
     version: '3.1.9',
@@ -3771,9 +3853,7 @@ function submitFeedback() {
     if (db && currentUser && storageMode === 'rtdb') {
       db.ref('feedbacks').push(payload).then(done).catch(fail);
     } else if (db && currentUser) {
-      // sem RTDB mas com auth: tenta mesmo assim
       db.ref('feedbacks').push(payload).then(done).catch(() => {
-        // fallback local
         const arr = JSON.parse(localStorage.getItem('pulso-feedbacks') || '[]');
         arr.push(payload); localStorage.setItem('pulso-feedbacks', JSON.stringify(arr));
         done();
@@ -3781,10 +3861,21 @@ function submitFeedback() {
     } else {
       const arr = JSON.parse(localStorage.getItem('pulso-feedbacks') || '[]');
       arr.push(payload); localStorage.setItem('pulso-feedbacks', JSON.stringify(arr));
-      // tenta RTDB anonimizado se houver db
       if (db) db.ref('feedbacks').push(payload).catch(()=>{});
       done();
     }
+    // Envia email de notificação para o admin
+    try {
+      const subject = encodeURIComponent('[Pulso Feedback] ' + userName);
+      const body = encodeURIComponent(
+        'Feedback do usuário: ' + userName + '\n' +
+        'Email: ' + userEmail + '\n' +
+        'Versão: 3.1.9\n' +
+        'Data: ' + new Date().toLocaleString('pt-BR') + '\n\n' +
+        'Mensagem:\n' + msg
+      );
+      window.open('mailto:pulsofeedback@gmail.com?subject=' + subject + '&body=' + body, '_blank');
+    } catch (e) {}
   } catch(e) { fail(e); }
 }
 
@@ -3890,6 +3981,8 @@ function renderReceitasChart(incomeByCategory) {
 
   if (receitasChartInstance) receitasChartInstance.destroy();
 
+  const total = values.reduce((a, b) => a + b, 0);
+
   receitasChartInstance = new Chart(canvas, {
     type: 'doughnut',
     data: {
@@ -3907,19 +4000,19 @@ function renderReceitasChart(incomeByCategory) {
       cutout: '65%',
       plugins: {
         legend: {
+          display: true,
           position: 'bottom',
           labels: {
-            color: 'rgba(255,255,255,0.7)',
-            padding: 12,
+            color: 'rgba(255,255,255,0.8)',
+            padding: 10,
             usePointStyle: true,
             pointStyleWidth: 10,
-            font: { size: 12 }
+            font: { size: 11 }
           }
         },
         tooltip: {
           callbacks: {
             label: function(ctx) {
-              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
               const pct = total > 0 ? ((ctx.raw / total) * 100).toFixed(1) : 0;
               return ctx.label + ': R$ ' + ctx.raw.toFixed(2) + ' (' + pct + '%)';
             }
@@ -3928,6 +4021,25 @@ function renderReceitasChart(incomeByCategory) {
       }
     }
   });
+
+  // Legenda customizada abaixo do gráfico
+  const wrap = canvas.parentElement;
+  if (wrap) {
+    let legendEl = wrap.querySelector('.receitas-custom-legend');
+    if (!legendEl) {
+      legendEl = document.createElement('div');
+      legendEl.className = 'receitas-custom-legend';
+      wrap.appendChild(legendEl);
+    }
+    legendEl.innerHTML = labels.map((label, i) => {
+      const pct = total > 0 ? ((values[i] / total) * 100).toFixed(1) : 0;
+      return '<div class="receitas-legend-item">' +
+        '<span class="receitas-legend-dot" style="background:' + colors[i % colors.length] + '"></span>' +
+        '<span class="receitas-legend-label">' + label + '</span>' +
+        '<span class="receitas-legend-pct">' + pct + '%</span>' +
+        '</div>';
+    }).join('');
+  }
 }
 
 // ============================================================
@@ -4435,6 +4547,7 @@ let lancFilter = 'all';
 let lancSearch = '';
 let lancCatFilter = 'all';
 let lancUserFilter = 'all';
+let lancView = 'monthly';
 
 const MONTH_NAMES = [
   'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -4496,15 +4609,28 @@ function renderLancamentos() {
   const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
   // Month name
-  if (monthNameEl) {
+  if (monthNameEl && lancView === 'monthly') {
     monthNameEl.textContent = MONTH_NAMES[lancMonth] + ' ' + lancYear;
   }
 
-  // Filter transactions by month
-  let filtered = transactions.filter(t => {
-    const d = new Date(t.date);
-    return d.getMonth() === lancMonth && d.getFullYear() === lancYear;
-  });
+  const yearNameEl = document.getElementById('lanc-year-name');
+  if (yearNameEl && lancView === 'annual') {
+    yearNameEl.textContent = lancYear;
+  }
+
+  // Filter transactions by month or year
+  let filtered;
+  if (lancView === 'annual') {
+    filtered = transactions.filter(t => {
+      const d = new Date(t.date);
+      return d.getFullYear() === lancYear;
+    });
+  } else {
+    filtered = transactions.filter(t => {
+      const d = new Date(t.date);
+      return d.getMonth() === lancMonth && d.getFullYear() === lancYear;
+    });
+  }
 
   // Type filter
   if (lancFilter === 'entrada') {
@@ -4573,7 +4699,7 @@ function renderLancamentos() {
     const cats = new Set();
     transactions.forEach(t => {
       const d = new Date(t.date);
-      if (d.getMonth() === lancMonth && d.getFullYear() === lancYear) {
+      if (lancView === 'annual' ? d.getFullYear() === lancYear : (d.getMonth() === lancMonth && d.getFullYear() === lancYear)) {
         cats.add(t.cat);
       }
     });
@@ -4680,6 +4806,23 @@ function changeLancMonth(delta) {
   lancMonth += delta;
   if (lancMonth > 11) { lancMonth = 0; lancYear++; }
   if (lancMonth < 0) { lancMonth = 11; lancYear--; }
+  renderLancamentos();
+}
+
+function setLancView(view) {
+  lancView = view;
+  document.querySelectorAll('.lanc-view-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-lanc-view') === view);
+  });
+  const monthNav = document.getElementById('lanc-month-nav');
+  const yearNav = document.getElementById('lanc-year-nav');
+  if (monthNav) monthNav.style.display = view === 'monthly' ? 'flex' : 'none';
+  if (yearNav) yearNav.style.display = view === 'annual' ? 'flex' : 'none';
+  renderLancamentos();
+}
+
+function changeLancYear(delta) {
+  lancYear += delta;
   renderLancamentos();
 }
 

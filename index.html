@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#6c7cff">
   <meta name="google-site-verification" content="DfsZ4EvUlvKRVvJ-QG7yAupX8bPEiZdmVQD8EbTZN4I">
   <meta name="google-adsense-account" content="ca-pub-7193916104971462">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; upgrade-insecure-requests; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://kit.fontawesome.com https://apis.google.com https://*.firebaseio.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://www.googletagmanager.com https://fundingchoicesignals.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://kit.fontawesome.com https://cdnjs.cloudflare.com; connect-src 'self' https://*.firebaseio.com wss://*.firebaseio.com https://*.googleapis.com https://accounts.google.com https://*.google.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesignals.google.com; frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.firebaseio.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://fundingchoicesignals.google.com; img-src 'self' data: https:; base-uri 'self'; form-action 'self' https://accounts.google.com https://*.google.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; upgrade-insecure-requests; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://kit.fontawesome.com https://apis.google.com https://*.firebaseio.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://www.googletagmanager.com https://fundingchoicesignals.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://kit.fontawesome.com https://cdnjs.cloudflare.com; connect-src 'self' https://*.firebaseio.com wss://*.firebaseio.com https://*.googleapis.com https://accounts.google.com https://*.google.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesignals.google.com; frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.firebaseio.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://fundingchoicesignals.google.com; img-src 'self' data: https:; base-uri 'self'; form-action 'self' https://accounts.google.com https://*.google.com mailto:;">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
@@ -174,12 +174,25 @@
               <p class="eyebrow">Extrato</p>
               <h2>Extrato Bancário</h2>
             </div>
-            <div class="lanc-month-nav">
+            <div class="lanc-view-toggle">
+              <button type="button" class="lanc-view-btn active" data-lanc-view="monthly" onclick="setLancView('monthly')">Mensal</button>
+              <button type="button" class="lanc-view-btn" data-lanc-view="annual" onclick="setLancView('annual')">Anual</button>
+            </div>
+            <div class="lanc-month-nav" id="lanc-month-nav">
               <button type="button" class="lanc-nav-btn" onclick="changeLancMonth(-1)" aria-label="Mês anterior">
                 <i class="fa-solid fa-chevron-left"></i>
               </button>
               <span class="lanc-month-name" id="lanc-month-name"></span>
               <button type="button" class="lanc-nav-btn" onclick="changeLancMonth(1)" aria-label="Próximo mês">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="lanc-year-nav" id="lanc-year-nav" style="display:none;">
+              <button type="button" class="lanc-nav-btn" onclick="changeLancYear(-1)" aria-label="Ano anterior">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <span class="lanc-month-name" id="lanc-year-name"></span>
+              <button type="button" class="lanc-nav-btn" onclick="changeLancYear(1)" aria-label="Próximo ano">
                 <i class="fa-solid fa-chevron-right"></i>
               </button>
             </div>
@@ -1128,7 +1141,7 @@
 <div class="form-modal-overlay" id="feedback-modal-overlay" onclick="closeFeedbackModal()">
   <div class="form-modal" onclick="event.stopPropagation()">
     <h3><i class="fa-solid fa-comment-dots" style="color:#6c7cff"></i> Seu feedback</h3>
-    <p class="panel-text" style="margin-bottom:12px;">Conte o que achou da atualização. Sua mensagem fica salva com seu usuário.</p>
+    <p class="panel-text" style="margin-bottom:12px;">Conte o que achou. Sua mensagem fica salva e enviada por e-mail para o administrador.</p>
     <div class="form-group">
       <textarea id="feedback-text" class="form-control" rows="4" placeholder="Ex: Adorei as correções! Sugiro..." maxlength="1000" style="resize:vertical;"></textarea>
       <small style="color:var(--text-secondary);font-size:0.75rem;"><span id="feedback-counter">0</span>/1000</small>
@@ -1258,6 +1271,19 @@ function cmpSaveSettings(granted) {
   if (banner) banner.style.display = 'none';
 }
 </script>
+
+<div id="delete-confirm-overlay" class="modal-overlay" style="display:none;">
+  <div class="modal-card delete-confirm-card">
+    <h3 id="delete-confirm-title"></h3>
+    <p id="delete-confirm-desc"></p>
+    <label id="delete-confirm-label" for="delete-confirm-input"></label>
+    <input type="text" id="delete-confirm-input" class="delete-confirm-input" autocomplete="off" spellcheck="false" />
+    <div class="delete-confirm-actions">
+      <button type="button" id="delete-confirm-cancel" class="btn-cancel"></button>
+      <button type="button" id="delete-confirm-ok" class="btn-danger" disabled></button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
