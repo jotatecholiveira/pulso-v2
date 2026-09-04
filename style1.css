@@ -5156,6 +5156,102 @@ body.light-theme .toast-notification {
   background: rgba(255, 77, 77, 0.1);
 }
 
+/* ============================================================
+   FEEDBACKS LIST (Profile)
+   ============================================================ */
+.profile-feedbacks-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+.profile-feedbacks-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.profile-feedbacks-title i { color: var(--accent-color); }
+.feedback-badge {
+  background: var(--accent-color);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+  min-width: 20px;
+  text-align: center;
+}
+.feedbacks-list {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+.feedbacks-list::-webkit-scrollbar { width: 5px; }
+.feedbacks-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 99px; }
+.feedbacks-empty {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 20px 0;
+  opacity: 0.7;
+}
+.fb-item {
+  background: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: background 0.2s;
+}
+.fb-item:hover { background: rgba(255,255,255,0.04); }
+.fb-item.unread { border-left: 3px solid var(--accent-color); }
+.fb-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.fb-item-date {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+.fb-item-version {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  background: var(--bg-soft);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.fb-item-message {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+  word-break: break-word;
+}
+.fb-item-status {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 6px;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.fb-item-status.unread {
+  background: rgba(108,124,255,0.15);
+  color: var(--accent-color);
+}
+.fb-item-status.read {
+  background: rgba(36,195,139,0.12);
+  color: var(--accent-success);
+}
+
 /* Avatar Simple Grid */
 .avatar-grid-simple {
   display: flex;

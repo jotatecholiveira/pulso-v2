@@ -1219,6 +1219,8 @@ function openProfileModal() {
 
   const firstInput = overlay.querySelector('input:not([disabled])');
   if (firstInput) setTimeout(() => firstInput.focus(), 200);
+
+  renderMyFeedbacks();
 }
 
 
@@ -3954,6 +3956,62 @@ function closeFeedbackModal() {
   const el = document.getElementById('feedback-modal-overlay');
   if (el) el.classList.remove('active');
 }
+
+function renderMyFeedbacks() {
+  const listEl = document.getElementById('feedbacks-list');
+  const countBadge = document.getElementById('feedbacks-count-badge');
+  if (!listEl) return;
+  listEl.innerHTML = '<p class="feedbacks-empty">Carregando...</p>';
+
+  if (!currentUser) {
+    const local = JSON.parse(localStorage.getItem('pulso-feedbacks') || '[]');
+    if (local.length === 0) {
+      listEl.innerHTML = '<p class="feedbacks-empty">Nenhum feedback enviado ainda.</p>';
+      if (countBadge) countBadge.textContent = '0';
+      return;
+    }
+    renderFeedbacksList(listEl, countBadge, local);
+    return;
+  }
+
+  if (db && storageMode === 'rtdb') {
+    db.ref('users/' + currentUser.uid + '/feedbacks').orderByChild('createdAt').once('value')
+      .then(snap => {
+        const items = [];
+        snap.forEach(child => items.push({ id: child.key, ...child.val() }));
+        items.reverse();
+        renderFeedbacksList(listEl, countBadge, items);
+      })
+      .catch(() => {
+        listEl.innerHTML = '<p class="feedbacks-empty">Erro ao carregar.</p>';
+      });
+  } else {
+    listEl.innerHTML = '<p class="feedbacks-empty">Nenhum feedback enviado ainda.</p>';
+    if (countBadge) countBadge.textContent = '0';
+  }
+}
+
+function renderFeedbacksList(listEl, countBadge, items) {
+  if (!items.length) {
+    listEl.innerHTML = '<p class="feedbacks-empty">Nenhum feedback enviado ainda.</p>';
+    if (countBadge) countBadge.textContent = '0';
+    return;
+  }
+  if (countBadge) countBadge.textContent = items.length;
+  listEl.innerHTML = items.map(fb => {
+    const date = fb.createdAt ? new Date(fb.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+    const statusClass = fb.status === 'unread' ? 'unread' : 'read';
+    const statusLabel = fb.status === 'unread' ? 'Enviado' : 'Lido';
+    return '<div class="fb-item ' + statusClass + '">' +
+      '<div class="fb-item-header">' +
+        '<span class="fb-item-date">' + date + '</span>' +
+        '<span class="fb-item-version">v' + (fb.version || '?') + '</span>' +
+      '</div>' +
+      '<div class="fb-item-message">' + escapeHTML(fb.message || '') + '</div>' +
+      '<span class="fb-item-status ' + statusClass + '">' + statusLabel + '</span>' +
+    '</div>';
+  }).join('');
+}
 function submitFeedback() {
   const ta = document.getElementById('feedback-text');
   const btn = document.getElementById('feedback-submit-btn');
@@ -3969,9 +4027,10 @@ function submitFeedback() {
     email: userEmail,
     photoURL: currentUser ? (currentUser.photoURL || '') : '',
     message: msg,
-    version: '3.1.12',
+    version: APP_VERSION || '3.1.12',
     createdAt: new Date().toISOString(),
-    userAgent: navigator.userAgent.slice(0,300)
+    userAgent: navigator.userAgent.slice(0,300),
+    status: 'unread'
   };
   const done = () => {
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar'; }
@@ -3987,9 +4046,9 @@ function submitFeedback() {
   };
   try {
     if (db && currentUser && storageMode === 'rtdb') {
-      db.ref('feedbacks').push(payload).then(done).catch(fail);
+      db.ref('users/' + currentUser.uid + '/feedbacks').push(payload).then(done).catch(fail);
     } else if (db && currentUser) {
-      db.ref('feedbacks').push(payload).then(done).catch(() => {
+      db.ref('users/' + currentUser.uid + '/feedbacks').push(payload).then(done).catch(() => {
         const arr = JSON.parse(localStorage.getItem('pulso-feedbacks') || '[]');
         arr.push(payload); localStorage.setItem('pulso-feedbacks', JSON.stringify(arr));
         done();
@@ -3997,21 +4056,8 @@ function submitFeedback() {
     } else {
       const arr = JSON.parse(localStorage.getItem('pulso-feedbacks') || '[]');
       arr.push(payload); localStorage.setItem('pulso-feedbacks', JSON.stringify(arr));
-      if (db) db.ref('feedbacks').push(payload).catch(()=>{});
       done();
     }
-    // Envia email de notificação para o admin
-    try {
-      const subject = encodeURIComponent('[Pulso Feedback] ' + userName);
-      const body = encodeURIComponent(
-        'Feedback do usuário: ' + userName + '\n' +
-        'Email: ' + userEmail + '\n' +
-        'Versão: 3.1.12\n' +
-        'Data: ' + new Date().toLocaleString('pt-BR') + '\n\n' +
-        'Mensagem:\n' + msg
-      );
-      window.open('mailto:pulsofeedback@gmail.com?subject=' + subject + '&body=' + body, '_blank');
-    } catch (e) {}
   } catch(e) { fail(e); }
 }
 
