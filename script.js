@@ -1438,11 +1438,9 @@ function populateCartaoSelect() {
 
 function syncCreditFieldsFromCard() {
   const cardSelect = document.getElementById('m-cartao');
-  const dueInput = document.getElementById('m-dia-vencimento');
-  if (!cardSelect || !dueInput) return;
+  if (!cardSelect) return;
   const idx = parseInt(cardSelect.value, 10);
   if (Number.isNaN(idx) || !cartoes[idx]) return;
-  dueInput.value = clampDueDay(cartoes[idx].diaVencimento || dueInput.value || 10);
 }
 
 function updatePaymentFields() {
@@ -1450,14 +1448,12 @@ function updatePaymentFields() {
   const pagamento = document.getElementById('m-pagamento')?.value || 'dinheiro';
   const pagamentoGroup = document.getElementById('pagamento-group');
   const cardGroup = document.getElementById('cartao-group');
-  const dueGroup = document.getElementById('vencimento-group');
   const parcelasGroup = document.getElementById('parcelas-group');
   const isExpense = type === 'saida';
   const isCredit = isExpense && pagamento === 'credito';
 
   if (pagamentoGroup) pagamentoGroup.style.display = isExpense ? '' : 'none';
   if (cardGroup) cardGroup.style.display = isCredit ? '' : 'none';
-  if (dueGroup) dueGroup.style.display = isCredit ? '' : 'none';
   if (parcelasGroup) parcelasGroup.style.display = isCredit ? 'flex' : 'none';
   updateParcelaInfo();
 }
@@ -1505,10 +1501,8 @@ function openModal(type) {
 
   const pagamentoInput = document.getElementById('m-pagamento');
   const parcelasInput = document.getElementById('m-parcelas');
-  const dueInput = document.getElementById('m-dia-vencimento');
   if (pagamentoInput) pagamentoInput.value = 'dinheiro';
   if (parcelasInput) parcelasInput.value = '1';
-  if (dueInput) dueInput.value = '10';
   populateCartaoSelect();
   syncCreditFieldsFromCard();
   updatePaymentFields();
@@ -1570,14 +1564,6 @@ if (cardInput) {
   });
 }
 
-const dueDayInput = document.getElementById('m-dia-vencimento');
-if (dueDayInput) {
-  dueDayInput.addEventListener('input', () => {
-    dueDayInput.value = String(clampDueDay(dueDayInput.value));
-    updateParcelaInfo();
-  });
-}
-
 function updateParcelaInfo() {
   const valor = parseFloat(document.getElementById('m-val')?.value) || 0;
   const parcelasRaw = parseInt(document.getElementById('m-parcelas')?.value, 10) || 1;
@@ -1618,7 +1604,6 @@ if (modalForm) {
     const pagamento = document.getElementById('m-pagamento').value;
     const parcelas = Math.min(12, Math.max(1, parseInt(document.getElementById('m-parcelas')?.value, 10) || 1));
     const cardIdx = parseInt(document.getElementById('m-cartao')?.value, 10);
-    const dueDay = clampDueDay(document.getElementById('m-dia-vencimento')?.value);
 
     if (!desc || !val || !date) {
       showToast('Preencha todos os campos obrigatórios.', 'warning');
@@ -1631,6 +1616,7 @@ if (modalForm) {
         return;
       }
       const card = cartoes[cardIdx];
+      const dueDay = clampDueDay(card.diaVencimento || 10);
       const valorParcela = val / parcelas;
       for (let i = 0; i < parcelas; i++) {
         const dueDateIso = getInvoiceDueDate(date, dueDay, i);
