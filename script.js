@@ -469,7 +469,7 @@ function sanitize(t) {
   return {
     id: t.id ?? Date.now() + Math.random(),
     type: t.type === 'entrada' ? 'entrada' : 'saida',
-    user: String(t.user || 'Compartilhado').slice(0, 60),
+    user: String(t.user || 'Usuário').slice(0, 60),
     desc: String(t.desc || '').slice(0, 200),
     val: Math.max(0, parseFloat(t.val) || 0),
     cat: String(t.cat || 'Outros').slice(0, 60),
@@ -1624,7 +1624,7 @@ if (modalForm) {
         addTransaction({
           id: Date.now() + i + Math.random(),
           type: type,
-          user: 'Compartilhado',
+          user: currentUser ? (currentUser.displayName || currentUser.email || 'Usuário') : 'Usuário',
           desc: parcelaDesc,
           val: valorParcela,
           cat: cat,
@@ -1655,7 +1655,7 @@ if (modalForm) {
       addTransaction({
         id: Date.now(),
         type: type,
-        user: 'Compartilhado',
+        user: currentUser ? (currentUser.displayName || currentUser.email || 'Usuário') : 'Usuário',
         desc: desc,
         val: val,
         cat: cat,
@@ -3292,7 +3292,7 @@ function importMeses(workbook, log) {
         } else {
           let categoria = bloco.tipo === 'essenciais' ? 'Gastos Essenciais' : 'Pessoais';
           if (PALAVRAS_INVESTIMENTO.some(p => rotuloLower.includes(p))) categoria = 'Investimento';
-          novos.push({ id: Date.now() + Math.random(), type: 'saida', user: 'Compartilhado', desc: rotulo, val: valor, cat: categoria, date: dataMes });
+          novos.push({ id: Date.now() + Math.random(), type: 'saida', user: currentUser ? (currentUser.displayName || currentUser.email || 'Usuário') : 'Usuário', desc: rotulo, val: valor, cat: categoria, date: dataMes });
         }
       }
     });
@@ -4815,7 +4815,7 @@ function renderLancamentos() {
       desc: cp.descricao || 'Conta a pagar',
       val: parseFloat(cp.valor) || 0,
       cat: cp.origem === 'cartao' ? ('Cartão · ' + (cp.cartaoNome || '')) : 'Conta a pagar',
-      user: 'Compartilhado',
+      user: currentUser ? (currentUser.displayName || currentUser.email || 'Usuário') : 'Usuário',
       _pago: cp.pago,
       _cartao: cp.origem === 'cartao',
       _cartaoNome: cp.cartaoNome || ''
@@ -4845,7 +4845,7 @@ function renderLancamentos() {
 
   // User filter
   if (lancUserFilter !== 'all') {
-    filtered = filtered.filter(t => (t.user || 'Compartilhado') === lancUserFilter);
+    filtered = filtered.filter(t => (t.user || 'Usuário') === lancUserFilter);
   }
 
   // Sort by date descending, then by type
@@ -4908,7 +4908,7 @@ function renderLancamentos() {
     transactions.forEach(t => {
       const d = new Date(t.date);
       if (d.getMonth() === lancMonth && d.getFullYear() === lancYear) {
-        users.add(t.user || 'Compartilhado');
+        users.add(t.user || 'Usuário');
       }
     });
     const currentUserVal = userSelect.value;
@@ -5202,7 +5202,7 @@ function confirmPayCp(descricao, valor, cartaoNome) {
     addTransaction({
       id: Date.now(),
       type: 'saida',
-      user: 'Compartilhado',
+      user: currentUser ? (currentUser.displayName || currentUser.email || 'Usuário') : 'Usuário',
       desc: 'Pagamento: ' + cp.descricao,
       val: payValue,
       cat: 'Pagamento de fatura',
