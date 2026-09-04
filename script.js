@@ -3922,10 +3922,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// — Update modal v3.1.9 (aparece 1x) —
+// — Update modal v3.1.12 (aparece 1x) —
 function maybeShowUpdateModal() {
   if (isLoginPage()) return;
-  const KEY = 'pulso-update-3.1.9-seen';
+  const KEY = 'pulso-update-3.1.12-seen';
   if (localStorage.getItem(KEY)) return;
   setTimeout(() => {
     const el = document.getElementById('update-modal-overlay');
@@ -3935,7 +3935,7 @@ function maybeShowUpdateModal() {
 function closeUpdateModal() {
   const el = document.getElementById('update-modal-overlay');
   if (el) el.classList.remove('active');
-  localStorage.setItem('pulso-update-3.1.9-seen', '1');
+  localStorage.setItem('pulso-update-3.1.12-seen', '1');
 }
 // fechar modal de update com ESC também marca como visto
 document.addEventListener('keydown', (e) => {
@@ -3969,7 +3969,7 @@ function submitFeedback() {
     email: userEmail,
     photoURL: currentUser ? (currentUser.photoURL || '') : '',
     message: msg,
-    version: '3.1.9',
+    version: '3.1.12',
     createdAt: new Date().toISOString(),
     userAgent: navigator.userAgent.slice(0,300)
   };
@@ -4006,7 +4006,7 @@ function submitFeedback() {
       const body = encodeURIComponent(
         'Feedback do usuário: ' + userName + '\n' +
         'Email: ' + userEmail + '\n' +
-        'Versão: 3.1.9\n' +
+        'Versão: 3.1.12\n' +
         'Data: ' + new Date().toLocaleString('pt-BR') + '\n\n' +
         'Mensagem:\n' + msg
       );
