@@ -5058,6 +5058,7 @@ function renderLancCartoes() {
     html += '<div class="lanc-cartao-bank" style="background:' + bank.color + '20;color:' + bank.color + ';"><i class="' + bank.icon + '"></i></div>';
     html += '<div class="lanc-cartao-title"><strong>' + escapeHTML(c.nome) + '</strong><span>' + escapeHTML(c.bandeira || 'Manual') + ' · Venc. dia ' + diaVencimento + '</span></div>';
     html += '<div class="lanc-cartao-total"><span class="lanc-cartao-total-label">Fatura atual</span><span class="lanc-cartao-total-value">' + formatCurrency(totalFatura) + '</span></div>';
+    html += '<button type="button" class="lanc-cartao-edit-btn" onclick="editFatura(' + ci + ')" title="Editar fatura"><i class="fa-solid fa-pen"></i></button>';
     html += '</div>';
 
     if (faturasMes.length === 0) {
@@ -5086,6 +5087,7 @@ function renderLancCartoes() {
       });
       html += '</div>';
     }
+    html += '<button type="button" class="lanc-cartao-add-btn" onclick="addFaturaItem(' + ci + ')"><i class="fa-solid fa-plus"></i> Adicionar item manual</button>';
     html += '</div>';
   });
 
@@ -5106,6 +5108,162 @@ function toggleCpPago(cartaoIndex, descricao, valor) {
   saveContasPagar();
   renderLancCartoes();
   showToast(cp.pago ? 'Item marcado como pago!' : 'Item marcado como pendente!', 'success');
+}
+
+function editFatura(cartaoIndex) {
+  const c = cartoes[cartaoIndex];
+  if (!c) return;
+  const now = new Date();
+  const faturasMes = contasPagar.filter(cp =>
+    cp.origem === 'cartao' &&
+    (cp.cartaoNome || '') === (c.nome || '') &&
+    new Date(cp.vencimento).getMonth() === now.getMonth() &&
+    new Date(cp.vencimento).getFullYear() === now.getFullYear()
+  );
+
+  const overlay = document.createElement('div');
+  overlay.className = 'form-modal-overlay';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+  let itemsHtml = faturasMes.map((cp, idx) => {
+    const venc = new Date(cp.vencimento).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+    return '<div class="fatura-edit-item' + (cp.pago ? ' paid' : '') + '">' +
+      '<div class="fatura-edit-item-info">' +
+        '<span class="fatura-edit-item-desc">' + escapeHTML(cp.descricao) + '</span>' +
+        '<span class="fatura-edit-item-venc">' + venc + '</span>' +
+      '</div>' +
+      '<input type="number" class="fatura-edit-item-val" data-idx="' + idx + '" value="' + (parseFloat(cp.valor) || 0).toFixed(2) + '" min="0" step="0.01">' +
+      '<button type="button" class="fatura-edit-item-del" onclick="deleteFaturaItem(' + cartaoIndex + ', ' + idx + ')" title="Remover"><i class="fa-solid fa-trash"></i></button>' +
+    '</div>';
+  }).join('');
+
+  if (!itemsHtml) itemsHtml = '<p class="fatura-edit-empty">Nenhum item nesta fatura.</p>';
+
+  overlay.innerHTML = `
+    <div class="form-modal fatura-edit-modal" onclick="event.stopPropagation()">
+      <h3><i class="fa-solid fa-pen-to-square"></i> Editar fatura — ${escapeHTML(c.nome)}</h3>
+      <div class="fatura-edit-items">${itemsHtml}</div>
+      <div class="delete-confirm-actions">
+        <button type="button" class="btn-cancel" onclick="this.closest('.form-modal-overlay').remove()">Cancelar</button>
+        <button type="button" class="btn-pay" onclick="saveFaturaEdit(${cartaoIndex}, this)"><i class="fa-solid fa-check"></i> Salvar</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add('active'));
+}
+
+function saveFaturaEdit(cartaoIndex, btn) {
+  const c = cartoes[cartaoIndex];
+  if (!c) return;
+  const now = new Date();
+  const inputs = document.querySelectorAll('.fatura-edit-item-val');
+  inputs.forEach(input => {
+    const idx = parseInt(input.dataset.idx, 10);
+    const faturasMes = contasPagar.filter(cp =>
+      cp.origem === 'cartao' &&
+      (cp.cartaoNome || '') === (c.nome || '') &&
+      new Date(cp.vencimento).getMonth() === now.getMonth() &&
+      new Date(cp.vencimento).getFullYear() === now.getFullYear()
+    );
+    if (faturasMes[idx]) {
+      faturasMes[idx].valor = parseFloat(input.value) || 0;
+    }
+  });
+  saveContasPagar();
+  const overlay = btn.closest('.form-modal-overlay');
+  if (overlay) overlay.remove();
+  renderLancCartoes();
+  renderDashCartoes();
+  showToast('Fatura atualizada!', 'success');
+}
+
+function deleteFaturaItem(cartaoIndex, itemIdx) {
+  const c = cartoes[cartaoIndex];
+  if (!c) return;
+  const now = new Date();
+  const faturasMes = contasPagar.filter(cp =>
+    cp.origem === 'cartao' &&
+    (cp.cartaoNome || '') === (c.nome || '') &&
+    new Date(cp.vencimento).getMonth() === now.getMonth() &&
+    new Date(cp.vencimento).getFullYear() === now.getFullYear()
+  );
+  const cp = faturasMes[itemIdx];
+  if (!cp) return;
+  const globalIdx = contasPagar.indexOf(cp);
+  if (globalIdx > -1) {
+    contasPagar.splice(globalIdx, 1);
+    saveContasPagar();
+    editFatura(cartaoIndex);
+    showToast('Item removido.', 'success');
+  }
+}
+
+function addFaturaItem(cartaoIndex) {
+  const c = cartoes[cartaoIndex];
+  if (!c) return;
+  const now = new Date();
+  const diaVenc = clampDueDay(c.diaVencimento || 10);
+  const vencDate = new Date(now.getFullYear(), now.getMonth(), diaVenc);
+  if (vencDate < now) vencDate.setMonth(vencDate.getMonth() + 1);
+
+  const overlay = document.createElement('div');
+  overlay.className = 'form-modal-overlay';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+  overlay.innerHTML = `
+    <div class="form-modal fatura-add-modal" onclick="event.stopPropagation()">
+      <h3><i class="fa-solid fa-plus-circle"></i> Adicionar item — ${escapeHTML(c.nome)}</h3>
+      <div class="fatura-add-fields">
+        <div class="modal-field">
+          <label>Descrição</label>
+          <input type="text" id="fatura-add-desc" class="modal-input" placeholder="Ex: Compra no mercado" maxlength="100">
+        </div>
+        <div class="modal-field">
+          <label>Valor (R$)</label>
+          <div class="currency-input-wrap"><span class="currency-prefix">R$</span><input type="number" id="fatura-add-val" class="modal-input currency-input" min="0" step="0.01" placeholder="0,00"></div>
+        </div>
+      </div>
+      <div class="delete-confirm-actions">
+        <button type="button" class="btn-cancel" onclick="this.closest('.form-modal-overlay').remove()">Cancelar</button>
+        <button type="button" class="btn-pay" onclick="confirmAddFaturaItem(${cartaoIndex}, this)"><i class="fa-solid fa-check"></i> Adicionar</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add('active'));
+  setTimeout(() => { const inp = document.getElementById('fatura-add-desc'); if (inp) inp.focus(); }, 200);
+}
+
+function confirmAddFaturaItem(cartaoIndex, btn) {
+  const c = cartoes[cartaoIndex];
+  if (!c) return;
+  const desc = (document.getElementById('fatura-add-desc')?.value || '').trim();
+  const val = parseFloat(document.getElementById('fatura-add-val')?.value) || 0;
+  if (!desc) { showToast('Preencha a descrição.', 'warning'); return; }
+  if (val <= 0) { showToast('Informe um valor válido.', 'warning'); return; }
+
+  const now = new Date();
+  const diaVenc = clampDueDay(c.diaVencimento || 10);
+  let vencDate = new Date(now.getFullYear(), now.getMonth(), diaVenc);
+  if (vencDate < now) vencDate.setMonth(vencDate.getMonth() + 1);
+
+  contasPagar.push({
+    descricao: 'Fatura ' + c.nome + ' — ' + desc,
+    valor: val,
+    vencimento: vencDate.toISOString(),
+    pago: false,
+    recorrencia: 'unico',
+    origem: 'cartao',
+    cartaoNome: c.nome,
+    criadoEm: new Date().toISOString()
+  });
+  saveContasPagar();
+  const overlay = btn.closest('.form-modal-overlay');
+  if (overlay) overlay.remove();
+  renderLancCartoes();
+  renderDashCartoes();
+  showToast('Item adicionado à fatura!', 'success');
 }
 
 function payCpItem(descricao, valor, cartaoNome) {

@@ -7495,6 +7495,137 @@ body.dark-mode .delete-confirm-actions .btn-cancel:hover {
 .adsense-banner-close:hover {
   background: rgba(255,255,255,0.1);
 }
+
+/* ============================================================
+   FATURA EDIT / ADD
+   ============================================================ */
+.lanc-cartao-edit-btn {
+  background: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.lanc-cartao-edit-btn:hover {
+  background: rgba(108, 124, 255, 0.12);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+.lanc-cartao-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 2px dashed var(--border-color);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.lanc-cartao-add-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: rgba(108, 124, 255, 0.06);
+}
+.fatura-edit-modal,
+.fatura-add-modal {
+  max-width: 440px;
+  width: 100%;
+}
+.fatura-edit-modal h3,
+.fatura-add-modal h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: var(--text-primary);
+}
+.fatura-edit-modal h3 i,
+.fatura-add-modal h3 i { color: var(--accent-color); }
+.fatura-edit-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 14px;
+}
+.fatura-edit-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border-color);
+}
+.fatura-edit-item.paid { opacity: 0.6; }
+.fatura-edit-item-info {
+  flex: 1;
+  min-width: 0;
+}
+.fatura-edit-item-desc {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fatura-edit-item-venc {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+.fatura-edit-item-val {
+  width: 90px;
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: right;
+}
+.fatura-edit-item-val:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+.fatura-edit-item-del {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+.fatura-edit-item-del:hover { color: var(--accent-danger); }
+.fatura-edit-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  padding: 20px 0;
+}
+.fatura-add-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
 @media (max-width: 768px) {
   #adsense-support-banner { left: 0; }
 }
