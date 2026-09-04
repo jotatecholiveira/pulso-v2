@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pulso-5ui.pages.dev/sitemap.xml

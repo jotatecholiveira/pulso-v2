@@ -2420,6 +2420,15 @@ function showFormModal({ title, fields, onSubmit }) {
         '<select id="' + escapeHTML(f.id) + '">' + opts + '</select>' +
         '</div>';
     }
+    if (f.type === 'currency') {
+      return '<div class="form-modal-field">' +
+        '<label for="' + escapeHTML(f.id) + '">' + escapeHTML(f.label) + '</label>' +
+        '<div class="currency-input-wrap">' +
+          '<span class="currency-prefix">R$</span>' +
+          '<input type="text" inputmode="decimal" id="' + escapeHTML(f.id) + '" placeholder="0,00"' +
+          (f.min !== undefined ? ' data-min="' + escapeHTML(String(f.min)) + '"' : '') + '>' +
+        '</div></div>';
+    }
     return '<div class="form-modal-field">' +
       '<label for="' + escapeHTML(f.id) + '">' + escapeHTML(f.label) + '</label>' +
       '<input type="' + escapeHTML(f.type) + '" id="' + escapeHTML(f.id) + '" placeholder="' + escapeHTML(f.placeholder || '') + '"' +
@@ -2445,13 +2454,42 @@ function showFormModal({ title, fields, onSubmit }) {
 
   overlay.querySelector('.form-modal-cancel').addEventListener('click', () => overlay.remove());
 
+  overlay.querySelectorAll('.currency-input-wrap input').forEach(input => {
+    const formatCurrencyInput = (raw) => {
+      const digits = raw.replace(/\D/g, '');
+      if (!digits) return '';
+      const num = parseInt(digits, 10);
+      const reais = (num / 100).toFixed(2);
+      return reais.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+    input.addEventListener('input', () => {
+      const pos = input.selectionStart;
+      const oldLen = input.value.length;
+      input.value = formatCurrencyInput(input.value);
+      const diff = input.value.length - oldLen;
+      input.setSelectionRange(pos + diff, pos + diff);
+    });
+    input.addEventListener('blur', () => {
+      const raw = input.value.replace(/\D/g, '');
+      if (raw) {
+        const num = parseInt(raw, 10) / 100;
+        input.value = num.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      }
+    });
+  });
+
   const firstInput = overlay.querySelector('input, select');
   if (firstInput) setTimeout(() => firstInput.focus(), 100);
 
   overlay.querySelector('#form-modal-ok').addEventListener('click', () => {
     const values = {};
     fields.forEach(f => {
-      values[f.id] = overlay.querySelector('#' + f.id).value;
+      const el = overlay.querySelector('#' + f.id);
+      if (f.type === 'currency') {
+        values[f.id] = el.value.replace(/\./g, '').replace(',', '.').replace(/[^0-9.]/g, '');
+      } else {
+        values[f.id] = el.value;
+      }
     });
     overlay.remove();
     onSubmit(values);
@@ -2621,6 +2659,32 @@ function saveCartoes() {
   }
 }
 
+const BANK_ICONS = {
+  'Nubank': { icon: 'fa-solid fa-building-columns', color: '#820ad1' },
+  'Inter': { icon: 'fa-solid fa-building-columns', color: '#ff7a00' },
+  'Itaú': { icon: 'fa-solid fa-building-columns', color: '#ec7e00' },
+  'Bradesco': { icon: 'fa-solid fa-building-columns', color: '#cc092f' },
+  'Banco do Brasil': { icon: 'fa-solid fa-building-columns', color: '#003da5' },
+  'Caixa': { icon: 'fa-solid fa-building-columns', color: '#0066b3' },
+  'Santander': { icon: 'fa-solid fa-building-columns', color: '#ec0000' },
+  'C6 Bank': { icon: 'fa-solid fa-building-columns', color: '#1a1a1a' },
+  'Mercado Pago': { icon: 'fa-solid fa-building-columns', color: '#009ee3' },
+  'PicPay': { icon: 'fa-solid fa-building-columns', color: '#11c76b' },
+  'PagBank': { icon: 'fa-solid fa-building-columns', color: '#00bfa5' },
+  'Neon': { icon: 'fa-solid fa-building-columns', color: '#00e676' },
+  'BTG Pactual': { icon: 'fa-solid fa-building-columns', color: '#000' },
+  'Original': { icon: 'fa-solid fa-building-columns', color: '#000' },
+  'Next': { icon: 'fa-solid fa-building-columns', color: '#ff5a5f' },
+  'Rico': { icon: 'fa-solid fa-building-columns', color: '#003580' },
+  'XP': { icon: 'fa-solid fa-building-columns', color: '#00b050' },
+  'Outro': { icon: 'fa-solid fa-credit-card', color: '#666' }
+};
+
+function getBankIcon(bankName) {
+  const match = BANK_ICONS[bankName];
+  return match || BANK_ICONS['Outro'];
+}
+
 function renderDashCartoes() {
   const container = document.getElementById('cartoes-list');
   if (!container) return;
@@ -2648,9 +2712,10 @@ function renderDashCartoes() {
       })
       .reduce((sum, cp) => sum + (parseFloat(cp.valor) || 0), 0);
     const diaVencimento = clampDueDay(c.diaVencimento || 10);
+    const bank = getBankIcon(c.nome);
     return '<div class="cartao-item">' +
       '<div class="cartao-info">' +
-        '<div class="cartao-icon"><i class="fa-solid fa-credit-card"></i></div>' +
+        '<div class="cartao-icon" style="background:' + bank.color + '20;color:' + bank.color + ';"><i class="' + bank.icon + '"></i></div>' +
         '<div>' +
           '<div class="cartao-nome">' + escapeHTML(c.nome) + ' <span class="cartao-badge">' + escapeHTML(c.bandeira || 'Manual') + '</span></div>' +
           '<div class="cartao-tipo">Vencimento dia ' + diaVencimento + '</div>' +
@@ -2686,7 +2751,7 @@ function openCartaoModal(options = {}) {
       title: 'Editar cartão de crédito',
       fields: [
         { id: 'fc-nome', label: 'Nome do cartão', type: 'text', placeholder: 'Ex: Nubank, Inter' },
-        { id: 'fc-limite', label: 'Limite total (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
+        { id: 'fc-limite', label: 'Limite total (R$)', type: 'currency' },
         { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] },
         { id: 'fc-vencimento', label: 'Dia de vencimento da fatura', type: 'number', placeholder: '10', min: '1' }
       ],
@@ -2709,7 +2774,7 @@ function openCartaoModal(options = {}) {
       const bandeiraEl = document.getElementById('fc-bandeira');
       const vencimentoEl = document.getElementById('fc-vencimento');
       if (nomeEl) nomeEl.value = cartao.nome || '';
-      if (limiteEl) limiteEl.value = String(cartao.limite || 0);
+      if (limiteEl) limiteEl.value = (cartao.limite || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
       if (bandeiraEl) bandeiraEl.value = cartao.bandeira || 'Outro';
       if (vencimentoEl) vencimentoEl.value = String(clampDueDay(cartao.diaVencimento || 10));
     }, 20);
@@ -2778,7 +2843,7 @@ function openCartaoModal(options = {}) {
         title: 'Novo cartão de crédito',
         fields: [
           { id: 'fc-nome', label: 'Nome do cartão', type: 'text', placeholder: 'Ex: Nubank, Inter' },
-          { id: 'fc-limite', label: 'Limite total (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
+          { id: 'fc-limite', label: 'Limite total (R$)', type: 'currency' },
           { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] },
           { id: 'fc-vencimento', label: 'Dia de vencimento da fatura', type: 'number', placeholder: '10', min: '1' }
         ],
@@ -2802,7 +2867,7 @@ function openCartaoModal(options = {}) {
     title: 'Novo cartão de crédito',
     fields: [
       { id: 'fc-nome', label: 'Nome do cartão', type: 'text', placeholder: 'Ex: Nubank, Inter' },
-      { id: 'fc-limite', label: 'Limite total (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
+      { id: 'fc-limite', label: 'Limite total (R$)', type: 'currency' },
       { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] },
       { id: 'fc-vencimento', label: 'Dia de vencimento da fatura', type: 'number', placeholder: '10', min: '1' }
     ],
@@ -4646,6 +4711,28 @@ function renderLancamentos() {
     });
   }
 
+  // Merge contas a pagar into filtered list
+  loadContasPagar();
+  contasPagar.forEach(cp => {
+    const d = new Date(cp.vencimento);
+    const inRange = lancView === 'annual'
+      ? d.getFullYear() === lancYear
+      : d.getMonth() === lancMonth && d.getFullYear() === lancYear;
+    if (!inRange) return;
+    filtered.push({
+      _cp: true,
+      date: d.toISOString(),
+      type: 'saida',
+      desc: cp.descricao || 'Conta a pagar',
+      val: parseFloat(cp.valor) || 0,
+      cat: cp.origem === 'cartao' ? ('Cartão · ' + (cp.cartaoNome || '')) : 'Conta a pagar',
+      user: 'Compartilhado',
+      _pago: cp.pago,
+      _cartao: cp.origem === 'cartao',
+      _cartaoNome: cp.cartaoNome || ''
+    });
+  });
+
   // Type filter
   if (lancFilter === 'entrada') {
     filtered = filtered.filter(t => t.type === 'entrada');
@@ -4776,21 +4863,24 @@ function renderLancamentos() {
 
     groups[dateKey].forEach(t => {
       const isEntrada = t.type === 'entrada';
-      const typeClass = isEntrada ? 'entrada' : 'saida';
-      const icon = getCategoryIcon(t.cat);
-      const catColor = getCategoryColor(t.cat);
+      const typeClass = t._pago === false ? 'saida-pending' : (isEntrada ? 'entrada' : 'saida');
+      const icon = t._cp ? (t._cartao ? 'fa-solid fa-credit-card' : 'fa-solid fa-file-invoice-dollar') : getCategoryIcon(t.cat);
+      const catColor = t._cp ? { bg: 'rgba(255,193,7,0.12)', fg: '#ffcc66' } : getCategoryColor(t.cat);
       const sign = isEntrada ? '+' : '-';
-      const parcelaTag = t.totalParcelas ? ' <span class="t-user-tag">' + t.parcela + '/' + t.totalParcelas + '</span>' : '';
-      const payMeta = !isEntrada
-        ? '<span>' + (t.paymentMethod === 'credito'
-          ? ('Crédito' + (t.cardName ? (' · ' + escapeHTML(t.cardName)) : ''))
-          : t.paymentMethod === 'dinheiro' ? 'Dinheiro' : 'Débito') + '</span>'
-        : '';
+      const parcelaTag = !t._cp && t.totalParcelas ? ' <span class="t-user-tag">' + t.parcela + '/' + t.totalParcelas + '</span>' : '';
+      const pagoTag = t._pago === false ? ' <span class="t-user-tag" style="background:rgba(255,107,107,0.15);color:var(--accent-danger);">Pendente</span>' : '';
+      const payMeta = t._cp
+        ? '<span>' + (t._cartao ? ('Cartão · ' + escapeHTML(t._cartaoNome)) : 'Conta a pagar') + '</span>'
+        : !isEntrada
+          ? '<span>' + (t.paymentMethod === 'credito'
+            ? ('Crédito' + (t.cardName ? (' · ' + escapeHTML(t.cardName)) : ''))
+            : t.paymentMethod === 'dinheiro' ? 'Dinheiro' : 'Débito') + '</span>'
+          : '';
 
       html += '<div class="lanc-item">';
       html += '<div class="lanc-item-icon ' + typeClass + '"><i class="' + icon + '"></i></div>';
       html += '<div class="lanc-item-info">';
-      html += '<div class="lanc-item-desc">' + escapeHTML(t.desc) + parcelaTag + '</div>';
+      html += '<div class="lanc-item-desc">' + escapeHTML(t.desc) + parcelaTag + pagoTag + '</div>';
       html += '<div class="lanc-item-meta">';
       html += '<span class="cat-badge" style="background:' + catColor.bg + ';color:' + catColor.fg + ';">' + escapeHTML(t.cat) + '</span>';
       html += payMeta;
@@ -4832,7 +4922,95 @@ function setLancView(view) {
   const yearNav = document.getElementById('lanc-year-nav');
   if (monthNav) monthNav.style.display = view === 'monthly' ? 'flex' : 'none';
   if (yearNav) yearNav.style.display = view === 'annual' ? 'flex' : 'none';
-  renderLancamentos();
+  const filtersEl = document.querySelector('.lanc-filters');
+  const summaryEl = document.querySelector('.lanc-summary');
+  if (view === 'cartoes') {
+    if (filtersEl) filtersEl.style.display = 'none';
+    if (summaryEl) summaryEl.style.display = 'none';
+    renderLancCartoes();
+  } else {
+    if (filtersEl) filtersEl.style.display = '';
+    if (summaryEl) summaryEl.style.display = '';
+    renderLancamentos();
+  }
+}
+
+function renderLancCartoes() {
+  const listEl = document.getElementById('lanc-list');
+  if (!listEl) return;
+  loadCartoes();
+  loadContasPagar();
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  const now = new Date();
+
+  if (cartoes.length === 0) {
+    listEl.innerHTML = '<div class="lanc-empty"><i class="fa-solid fa-credit-card"></i><p>Adicione cartões de crédito em Dashboard → Cartões de Crédito.</p></div>';
+    return;
+  }
+
+  let html = '';
+  cartoes.forEach((c, ci) => {
+    const bank = getBankIcon(c.nome);
+    const diaVencimento = clampDueDay(c.diaVencimento || 10);
+    const faturas = contasPagar.filter(cp => cp.origem === 'cartao' && (cp.cartaoNome || '') === (c.nome || ''));
+    const faturasMes = faturas.filter(cp => {
+      const d = new Date(cp.vencimento);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+    const totalFatura = faturasMes.reduce((sum, cp) => sum + (parseFloat(cp.valor) || 0), 0);
+    const pagoCount = faturasMes.filter(cp => cp.pago).length;
+    const totalItens = faturasMes.length;
+
+    html += '<div class="lanc-cartao-card">';
+    html += '<div class="lanc-cartao-header">';
+    html += '<div class="lanc-cartao-bank" style="background:' + bank.color + '20;color:' + bank.color + ';"><i class="' + bank.icon + '"></i></div>';
+    html += '<div class="lanc-cartao-title"><strong>' + escapeHTML(c.nome) + '</strong><span>' + escapeHTML(c.bandeira || 'Manual') + ' · Venc. dia ' + diaVencimento + '</span></div>';
+    html += '<div class="lanc-cartao-total"><span class="lanc-cartao-total-label">Fatura atual</span><span class="lanc-cartao-total-value">' + formatCurrency(totalFatura) + '</span></div>';
+    html += '</div>';
+
+    if (faturasMes.length === 0) {
+      html += '<div class="lanc-cartao-empty"><i class="fa-solid fa-check-circle"></i><p>Sem itens na fatura deste mês</p></div>';
+    } else {
+      html += '<div class="lanc-cartao-progress"><div class="lanc-cartao-progress-bar" style="width:' + (totalItens > 0 ? (pagoCount / totalItens * 100) : 0) + '%;"></div></div>';
+      html += '<div class="lanc-cartao-status">' + pagoCount + ' de ' + totalItens + ' itens pagos</div>';
+      html += '<div class="lanc-cartao-items">';
+      faturasMes.forEach(cp => {
+        const venc = new Date(cp.vencimento);
+        const diaVenc = venc.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+        const isAtrasado = venc < now && !cp.pago;
+        html += '<div class="lanc-cartao-item' + (cp.pago ? ' paid' : '') + '">';
+        html += '<div class="lanc-cartao-item-info">';
+        html += '<span class="lanc-cartao-item-desc">' + escapeHTML(cp.descricao) + '</span>';
+        html += '<span class="lanc-cartao-item-venc" style="color:' + (isAtrasado ? 'var(--accent-danger)' : 'var(--text-secondary)') + ';">' + diaVenc + '</span>';
+        html += '</div>';
+        html += '<span class="lanc-cartao-item-valor">' + formatCurrency(cp.valor) + '</span>';
+        html += '<button type="button" class="lanc-cartao-item-action' + (cp.pago ? ' paid' : '') + '" onclick="toggleCpPago(' + ci + ', \'' + escapeHTML(cp.descricao) + '\', ' + cp.valor + ')" title="' + (cp.pago ? 'Marcar como não pago' : 'Marcar como pago') + '">';
+        html += '<i class="fa-solid ' + (cp.pago ? 'fa-rotate-left' : 'fa-check') + '"></i>';
+        html += '</button>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+
+  listEl.innerHTML = html;
+}
+
+function toggleCpPago(cartaoIndex, descricao, valor) {
+  const c = cartoes[cartaoIndex];
+  if (!c) return;
+  const cp = contasPagar.find(item =>
+    item.origem === 'cartao' &&
+    (item.cartaoNome || '') === (c.nome || '') &&
+    item.descricao === descricao &&
+    Math.abs((parseFloat(item.valor) || 0) - valor) < 0.01
+  );
+  if (!cp) return;
+  cp.pago = !cp.pago;
+  saveContasPagar();
+  renderLancCartoes();
+  showToast(cp.pago ? 'Item marcado como pago!' : 'Item marcado como pendente!', 'success');
 }
 
 function changeLancYear(delta) {

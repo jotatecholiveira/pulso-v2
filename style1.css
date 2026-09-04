@@ -719,7 +719,7 @@ body.light-theme .nav-link.active {
   width: 42px;
   height: 42px;
   border: 1px solid var(--border-color);
-  background: rgba(255,255,255,0.04);
+  background: var(--bg-panel);
   border-radius: 12px;
   color: var(--text-primary);
   cursor: pointer;
@@ -3674,6 +3674,16 @@ body.light-theme .modal-sheet {
   color: var(--accent-danger);
 }
 
+.lanc-item-amount.saida-pending {
+  color: var(--accent-warning);
+  opacity: 0.85;
+}
+
+.lanc-item-icon.saida-pending {
+  background: rgba(255, 193, 7, 0.12);
+  color: #ffcc66;
+}
+
 .cat-badge {
   display: inline-flex;
   align-items: center;
@@ -3763,6 +3773,186 @@ body.light-theme .modal-sheet {
 
 .lanc-empty p {
   font-size: 0.9rem;
+}
+
+/* ── Cartões Tab ── */
+.lanc-cartao-card {
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--bg-card);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.lanc-cartao-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+}
+
+.lanc-cartao-bank {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.lanc-cartao-title {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lanc-cartao-title strong {
+  font-size: 1rem;
+}
+
+.lanc-cartao-title span {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.lanc-cartao-total {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lanc-cartao-total-label {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.lanc-cartao-total-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent-danger);
+}
+
+.lanc-cartao-empty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.lanc-cartao-empty i {
+  color: var(--accent-success);
+}
+
+.lanc-cartao-progress {
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  margin: 0 20px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.lanc-cartao-progress-bar {
+  height: 100%;
+  background: var(--accent-success);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.lanc-cartao-status {
+  padding: 6px 20px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.lanc-cartao-items {
+  border-top: 1px solid var(--border-color);
+}
+
+.lanc-cartao-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.15s;
+}
+
+.lanc-cartao-item:last-child {
+  border-bottom: none;
+}
+
+.lanc-cartao-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.lanc-cartao-item.paid {
+  opacity: 0.55;
+}
+
+.lanc-cartao-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lanc-cartao-item-desc {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.lanc-cartao-item.paid .lanc-cartao-item-desc {
+  text-decoration: line-through;
+}
+
+.lanc-cartao-item-venc {
+  font-size: 0.75rem;
+}
+
+.lanc-cartao-item-valor {
+  font-weight: 600;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.lanc-cartao-item-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-soft);
+  color: var(--accent-success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.lanc-cartao-item-action:hover {
+  background: var(--accent-success);
+  color: #fff;
+  border-color: var(--accent-success);
+}
+
+.lanc-cartao-item-action.paid {
+  color: var(--accent-warning);
+}
+
+.lanc-cartao-item-action.paid:hover {
+  background: var(--accent-warning);
+  color: #fff;
+  border-color: var(--accent-warning);
 }
 
 .lanc-total-bar {
@@ -4435,6 +4625,38 @@ body.light-theme .toast-notification {
 .form-modal-field input:focus,
 .form-modal-field select:focus {
   border-color: var(--accent-color);
+}
+
+.currency-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  background: var(--bg-soft);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.currency-input-wrap:focus-within {
+  border-color: var(--accent-color);
+}
+
+.currency-prefix {
+  padding: 10px 0 10px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.currency-input-wrap input {
+  border: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding-left: 6px !important;
+  flex: 1;
+  min-width: 0;
 }
 
 .form-modal-actions {
