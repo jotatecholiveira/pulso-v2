@@ -1788,6 +1788,18 @@ function updateUI() {
     }
   });
 
+  loadContasPagar();
+  contasPagar.forEach(cp => {
+    const d = new Date(cp.vencimento);
+    if (d.getMonth() === currentMonth && d.getFullYear() === currentYear) {
+      const cat = cp.origem === 'cartao' ? ('Cartão · ' + (cp.cartaoNome || '')) : 'Conta a pagar';
+      const val = parseFloat(cp.valor) || 0;
+      categories[cat] = (categories[cat] || 0) + val;
+      totalExpense += val;
+      monthlyExpense += val;
+    }
+  });
+
   const formatCurrency = value => 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
   // Última entrada
@@ -2021,6 +2033,15 @@ function renderResumoMensal(totalIncome, totalExpense, balance) {
   const gastosPorCategoria = {};
   saidasMes.forEach(t => {
     gastosPorCategoria[t.cat] = (gastosPorCategoria[t.cat] || 0) + t.val;
+  });
+
+  loadContasPagar();
+  contasPagar.forEach(cp => {
+    const d = new Date(cp.vencimento);
+    if (d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) {
+      const cat = cp.origem === 'cartao' ? ('Cartão · ' + (cp.cartaoNome || '')) : 'Conta a pagar';
+      gastosPorCategoria[cat] = (gastosPorCategoria[cat] || 0) + (parseFloat(cp.valor) || 0);
+    }
   });
 
   const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
@@ -3084,16 +3105,32 @@ function renderDashMaioresGastos(monthlyExpense) {
   const gastosMes = transactions.filter(t => {
     const d = new Date(t.date);
     return t.type === 'saida' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-  }).sort((a, b) => b.val - a.val).slice(0, 5);
+  }).map(t => ({ desc: t.desc, cat: t.cat, user: t.user, val: t.val }));
 
-  if (gastosMes.length === 0) {
+  loadContasPagar();
+  contasPagar.forEach(cp => {
+    const d = new Date(cp.vencimento);
+    if (d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) {
+      gastosMes.push({
+        desc: (cp.descricao || 'Conta a pagar').replace('Fatura ' + (cp.cartaoNome || '') + ' — ', ''),
+        cat: cp.origem === 'cartao' ? ('Cartão · ' + (cp.cartaoNome || '')) : 'Conta a pagar',
+        user: currentUser ? (currentUser.displayName || currentUser.email || 'Usuário') : 'Usuário',
+        val: parseFloat(cp.valor) || 0
+      });
+    }
+  });
+
+  gastosMes.sort((a, b) => b.val - a.val);
+  const topGastos = gastosMes.slice(0, 5);
+
+  if (topGastos.length === 0) {
     container.innerHTML = '<div class="empty-state-small"><i class="fa-solid fa-receipt"></i><p>Sem gastos no período</p></div>';
     return;
   }
 
   const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
-  container.innerHTML = gastosMes.map((t, i) =>
+  container.innerHTML = topGastos.map((t, i) =>
     '<div class="gasto-item">' +
       '<div class="gasto-info">' +
         '<span class="gasto-rank">' + (i + 1) + '</span>' +
@@ -4171,7 +4208,7 @@ function renderReceitasChart(incomeByCategory) {
           display: true,
           position: 'bottom',
           labels: {
-            color: 'rgba(255,255,255,0.8)',
+            color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() || 'rgba(255,255,255,0.8)',
             padding: 10,
             usePointStyle: true,
             pointStyleWidth: 10,
