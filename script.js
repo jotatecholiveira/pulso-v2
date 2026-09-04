@@ -5300,8 +5300,30 @@ function loadMoreMov() {
 }
 
 function showAddTransactionModal() {
-  switchTab('entrada');
-  setTimeout(() => openModal('saida'), 200);
+  const overlay = document.createElement('div');
+  overlay.className = 'form-modal-overlay';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+  overlay.innerHTML = `
+    <div class="form-modal tx-type-modal" onclick="event.stopPropagation()">
+      <h3><i class="fa-solid fa-plus-circle"></i> Novo lançamento</h3>
+      <p class="tx-type-subtitle">Qual tipo de lançamento você deseja registrar?</p>
+      <div class="tx-type-btns">
+        <button type="button" class="tx-type-btn tx-type-saida" onclick="this.closest('.form-modal-overlay').remove(); switchTab('entrada'); setTimeout(() => openModal('saida'), 200);">
+          <i class="fa-solid fa-arrow-trend-down"></i>
+          <span class="tx-type-label">Despesa</span>
+          <span class="tx-type-desc">Compras, contas, gastos...</span>
+        </button>
+        <button type="button" class="tx-type-btn tx-type-entrada" onclick="this.closest('.form-modal-overlay').remove(); switchTab('entrada'); setTimeout(() => openModal('entrada'), 200);">
+          <i class="fa-solid fa-arrow-trend-up"></i>
+          <span class="tx-type-label">Receita</span>
+          <span class="tx-type-desc">Salário, renda, devoluções...</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
 }
 
 function toggleCollapsible(card) {

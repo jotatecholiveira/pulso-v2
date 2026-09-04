@@ -7431,3 +7431,78 @@ body.dark-mode .delete-confirm-actions .btn-cancel:hover {
   background: #1fb37a;
   transform: scale(1.02);
 }
+
+/* ============================================================
+   TX TYPE SELECTOR MODAL
+   ============================================================ */
+.tx-type-modal {
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+.tx-type-modal h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+.tx-type-modal h3 i { color: var(--accent-color); }
+.tx-type-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+.tx-type-btns {
+  display: flex;
+  gap: 12px;
+}
+.tx-type-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 12px;
+  border-radius: 14px;
+  border: 2px solid var(--border-color);
+  background: var(--bg-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tx-type-btn i {
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+.tx-type-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.tx-type-desc {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+.tx-type-saida {
+  border-color: rgba(255, 107, 107, 0.3);
+}
+.tx-type-saida i { color: var(--accent-danger); }
+.tx-type-saida:hover {
+  border-color: var(--accent-danger);
+  background: rgba(255, 107, 107, 0.08);
+}
+.tx-type-entrada {
+  border-color: rgba(36, 195, 139, 0.3);
+}
+.tx-type-entrada i { color: var(--accent-success); }
+.tx-type-entrada:hover {
+  border-color: var(--accent-success);
+  background: rgba(36, 195, 139, 0.08);
+}
+@media (max-width: 480px) {
+  .tx-type-btns { flex-direction: column; }
+  .tx-type-btn { flex-direction: row; padding: 14px 16px; gap: 12px; text-align: left; }
+  .tx-type-btn i { margin-bottom: 0; font-size: 1.3rem; }
+}
