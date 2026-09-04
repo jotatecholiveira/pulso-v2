@@ -4978,7 +4978,10 @@ function renderLancamentos() {
       html += '</div>';
       html += '<div class="lanc-item-amount ' + typeClass + '">' + sign + ' ' + formatCurrency(t.val) + '</div>';
       if (t._cp && t._pago === false) {
-        html += '<button type="button" class="lanc-pay-btn" onclick="payCpItem(\'' + escapeHTML(t.desc) + '\', ' + t.val + ', \'' + escapeHTML(t._cartaoNome || '') + '\')" title="Pagar esta fatura"><i class="fa-solid fa-dollar-sign"></i> Pagar</button>';
+        html += '<button type="button" class="lanc-pay-btn" onclick="editLancFromCp(\'' + escapeHTML(t.desc) + '\', ' + t.val + ', \'' + escapeHTML(t._cartaoNome || '') + '\')" title="Editar lançamento"><i class="fa-solid fa-pen"></i> Editar</button>';
+      }
+      if (t._cp && t._pago === true) {
+        html += '<button type="button" class="lanc-pay-btn lanc-edit-paid" onclick="editLancFromCp(\'' + escapeHTML(t.desc) + '\', ' + t.val + ', \'' + escapeHTML(t._cartaoNome || '') + '\')" title="Ver lançamento"><i class="fa-solid fa-eye"></i></button>';
       }
       html += '</div>';
     });
@@ -5264,6 +5267,67 @@ function confirmAddFaturaItem(cartaoIndex, btn) {
   renderLancCartoes();
   renderDashCartoes();
   showToast('Item adicionado à fatura!', 'success');
+}
+
+function editLancFromCp(descricao, valor, cartaoNome) {
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  const now = new Date();
+  const mesAtual = now.getMonth();
+  const anoAtual = now.getFullYear();
+
+  const items = contasPagar.filter(item =>
+    (item.cartaoNome || '') === (cartaoNome || '') &&
+    ((new Date(item.vencimento).getFullYear() > anoAtual) ||
+     (new Date(item.vencimento).getFullYear() === anoAtual && new Date(item.vencimento).getMonth() >= mesAtual))
+  ).sort((a, b) => new Date(a.vencimento) - new Date(b.vencimento));
+
+  const overlay = document.createElement('div');
+  overlay.className = 'form-modal-overlay';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+  let itemsHtml = items.map((item, idx) => {
+    const venc = new Date(item.vencimento).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+    const pagoClass = item.pago ? ' lanc-edit-item-pago' : '';
+    const statusTag = item.pago
+      ? '<span class="lanc-edit-tag lanc-edit-tag-pago"><i class="fa-solid fa-check"></i> Pago</span>'
+      : '<span class="lanc-edit-tag lanc-edit-tag-pendente"><i class="fa-solid fa-clock"></i> Pendente</span>';
+    const descLimpa = (item.descricao || '').replace('Fatura ' + cartaoNome + ' — ', '');
+    const globalIdx = contasPagar.indexOf(item);
+    return '<div class="lanc-edit-item' + pagoClass + '">' +
+      '<div class="lanc-edit-item-info">' +
+        '<span class="lanc-edit-item-desc">' + escapeHTML(descLimpa) + '</span>' +
+        '<span class="lanc-edit-item-venc"><i class="fa-regular fa-calendar"></i> ' + venc + '</span>' +
+      '</div>' +
+      '<span class="lanc-edit-item-val">' + formatCurrency(parseFloat(item.valor) || 0) + '</span>' +
+      statusTag +
+      '<button type="button" class="lanc-edit-item-del" onclick="deleteLancCpItem(' + globalIdx + ', \'' + escapeHTML(cartaoNome) + '\')" title="Excluir"><i class="fa-solid fa-trash"></i></button>' +
+    '</div>';
+  }).join('');
+
+  if (!itemsHtml) itemsHtml = '<p class="lanc-edit-empty">Nenhum lançamento futuro encontrado para este cartão.</p>';
+
+  overlay.innerHTML = `
+    <div class="form-modal lanc-edit-modal" onclick="event.stopPropagation()">
+      <h3><i class="fa-solid fa-pen-to-square"></i> Editar lançamentos — ${escapeHTML(cartaoNome)}</h3>
+      <div class="lanc-edit-items">${itemsHtml}</div>
+      <div class="delete-confirm-actions">
+        <button type="button" class="btn-cancel" onclick="this.closest('.form-modal-overlay').remove()">Fechar</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add('active'));
+}
+
+function deleteLancCpItem(globalIdx, cartaoNome) {
+  const cp = contasPagar[globalIdx];
+  if (!cp) { showToast('Item não encontrado.', 'error'); return; }
+  contasPagar.splice(globalIdx, 1);
+  saveContasPagar();
+  showToast('Lançamento excluído.', 'success');
+  editLancFromCp('', 0, cartaoNome);
+  renderLancCartoes();
+  renderDashCartoes();
 }
 
 function payCpItem(descricao, valor, cartaoNome) {
