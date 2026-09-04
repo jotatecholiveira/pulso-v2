@@ -5682,6 +5682,11 @@ body.light-theme .toast-notification {
     padding: 18px 14px 32px;
   }
 
+  .dash-two-col {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
   .topbar {
     flex-direction: column;
     align-items: flex-start;
@@ -6645,6 +6650,109 @@ body.light-theme .hero-saldo-card {
   border-color: rgba(46,204,113,0.45);
 }
 .hero-quick-receita:hover { background: rgba(46,204,113,0.45); }
+
+/* ============================================================
+   HERO EMPTY CTA — first-time user prompt
+   ============================================================ */
+.hero-empty-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 16px;
+  margin-top: 10px;
+  border: 2px dashed rgba(255,255,255,0.18);
+  border-radius: 14px;
+  background: rgba(108, 124, 255, 0.06);
+  text-align: center;
+}
+.hero-empty-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+.hero-empty-text {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+  max-width: 260px;
+}
+.hero-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.hero-empty-btn:hover { background: rgba(255,255,255,0.32); transform: translateY(-1px); }
+body.light-theme .hero-empty-cta {
+  border-color: rgba(15,24,40,0.12);
+  background: rgba(108, 124, 255, 0.04);
+}
+body.light-theme .hero-empty-text { color: var(--text-secondary); }
+body.light-theme .hero-empty-btn {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #fff;
+}
+body.light-theme .hero-empty-btn:hover { background: #5a6ae0; }
+
+/* ============================================================
+   HERO SPARKLINE — mini 7-day trend
+   ============================================================ */
+.hero-sparkline {
+  width: 60px;
+  height: 20px;
+  flex-shrink: 0;
+  opacity: 0.65;
+  margin-left: 6px;
+  align-self: center;
+}
+
+/* ============================================================
+   NAV BADGE — beta indicator
+   ============================================================ */
+.nav-badge {
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(255, 180, 84, 0.15);
+  color: #ffb454;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-left: 4px;
+  line-height: 1;
+  vertical-align: middle;
+}
+body.light-theme .nav-badge {
+  background: rgba(217, 140, 31, 0.12);
+  color: #c08412;
+}
+
+/* ============================================================
+   MOV LOAD MORE — pagination button
+   ============================================================ */
+.mov-load-more {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border: 1px dashed var(--border-color);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--accent-color);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.mov-load-more:hover { background: rgba(108, 124, 255, 0.06); }
 
 /* ============================================================
    MOBILE BOTTOM NAV (Nubank/Revolut pattern)

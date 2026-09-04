@@ -1945,11 +1945,14 @@ function updateUI() {
   // Últimas movimentações
   const movimentacoesList = document.getElementById('movimentacoes-list');
   if (movimentacoesList) {
-    const recent = transactions.slice(0, 5);
+    const MOV_PAGE_SIZE = 5;
+    if (!window._movPage) window._movPage = 1;
+    const limit = window._movPage * MOV_PAGE_SIZE;
+    const recent = transactions.slice(0, limit);
     if (recent.length === 0) {
-      movimentacoesList.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem; text-align: center; padding: 20px;">Nenhuma movimentação registrada.</p>';
+      movimentacoesList.innerHTML = '<div class="empty-state-small"><i class="fa-solid fa-receipt"></i><p>Nenhuma movimentação registrada.</p></div>';
     } else {
-      movimentacoesList.innerHTML = recent.map(t => {
+      let html = recent.map(t => {
         const dateFormatted = new Date(t.date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
         const isEntrada = t.type === 'entrada';
         const sign = isEntrada ? '+' : '-';
@@ -1962,6 +1965,10 @@ function updateUI() {
           '<span class="mov-value" style="color: ' + color + ';">' + sign + ' ' + formatCurrency(t.val) + '</span>' +
         '</div>';
       }).join('');
+      if (transactions.length > limit) {
+        html += '<button type="button" class="mov-load-more" onclick="loadMoreMov()">Ver todas as movimentações</button>';
+      }
+      movimentacoesList.innerHTML = html;
     }
   }
 
@@ -1995,6 +2002,8 @@ function updateUI() {
   renderDashGreeting();
   renderDashMonthSummary(monthlyExpense);
   renderDashSaldoGeral(balance, investimentoTotal);
+  renderHeroEmptyCTA();
+  renderHeroSparklines();
   renderDashContas();
   renderDashCartoes();
   renderDashContasPagar();
@@ -2347,6 +2356,54 @@ function renderDashSaldoGeral(balance, investimentoTotal) {
   }
   if (heroSaldoEl) {
     heroSaldoEl.textContent = formatted;
+  }
+}
+
+function renderHeroEmptyCTA() {
+  const cta = document.getElementById('hero-empty-cta');
+  if (!cta) return;
+  cta.style.display = transactions.length === 0 ? '' : 'none';
+}
+
+function renderHeroSparklines() {
+  if (transactions.length < 2) return;
+  const now = new Date();
+  const dayMap = {};
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    dayMap[key] = { income: 0, expense: 0 };
+  }
+  transactions.forEach(t => {
+    const key = new Date(t.date).toISOString().split('T')[0];
+    if (!dayMap[key]) return;
+    if (t.type === 'entrada') dayMap[key].income += t.val;
+    else dayMap[key].expense += t.val;
+  });
+  const keys = Object.keys(dayMap).sort();
+  const buildPoints = (getter) => {
+    const vals = keys.map(k => getter(dayMap[k]));
+    const max = Math.max(...vals, 1);
+    return vals.map((v, i) => {
+      const x = (i / (vals.length - 1)) * 80;
+      const y = 22 - (v / max) * 20;
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+  };
+  const incPoints = buildPoints(v => v.income);
+  const expPoints = buildPoints(v => v.expense);
+  const hasInc = keys.some(k => dayMap[k].income > 0);
+  const hasExp = keys.some(k => dayMap[k].expense > 0);
+  const sparkInc = document.getElementById('hero-spark-income');
+  const sparkExp = document.getElementById('hero-spark-expense');
+  if (sparkInc && hasInc) {
+    sparkInc.style.display = '';
+    sparkInc.querySelector('polyline').setAttribute('points', incPoints);
+  }
+  if (sparkExp && hasExp) {
+    sparkExp.style.display = '';
+    sparkExp.querySelector('polyline').setAttribute('points', expPoints);
   }
 }
 
@@ -5039,6 +5096,16 @@ function setLancUserFilter(user) {
 function onLancSearch(query) {
   lancSearch = query.trim();
   renderLancamentos();
+}
+
+function loadMoreMov() {
+  window._movPage = (window._movPage || 1) + 1;
+  updateUI();
+}
+
+function showAddTransactionModal() {
+  switchTab('entrada');
+  setTimeout(() => openModal('saida'), 200);
 }
 
 function toggleCollapsible(card) {

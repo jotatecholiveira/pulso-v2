@@ -126,6 +126,11 @@
               <i class="fa-solid fa-building-columns"></i>
               <span class="nav-label">Banco</span>
             </button>
+            <button type="button" class="nav-link" onclick="openShareModal()" data-tab="share">
+              <i class="fa-solid fa-user-group"></i>
+              <span class="nav-label">Compartilhar</span>
+              <span class="nav-badge">beta</span>
+            </button>
           </nav>
         </div>
 
@@ -146,7 +151,7 @@
             <a href="https://github.com/jotatecholiveira/pulso-v2" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
           </div>
           <p class="sidebar-thanks">Obrigado por usar o Pulso!</p>
-          <p class="sidebar-version">Beta v3.1.10</p>
+          <p class="sidebar-version">Beta v3.1.11</p>
           <div class="sidebar-legal">
             <a href="privacidade.html" target="_blank">Privacidade</a>
             <span class="sidebar-legal-sep">·</span>
@@ -396,17 +401,26 @@
             </button>
           </div>
           <div class="hero-saldo-valor" id="hero-saldo-valor">R$ 0,00</div>
+          <div id="hero-empty-cta" class="hero-empty-cta" style="display:none;">
+            <div class="hero-empty-icon">🚀</div>
+            <div class="hero-empty-text">Comece registrando seu primeiro lançamento financeiro</div>
+            <button type="button" class="hero-empty-btn" onclick="showAddTransactionModal()">
+              <i class="fa-solid fa-plus"></i> Adicionar lançamento
+            </button>
+          </div>
           <div class="hero-saldo-meta">
             <div class="hero-meta-item hero-meta-income">
               <i class="fa-solid fa-arrow-trend-up"></i>
               <span id="hero-receitas">R$ 0,00</span>
               <span class="hero-meta-label">Receitas</span>
+              <svg class="hero-sparkline hero-spark-income" id="hero-spark-income" viewBox="0 0 80 24" fill="none" style="display:none;"><polyline stroke="var(--accent-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </div>
             <div class="hero-meta-divider"></div>
             <div class="hero-meta-item hero-meta-expense">
               <i class="fa-solid fa-arrow-trend-down"></i>
               <span id="hero-despesas">R$ 0,00</span>
               <span class="hero-meta-label">Despesas</span>
+              <svg class="hero-sparkline hero-spark-expense" id="hero-spark-expense" viewBox="0 0 80 24" fill="none" style="display:none;"><polyline stroke="var(--accent-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </div>
           </div>
         </div>
