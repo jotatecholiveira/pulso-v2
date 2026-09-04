@@ -6862,6 +6862,18 @@ body.light-theme .hero-empty-btn:hover { background: #5a6ae0; }
   margin-left: 4px;
   line-height: 1;
   vertical-align: middle;
+  opacity: 0;
+  max-width: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  transition: opacity 0.25s ease 0.06s, max-width 0.25s ease 0.06s, padding 0.25s ease 0.06s, margin 0.25s ease 0.06s;
+}
+.sidebar:hover .nav-badge {
+  opacity: 1;
+  max-width: 60px;
+  padding: 2px 6px;
+  margin-left: 4px;
 }
 body.light-theme .nav-badge {
   background: rgba(217, 140, 31, 0.12);

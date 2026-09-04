@@ -5177,6 +5177,7 @@ function payCpItem(descricao, valor, cartaoNome) {
   `;
 
   document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add('active'));
 }
 
 let _selectedPayMethod = 'dinheiro';
@@ -5310,6 +5311,7 @@ function showAddTransactionModal() {
   `;
 
   document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add('active'));
 }
 
 function toggleCollapsible(card) {
