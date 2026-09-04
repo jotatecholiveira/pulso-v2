@@ -5318,3 +5318,34 @@ function toggleCollapsible(card) {
   if (!card) return;
   card.classList.toggle('collapsed');
 }
+
+// ============================================================
+// ADSENSE BLOCKED DETECTION — ask Firefox users to whitelist
+// ============================================================
+(function checkAdSenseBlocked() {
+  if (isLoginPage()) return;
+  setTimeout(() => {
+    const adsbygoogle = window.adsbygoogle;
+    const adsBlocked = !adsbygoogle || (Array.isArray(adsbygoogle) && adsbygoogle.length === 0 && document.querySelectorAll('ins.adsbygoogle').length > 0);
+    const adSlots = document.querySelectorAll('ins.adsbygoogle');
+    let anyRendered = false;
+    adSlots.forEach(ins => {
+      if (ins.getAttribute('data-ad-status') === 'filled' || ins.children.length > 1) anyRendered = true;
+    });
+    if (adsBlocked && !anyRendered && adSlots.length > 0) {
+      const existing = document.getElementById('adsense-support-banner');
+      if (existing) return;
+      const banner = document.createElement('div');
+      banner.id = 'adsense-support-banner';
+      banner.innerHTML =
+        '<div class="adsense-banner-content">' +
+          '<i class="fa-solid fa-hand-holding-heart"></i>' +
+          '<span>Parece que seus bloqueadores de anúncios estão ativos. ' +
+          'Se quiser apoiar o Pulso, considere desabilitar o bloqueio neste site. ' +
+          '<strong>Obrigado!</strong> 💜</span>' +
+          '<button type="button" class="adsense-banner-close" onclick="this.closest(\'#adsense-support-banner\').remove()" title="Fechar">&times;</button>' +
+        '</div>';
+      document.body.appendChild(banner);
+    }
+  }, 4000);
+})();

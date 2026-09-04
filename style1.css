@@ -7445,6 +7445,67 @@ body.dark-mode .delete-confirm-actions .btn-cancel:hover {
 }
 
 /* ============================================================
+   ADSENSE SUPPORT BANNER
+   ============================================================ */
+#adsense-support-banner {
+  position: fixed;
+  bottom: 0;
+  left: 72px;
+  right: 0;
+  z-index: 9000;
+  padding: 0;
+  animation: slideUp 0.4s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.adsense-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(108, 124, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(108, 124, 255, 0.2);
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+.adsense-banner-content i {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.adsense-banner-content span {
+  flex: 1;
+}
+.adsense-banner-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.adsense-banner-close:hover {
+  background: rgba(255,255,255,0.1);
+}
+@media (max-width: 768px) {
+  #adsense-support-banner { left: 0; }
+}
+@media (max-width: 480px) {
+  .adsense-banner-content {
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+  }
+}
+
+/* ============================================================
    TX TYPE SELECTOR MODAL
    ============================================================ */
 .tx-type-modal {
