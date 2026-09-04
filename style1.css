@@ -3608,6 +3608,7 @@ body.light-theme .modal-sheet {
   padding: 14px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   transition: background 0.15s ease;
+  flex-wrap: wrap;
 }
 
 .lanc-item:last-child {
@@ -6540,6 +6541,11 @@ body.light-theme .global-eye-btn:hover {
     padding: 12px 14px;
     gap: 10px;
   }
+  .lanc-pay-btn {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* --- Share modal mobile --- */
@@ -7286,4 +7292,142 @@ body.dark-mode .delete-confirm-actions .btn-cancel {
 }
 body.dark-mode .delete-confirm-actions .btn-cancel:hover {
   background: var(--border, #334155);
+}
+
+/* ============================================================
+   PAY BUTTON (lancamentos extrato)
+   ============================================================ */
+.lanc-pay-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  min-height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent-success, #24c38b);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+.lanc-pay-btn:hover {
+  background: #1fb37a;
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   PAY MODAL
+   ============================================================ */
+.pay-modal {
+  max-width: 420px;
+  width: 100%;
+}
+.pay-modal h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+.pay-modal h3 i { color: var(--accent-success); }
+.pay-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.pay-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--bg-soft);
+}
+.pay-detail span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.pay-detail strong {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+.pay-valor {
+  font-size: 1rem !important;
+  color: var(--accent-danger) !important;
+}
+.pay-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 180, 84, 0.12);
+  color: var(--accent-warning, #ffb454);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.pay-warning i { margin-top: 2px; flex-shrink: 0; }
+.pay-warning-info {
+  background: rgba(33, 150, 243, 0.1);
+  color: var(--accent-info, #2196f3);
+}
+.pay-method-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+.pay-method-row > span {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+.pay-method-btns {
+  display: flex;
+  gap: 6px;
+}
+.pay-method-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  min-height: 36px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-soft);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pay-method-btn.active {
+  border-color: var(--accent-success);
+  background: rgba(36, 195, 139, 0.12);
+  color: var(--accent-success);
+}
+.pay-method-btn:hover:not(.active) {
+  background: rgba(255,255,255,0.04);
+}
+.delete-confirm-actions .btn-pay {
+  padding: 10px 20px;
+  min-height: 44px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--accent-success, #24c38b);
+  color: #fff;
+}
+.delete-confirm-actions .btn-pay:hover {
+  background: #1fb37a;
+  transform: scale(1.02);
 }

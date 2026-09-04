@@ -4991,6 +4991,9 @@ function renderLancamentos() {
       html += '</div>';
       html += '</div>';
       html += '<div class="lanc-item-amount ' + typeClass + '">' + sign + ' ' + formatCurrency(t.val) + '</div>';
+      if (t._cp && t._pago === false) {
+        html += '<button type="button" class="lanc-pay-btn" onclick="payCpItem(\'' + escapeHTML(t.desc) + '\', ' + t.val + ', \'' + escapeHTML(t._cartaoNome || '') + '\')" title="Pagar esta fatura"><i class="fa-solid fa-dollar-sign"></i> Pagar</button>';
+      }
       html += '</div>';
     });
 
@@ -5087,6 +5090,9 @@ function renderLancCartoes() {
         html += '<span class="lanc-cartao-item-venc" style="color:' + (isAtrasado ? 'var(--accent-danger)' : 'var(--text-secondary)') + ';">' + diaVenc + '</span>';
         html += '</div>';
         html += '<span class="lanc-cartao-item-valor">' + formatCurrency(cp.valor) + '</span>';
+        if (!cp.pago) {
+          html += '<button type="button" class="lanc-pay-btn" onclick="payCpItem(\'' + escapeHTML(cp.descricao) + '\', ' + cp.valor + ', \'' + escapeHTML(cp.cartaoNome || '') + '\')" title="Pagar esta fatura"><i class="fa-solid fa-dollar-sign"></i></button>';
+        }
         html += '<button type="button" class="lanc-cartao-item-action' + (cp.pago ? ' paid' : '') + '" onclick="toggleCpPago(' + ci + ', \'' + escapeHTML(cp.descricao) + '\', ' + cp.valor + ')" title="' + (cp.pago ? 'Marcar como não pago' : 'Marcar como pago') + '">';
         html += '<i class="fa-solid ' + (cp.pago ? 'fa-rotate-left' : 'fa-check') + '"></i>';
         html += '</button>';
@@ -5114,6 +5120,150 @@ function toggleCpPago(cartaoIndex, descricao, valor) {
   saveContasPagar();
   renderLancCartoes();
   showToast(cp.pago ? 'Item marcado como pago!' : 'Item marcado como pendente!', 'success');
+}
+
+function payCpItem(descricao, valor, cartaoNome) {
+  const cp = contasPagar.find(item =>
+    item.descricao === descricao &&
+    Math.abs((parseFloat(item.valor) || 0) - valor) < 0.01 &&
+    (item.cartaoNome || '') === (cartaoNome || '')
+  );
+  if (!cp) { showToast('Item não encontrado.', 'error'); return; }
+  if (cp.pago) { showToast('Este item já foi pago.', 'warning'); return; }
+
+  const currentBalance = transactions.reduce((acc, t) => {
+    if (t.type === 'entrada') return acc + (parseFloat(t.val) || 0);
+    if (impactsBalance(t)) return acc - (parseFloat(t.val) || 0);
+    return acc;
+  }, 0);
+
+  const payValue = parseFloat(cp.valor) || 0;
+  const futureBalance = currentBalance - payValue;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'form-modal-overlay';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+  const futureTxCount = cp.origem === 'cartao'
+    ? transactions.filter(t =>
+        t.paymentMethod === 'credito' &&
+        t.cardName === cartaoNome &&
+        t.desc &&
+        t.desc.includes(descricao.replace('Fatura ' + cartaoNome + ' — ', '').replace(/ \(\d+\/\d+\)$/, '')) &&
+        new Date(t.date) > new Date(cp.vencimento) &&
+        !contasPagar.find(cp2 => cp2.descricao.includes(t.desc) && cp2.pago)
+      ).length
+    : 0;
+
+  let warningHtml = '';
+  if (futureBalance < 0) {
+    warningHtml = '<div class="pay-warning"><i class="fa-solid fa-triangle-exclamation"></i> Saldo insuficiente! Saldo atual: ' + formatCurrency(currentBalance) + ' — após pagamento: ' + formatCurrency(futureBalance) + '</div>';
+  }
+  if (futureTxCount > 0) {
+    warningHtml += '<div class="pay-warning pay-warning-info"><i class="fa-solid fa-info-circle"></i> Serão removidos ' + futureTxCount + ' lançamento(s) futuro(s) duplicado(s) desta fatura para evitar duplicidade.</div>';
+  }
+
+  overlay.innerHTML = `
+    <div class="form-modal pay-modal" onclick="event.stopPropagation()">
+      <h3><i class="fa-solid fa-wallet"></i> Pagar Fatura</h3>
+      <div class="pay-modal-body">
+        <div class="pay-detail"><span>Descrição</span><strong>${escapeHTML(cp.descricao)}</strong></div>
+        <div class="pay-detail"><span>Valor</span><strong class="pay-valor">${formatCurrency(payValue)}</strong></div>
+        <div class="pay-detail"><span>Vencimento</span><strong>${new Date(cp.vencimento).toLocaleDateString('pt-BR')}</strong></div>
+        <div class="pay-detail"><span>Saldo atual</span><strong>${formatCurrency(currentBalance)}</strong></div>
+        <div class="pay-detail"><span>Saldo após pagamento</span><strong style="color:${futureBalance >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)'};">${formatCurrency(futureBalance)}</strong></div>
+        ${warningHtml}
+        <div class="pay-method-row">
+          <span>Forma de pagamento:</span>
+          <div class="pay-method-btns">
+            <button type="button" class="pay-method-btn active" data-method="dinheiro" onclick="selectPayMethod(this)"><i class="fa-solid fa-money-bill-wave"></i> Dinheiro</button>
+            <button type="button" class="pay-method-btn" data-method="debito" onclick="selectPayMethod(this)"><i class="fa-solid fa-card"></i> Débito</button>
+          </div>
+        </div>
+      </div>
+      <div class="delete-confirm-actions">
+        <button type="button" class="btn-cancel" onclick="this.closest('.form-modal-overlay').remove()">Cancelar</button>
+        <button type="button" class="btn-pay" id="pay-confirm-btn" onclick="confirmPayCp('${escapeHTML(descricao)}', ${valor}, '${escapeHTML(cartaoNome)}')">
+          <i class="fa-solid fa-check"></i> Confirmar Pagamento
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+}
+
+let _selectedPayMethod = 'dinheiro';
+function selectPayMethod(btn) {
+  btn.closest('.pay-method-btns').querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  _selectedPayMethod = btn.dataset.method;
+}
+
+function confirmPayCp(descricao, valor, cartaoNome) {
+  const cp = contasPagar.find(item =>
+    item.descricao === descricao &&
+    Math.abs((parseFloat(item.valor) || 0) - valor) < 0.01 &&
+    (item.cartaoNome || '') === (cartaoNome || '')
+  );
+  if (!cp) { showToast('Item não encontrado.', 'error'); return; }
+
+  const payValue = parseFloat(cp.valor) || 0;
+  const payDate = new Date().toISOString();
+
+  if (_selectedPayMethod === 'dinheiro') {
+    addTransaction({
+      id: Date.now(),
+      type: 'saida',
+      user: 'Compartilhado',
+      desc: 'Pagamento: ' + cp.descricao,
+      val: payValue,
+      cat: 'Pagamento de fatura',
+      date: payDate,
+      paymentMethod: 'dinheiro'
+    });
+  }
+
+  if (cp.origem === 'cartao' && cartaoNome) {
+    const baseDesc = cp.descricao.replace('Fatura ' + cartaoNome + ' — ', '').replace(/ \(\d+\/\d+\)$/, '');
+    const futureCps = contasPagar.filter(item =>
+      item !== cp &&
+      item.origem === 'cartao' &&
+      item.cartaoNome === cartaoNome &&
+      item.descricao.includes(baseDesc) &&
+      new Date(item.vencimento) > new Date(cp.vencimento) &&
+      !item.pago
+    );
+
+    futureCps.forEach(fcp => {
+      fcp.pago = true;
+      const fcpDesc = fcp.descricao;
+      const fcpVal = parseFloat(fcp.valor) || 0;
+      const linkedTx = transactions.find(t =>
+        t.paymentMethod === 'credito' &&
+        t.cardName === cartaoNome &&
+        t.desc === fcpDesc.replace('Fatura ' + cartaoNome + ' — ', '')
+      );
+      if (linkedTx && storageMode === 'rtdb' && db && currentUser && linkedTx.key) {
+        db.ref('users/' + currentUser.uid + '/transactions/' + linkedTx.key).remove();
+      }
+    });
+
+    if (futureCps.length > 0) {
+      showToast(futureCps.length + ' parcela(s) futura(s) removida(s) para evitar duplicidade.', 'success');
+    }
+  }
+
+  cp.pago = true;
+  saveContasPagar();
+
+  const overlay = document.querySelector('.form-modal-overlay');
+  if (overlay) overlay.remove();
+
+  renderLancamentos();
+  renderLancCartoes();
+  updateUI();
+  showToast('Fatura paga com sucesso!', 'success');
 }
 
 function changeLancYear(delta) {
