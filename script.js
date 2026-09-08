@@ -6019,8 +6019,9 @@ function confirmAddFaturaItem(cartaoIndex, btn) {
   renderLancCartoes();
   renderDashCartoes();
   showToast('Item adicionado à fatura!', 'success');
-  }
+}
 
+function editLancFromCp(descricao, valor, cartaoNome) {
   const now = new Date();
   const mesAtual = now.getMonth();
   const anoAtual = now.getFullYear();

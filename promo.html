@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pulso - Product Hunt Assets</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #111; font-family: 'Inter', sans-serif; padding: 40px; }
+.section { margin-bottom: 60px; }
+.label { color: #888; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+
+/* === THUMBNAIL 240x240 === */
+.thumbnail {
+  width: 240px; height: 240px;
+  background: linear-gradient(135deg, #0f0a2e 0%, #1a103d 40%, #2d1b69 100%);
+  border-radius: 24px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(99, 102, 241, 0.3);
+}
+.thumbnail::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(244, 114, 82, 0.2) 0%, transparent 50%);
+}
+.thumbnail .logo {
+  font-size: 64px; font-weight: 900; color: #fff;
+  font-family: 'Inter', sans-serif; letter-spacing: -3px;
+  position: relative; z-index: 1;
+  text-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+}
+.thumbnail .logo span { color: #818cf8; }
+.thumbnail .tagline {
+  font-size: 11px; color: rgba(255,255,255,0.6);
+  font-weight: 500; margin-top: 6px;
+  position: relative; z-index: 1;
+  letter-spacing: 0.5px;
+}
+
+/* === GALLERY IMAGES 1270x760 === */
+.gallery-img {
+  width: 1270px; height: 760px;
+  border-radius: 16px;
+  position: relative; overflow: hidden;
+  display: flex;
+}
+
+/* Slide 1 - Hero */
+.slide-hero {
+  background: linear-gradient(135deg, #0f0a2e 0%, #1a103d 30%, #2d1b69 70%, #0f0a2e 100%);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.slide-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, rgba(99, 102, 241, 0.25) 0%, transparent 60%),
+              radial-gradient(circle at 80% 70%, rgba(244, 114, 82, 0.15) 0%, transparent 40%);
+}
+.slide-hero .hero-content { position: relative; z-index: 1; }
+.slide-hero .hero-logo { font-size: 96px; font-weight: 900; color: #fff; letter-spacing: -4px; margin-bottom: 16px; text-shadow: 0 0 60px rgba(99, 102, 241, 0.4); }
+.slide-hero .hero-logo span { color: #818cf8; }
+.slide-hero .hero-tagline { font-size: 28px; color: rgba(255,255,255,0.8); font-weight: 500; margin-bottom: 8px; }
+.slide-hero .hero-sub { font-size: 18px; color: rgba(255,255,255,0.45); font-weight: 400; }
+.slide-hero .hero-badge { display: inline-block; margin-top: 32px; padding: 10px 24px; background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4); border-radius: 100px; color: #818cf8; font-size: 14px; font-weight: 600; }
+.slide-hero .grid-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 40px 40px; z-index: 0; }
+
+/* Slide 2 - Features */
+.slide-features {
+  background: linear-gradient(160deg, #0f0a2e 0%, #1a103d 100%);
+  flex-direction: row;
+  padding: 60px 80px;
+  gap: 40px;
+}
+.slide-features .features-left {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  position: relative; z-index: 1;
+}
+.slide-features .features-left h2 { font-size: 44px; font-weight: 800; color: #fff; line-height: 1.15; margin-bottom: 16px; }
+.slide-features .features-left h2 span { color: #818cf8; }
+.slide-features .features-left p { font-size: 18px; color: rgba(255,255,255,0.5); line-height: 1.6; max-width: 420px; }
+.slide-features .features-right {
+  flex: 1; display: flex; flex-direction: column; gap: 16px;
+  justify-content: center; position: relative; z-index: 1;
+}
+.feature-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 20px 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.feature-card .icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.feature-card .icon.green { background: rgba(34,197,94,0.15); }
+.feature-card .icon.blue { background: rgba(99,102,241,0.15); }
+.feature-card .icon.orange { background: rgba(244,114,82,0.15); }
+.feature-card .icon.pink { background: rgba(236,72,153,0.15); }
+.feature-card .info h4 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.feature-card .info p { font-size: 13px; color: rgba(255,255,255,0.45); }
+.slide-features::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
+}
+
+/* Slide 3 - Dashboard Preview */
+.slide-dashboard {
+  background: #0f0a2e;
+  flex-direction: column;
+  padding: 48px 60px;
+}
+.slide-dashboard .dash-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 32px; position: relative; z-index: 1;
+}
+.slide-dashboard .dash-header h3 { font-size: 24px; font-weight: 700; color: #fff; }
+.slide-dashboard .dash-header span { color: rgba(255,255,255,0.4); font-size: 14px; }
+.slide-dashboard .dash-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  flex: 1; position: relative; z-index: 1;
+}
+.dash-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 24px;
+}
+.dash-card .card-label { font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.dash-card .card-value { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
+.dash-card .card-value.green { color: #22c55e; }
+.dash-card .card-value.red { color: #ef4444; }
+.dash-card .card-value.white { color: #fff; }
+.dash-card .card-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+.dash-card .card-bar .fill { height: 100%; border-radius: 3px; }
+.dash-card .card-bar .fill.green { background: #22c55e; }
+.dash-card .card-bar .fill.orange { background: #f59e0b; }
+.dash-card .mini-chart { display: flex; align-items: flex-end; gap: 4px; height: 60px; margin-top: 12px; }
+.dash-card .mini-chart .bar { flex: 1; border-radius: 3px 3px 0 0; }
+.dash-card .mini-chart .bar.filled { background: #818cf8; }
+.dash-card .mini-chart .bar.empty { background: rgba(255,255,255,0.06); }
+.slide-dashboard::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 100%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+}
+
+/* Slide 4 - Privacy */
+.slide-privacy {
+  background: linear-gradient(160deg, #0f0a2e 0%, #1a103d 100%);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.slide-privacy .shield { font-size: 80px; margin-bottom: 24px; position: relative; z-index: 1; }
+.slide-privacy h2 { font-size: 48px; font-weight: 800; color: #fff; margin-bottom: 12px; position: relative; z-index: 1; }
+.slide-privacy h2 span { color: #22c55e; }
+.slide-privacy p { font-size: 20px; color: rgba(255,255,255,0.5); max-width: 600px; line-height: 1.6; margin-bottom: 40px; position: relative; z-index: 1; }
+.slide-privacy .privacy-items { display: flex; gap: 32px; position: relative; z-index: 1; }
+.slide-privacy .privacy-item {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 24px 32px;
+  text-align: center;
+}
+.slide-privacy .privacy-item .picon { font-size: 28px; margin-bottom: 10px; }
+.slide-privacy .privacy-item h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.slide-privacy .privacy-item p { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 0; }
+.slide-privacy::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+}
+</style>
+</head>
+<body>
+
+<!-- THUMBNAIL -->
+<div class="section">
+  <div class="label">Thumbnail (240x240) — Screenshot this</div>
+  <div class="thumbnail">
+    <div class="logo">p<span>ulso</span></div>
+    <div class="tagline">Master your money</div>
+  </div>
+</div>
+
+<!-- SLIDE 1 - HERO -->
+<div class="section">
+  <div class="label">Gallery Image 1 — Hero (1270x760)</div>
+  <div class="gallery-img slide-hero">
+    <div class="grid-dots"></div>
+    <div class="hero-content">
+      <div class="hero-logo">p<span>ulso</span></div>
+      <div class="hero-tagline">Master your money rhythm</div>
+      <div class="hero-sub">Controle financeiro completo, gratuito, sem complicacoes</div>
+      <div class="hero-badge">Free &bull; Complete &bull; No Compromises</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2 - FEATURES -->
+<div class="section">
+  <div class="label">Gallery Image 2 — Features (1270x760)</div>
+  <div class="gallery-img slide-features">
+    <div class="features-left">
+      <h2>Everything you need to <span>manage your money</span></h2>
+      <p>Track expenses, income, credit cards, investments, bills, and savings goals — all in one beautiful dashboard.</p>
+    </div>
+    <div class="features-right">
+      <div class="feature-card">
+        <div class="icon green">💰</div>
+        <div class="info">
+          <h4>Smart Dashboard</h4>
+          <p>Real-time balance, charts, and monthly overview</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="icon blue">📊</div>
+        <div class="info">
+          <h4>Reports & Analytics</h4>
+          <p>Category breakdown, trends, and yearly comparison</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="icon orange">💳</div>
+        <div class="info">
+          <h4>Credit Cards & Bills</h4>
+          <p>Track invoices, due dates, and spending limits</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="icon pink">🎯</div>
+        <div class="info">
+          <h4>Goals & Investments</h4>
+          <p>Emergency fund, portfolios, and projected returns</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 - DASHBOARD -->
+<div class="section">
+  <div class="label">Gallery Image 3 — Dashboard (1270x760)</div>
+  <div class="gallery-img slide-dashboard">
+    <div class="dash-header">
+      <h3>Dashboard Overview</h3>
+      <span>pulso-5ui.pages.dev</span>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div class="card-label">Balance</div>
+        <div class="card-value green">R$ 12.450,00</div>
+        <div class="card-bar"><div class="fill green" style="width:72%"></div></div>
+      </div>
+      <div class="dash-card">
+        <div class="card-label">Monthly Expenses</div>
+        <div class="card-value red">- R$ 4.230,50</div>
+        <div class="card-bar"><div class="fill orange" style="width:45%"></div></div>
+      </div>
+      <div class="dash-card">
+        <div class="card-label">Income vs Expenses</div>
+        <div class="mini-chart">
+          <div class="bar filled" style="height:60%"></div>
+          <div class="bar filled" style="height:45%"></div>
+          <div class="bar filled" style="height:70%"></div>
+          <div class="bar filled" style="height:35%"></div>
+          <div class="bar filled" style="height:55%"></div>
+          <div class="bar empty" style="height:20%"></div>
+          <div class="bar filled" style="height:65%"></div>
+          <div class="bar filled" style="height:50%"></div>
+          <div class="bar empty" style="height:30%"></div>
+          <div class="bar filled" style="height:40%"></div>
+          <div class="bar filled" style="height:75%"></div>
+          <div class="bar filled" style="height:60%"></div>
+        </div>
+      </div>
+      <div class="dash-card">
+        <div class="card-label">Emergency Fund</div>
+        <div class="card-value white">R$ 8.200,00</div>
+        <div class="card-bar"><div class="fill green" style="width:55%"></div></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:8px;">Goal: R$ 40.000 (6 months)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 - PRIVACY -->
+<div class="section">
+  <div class="label">Gallery Image 4 — Privacy (1270x760)</div>
+  <div class="gallery-img slide-privacy">
+    <div class="shield">🔒</div>
+    <h2>Your data, <span>your rules</span></h2>
+    <p>Everything is saved on your Firebase account — only you have access. No tracking, no data selling, no compromises.</p>
+    <div class="privacy-items">
+      <div class="privacy-item">
+        <div class="picon">🛡️</div>
+        <h4>Encrypted</h4>
+        <p>HTTPS everywhere</p>
+      </div>
+      <div class="privacy-item">
+        <div class="picon">👤</div>
+        <h4>Private</h4>
+        <p>Your Firebase, your data</p>
+      </div>
+      <div class="privacy-item">
+        <div class="picon">📱</div>
+        <h4>Works Offline</h4>
+        <p>PWA with local cache</p>
+      </div>
+      <div class="privacy-item">
+        <div class="picon">🌐</div>
+        <h4>Multilingual</h4>
+        <p>PT, EN, ES</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
