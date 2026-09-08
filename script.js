@@ -277,6 +277,9 @@ const pulsoTranslations = {
     categoriasPorArea: 'Categorias por área da vida...',
     investidor: 'Investidor',
     focoInvestimentos: 'Foco em investimentos e metas financeiras...',
+    catAlimentacao: 'Alimentação', catTransporte: 'Transporte', catLazer: 'Lazer', catSaude: 'Saúde',
+    catMoradia: 'Moradia', catMercado: 'Mercado', catInvestimentos: 'Investimentos', catEducacao: 'Educação',
+    catRendaFixa: 'Renda Fixa', catAcoes: 'Ações', catFIIs: 'FIIs', catETFs: 'ETFs', catCripto: 'Cripto',
     compartilharOrcamento: 'Compartilhar orçamento',
     convideAlguem: 'Convide alguém para visualizar e registrar lançamentos no mesmo orçamento.',
     convidar: 'Convidar',
@@ -602,6 +605,9 @@ const pulsoTranslations = {
     categoriasPorArea: 'Categories by life area...',
     investidor: 'Investor',
     focoInvestimentos: 'Focus on investments and financial goals...',
+    catAlimentacao: 'Food', catTransporte: 'Transport', catLazer: 'Leisure', catSaude: 'Health',
+    catMoradia: 'Housing', catMercado: 'Groceries', catInvestimentos: 'Investments', catEducacao: 'Education',
+    catRendaFixa: 'Fixed Income', catAcoes: 'Stocks', catFIIs: 'REITs', catETFs: 'ETFs', catCripto: 'Crypto',
     compartilharOrcamento: 'Share budget',
     convideAlguem: 'Invite someone to view and record transactions in the same budget.',
     convidar: 'Invite',
@@ -927,6 +933,9 @@ const pulsoTranslations = {
     categoriasPorArea: 'Categorías por área de vida...',
     investidor: 'Inversor',
     focoInvestimentos: 'Enfoque en inversiones y metas financieras...',
+    catAlimentacao: 'Alimentación', catTransporte: 'Transporte', catLazer: 'Ocio', catSaude: 'Salud',
+    catMoradia: 'Vivienda', catMercado: 'Supermercado', catInvestimentos: 'Inversiones', catEducacao: 'Educación',
+    catRendaFixa: 'Renta Fija', catAcoes: 'Acciones', catFIIs: 'FIIs', catETFs: 'ETFs', catCripto: 'Cripto',
     compartilharOrcamento: 'Compartir presupuesto',
     convideAlguem: 'Invita a alguien a ver y registrar movimientos en el mismo presupuesto.',
     convidar: 'Invitar',
@@ -3960,7 +3969,7 @@ function renderDashMaioresGastos(monthlyExpense) {
     '<div class="gasto-item">' +
       '<div class="gasto-info">' +
         '<span class="gasto-rank">' + (i + 1) + '</span>' +
-        '<div><div class="conta-nome">' + escapeHTML(t.desc) + '</div><div class="conta-tipo">' + escapeHTML(t.cat) + ' • ' + escapeHTML(t.user) + '</div></div>' +
+        '<div><div class="conta-nome">' + escapeHTML(t.desc) + '</div><div class="conta-tipo">' + escapeHTML(tCategory(t.cat)) + ' • ' + escapeHTML(t.user) + '</div></div>' +
       '</div>' +
       '<span class="gasto-valor">- ' + formatCurrency(t.val) + '</span>' +
     '</div>'
@@ -5376,6 +5385,72 @@ function removeSharedMember(idx) {
 }
 
 // ============================================================
+// CATEGORY TRANSLATIONS — translate stored category names for display
+// ============================================================
+const CATEGORY_LABELS = {
+  pt: {
+    'Salário': 'Salário', 'Dividendos': 'Dividendos', 'Renda Extra': 'Renda Extra',
+    'Outros Ganhos': 'Outros Ganhos', 'Gastos Essenciais': 'Gastos Essenciais',
+    'Pessoais': 'Pessoais', 'Investimento': 'Investimento',
+    'Freelance': 'Freelance', 'Moradia': 'Moradia', 'Alimentação': 'Alimentação',
+    'Transporte': 'Transporte', 'Saúde': 'Saúde', 'Lazer': 'Lazer', 'Pessoal': 'Pessoal',
+    'Outros': 'Outros', 'Aluguel': 'Aluguel', 'Condomínio': 'Condomínio',
+    'Contas (Luz/Água/Gás)': 'Contas (Luz/Água/Gás)', 'Internet/Telefone': 'Internet/Telefone',
+    'Mercado': 'Mercado', 'Restaurante': 'Restaurante', 'Combustível': 'Combustível',
+    'Educação': 'Educação', 'Vestuário': 'Vestuário', 'Compras': 'Compras',
+    'Assinaturas': 'Assinaturas', 'Seguros': 'Seguros', 'Impostos': 'Impostos',
+    'Presentes': 'Presentes', 'Doações': 'Doações', 'Viagens': 'Viagens',
+    'Manutenção': 'Manutenção', 'Pet': 'Pet',
+    'Aluguel Recebido': 'Aluguel Recebido', 'Rendimentos': 'Rendimentos',
+    'Juros': 'Juros', 'Renda Fixa': 'Renda Fixa', 'Ações': 'Ações',
+    'FIIs': 'FIIs', 'ETFs': 'ETFs', 'Criptomoedas': 'Criptomoedas',
+    'Poupança': 'Poupança', 'Reserva de Emergência': 'Reserva de Emergência'
+  },
+  en: {
+    'Salário': 'Salary', 'Dividendos': 'Dividends', 'Renda Extra': 'Extra Income',
+    'Outros Ganhos': 'Other Earnings', 'Gastos Essenciais': 'Essential Expenses',
+    'Pessoais': 'Personal', 'Investimento': 'Investment',
+    'Freelance': 'Freelance', 'Moradia': 'Housing', 'Alimentação': 'Food',
+    'Transporte': 'Transport', 'Saúde': 'Health', 'Lazer': 'Leisure', 'Pessoal': 'Personal',
+    'Outros': 'Others', 'Aluguel': 'Rent', 'Condomínio': 'Condo Fee',
+    'Contas (Luz/Água/Gás)': 'Utilities (Electric/Water/Gas)', 'Internet/Telefone': 'Internet/Phone',
+    'Mercado': 'Groceries', 'Restaurante': 'Restaurant', 'Combustível': 'Fuel',
+    'Educação': 'Education', 'Vestuário': 'Clothing', 'Compras': 'Shopping',
+    'Assinaturas': 'Subscriptions', 'Seguros': 'Insurance', 'Impostos': 'Taxes',
+    'Presentes': 'Gifts', 'Doações': 'Donations', 'Viagens': 'Travel',
+    'Manutenção': 'Maintenance', 'Pet': 'Pet',
+    'Aluguel Recebido': 'Rental Income', 'Rendimentos': 'Returns',
+    'Juros': 'Interest', 'Renda Fixa': 'Fixed Income', 'Ações': 'Stocks',
+    'FIIs': 'REITs', 'ETFs': 'ETFs', 'Criptomoedas': 'Crypto',
+    'Poupança': 'Savings', 'Reserva de Emergência': 'Emergency Fund'
+  },
+  es: {
+    'Salário': 'Salario', 'Dividendos': 'Dividendos', 'Renda Extra': 'Ingreso Extra',
+    'Outros Ganhos': 'Otros Ganancias', 'Gastos Essenciais': 'Gastos Esenciales',
+    'Pessoais': 'Personales', 'Investimento': 'Inversión',
+    'Freelance': 'Freelance', 'Moradia': 'Vivienda', 'Alimentação': 'Alimentación',
+    'Transporte': 'Transporte', 'Saúde': 'Salud', 'Lazer': 'Ocio', 'Pessoal': 'Personal',
+    'Outros': 'Otros', 'Aluguel': 'Alquiler', 'Condomínio': 'Condominio',
+    'Contas (Luz/Água/Gás)': 'Servicios (Luz/Agua/Gas)', 'Internet/Telefone': 'Internet/Teléfono',
+    'Mercado': 'Supermercado', 'Restaurante': 'Restaurante', 'Combustível': 'Combustible',
+    'Educação': 'Educación', 'Vestuário': 'Ropa', 'Compras': 'Compras',
+    'Assinaturas': 'Suscripciones', 'Seguros': 'Seguros', 'Impostos': 'Impuestos',
+    'Presentes': 'Regalos', 'Doações': 'Donaciones', 'Viagens': 'Viajes',
+    'Manutenção': 'Mantenimiento', 'Pet': 'Mascota',
+    'Aluguel Recebido': 'Alquiler Recibido', 'Rendimentos': 'Rendimientos',
+    'Juros': 'Intereses', 'Renda Fixa': 'Renta Fija', 'Ações': 'Acciones',
+    'FIIs': 'FIIs', 'ETFs': 'ETFs', 'Criptomoedas': 'Criptomonedas',
+    'Poupança': 'Ahorro', 'Reserva de Emergência': 'Fondo de Emergencia'
+  }
+};
+
+function tCategory(name) {
+  if (!name) return '';
+  const lang = (window.PulsoI18n && window.PulsoI18n.currentLang) || 'pt';
+  return (CATEGORY_LABELS[lang] && CATEGORY_LABELS[lang][name]) || name;
+}
+
+// ============================================================
 // CATEGORIAS CUSTOMIZÁVEIS
 // ============================================================
 const DEFAULT_CATEGORIES = {
@@ -5413,7 +5488,7 @@ function renderCategoriesSummary() {
   const container = document.getElementById('categories-summary');
   if (!container) return;
   const all = [...customCategories.income, ...customCategories.expense];
-  container.innerHTML = all.map(c => '<span class="cat-mini-tag">' + escapeHTML(c) + '</span>').join('');
+  container.innerHTML = all.map(c => '<span class="cat-mini-tag">' + escapeHTML(tCategory(c)) + '</span>').join('');
 }
 
 function updateTransactionModalCategories() {
@@ -5425,12 +5500,12 @@ function updateTransactionModalCategories() {
 
   if (incomeGroup) {
     incomeGroup.innerHTML = customCategories.income.map(c =>
-      '<option value="' + escapeHTML(c) + '">' + escapeHTML(c) + '</option>'
+      '<option value="' + escapeHTML(c) + '">' + escapeHTML(tCategory(c)) + '</option>'
     ).join('');
   }
   if (expenseGroup) {
     expenseGroup.innerHTML = customCategories.expense.map(c =>
-      '<option value="' + escapeHTML(c) + '">' + escapeHTML(c) + '</option>'
+      '<option value="' + escapeHTML(c) + '">' + escapeHTML(tCategory(c)) + '</option>'
     ).join('');
   }
 }
@@ -5457,7 +5532,7 @@ function renderCategoriesList(type) {
   container.innerHTML = cats.map(c => {
     const isDefault = defaults.includes(c);
     return '<span class="cat-tag ' + (isDefault ? 'default' : '') + '">' +
-      escapeHTML(c) +
+      escapeHTML(tCategory(c)) +
       (isDefault ? '' : '<button type="button" class="cat-remove" data-cat-type="' + escapeHTML(type) + '" data-cat-name="' + escapeHTML(c) + '"><i class="fa-solid fa-xmark"></i></button>') +
     '</span>';
   }).join('');
@@ -5847,7 +5922,7 @@ function renderLancamentos() {
       html += '<div class="lanc-item-info">';
       html += '<div class="lanc-item-desc">' + escapeHTML(t.desc) + parcelaTag + pagoTag + '</div>';
       html += '<div class="lanc-item-meta">';
-      html += '<span class="cat-badge" style="background:' + catColor.bg + ';color:' + catColor.fg + ';">' + escapeHTML(t.cat) + '</span>';
+      html += '<span class="cat-badge" style="background:' + catColor.bg + ';color:' + catColor.fg + ';">' + escapeHTML(tCategory(t.cat)) + '</span>';
       html += payMeta;
       html += '<span>' + escapeHTML(t.user) + '</span>';
       html += '</div>';

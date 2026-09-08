@@ -1093,36 +1093,36 @@
 <div class="form-modal-overlay" id="onboarding-overlay">
   <div class="form-modal onboarding-modal" onclick="event.stopPropagation()">
     <div class="onboarding-step" id="onboarding-step-1">
-      <button type="button" class="onboarding-skip" onclick="closeOnboarding()">Pular</button>
+      <button type="button" class="onboarding-skip" onclick="closeOnboarding()" data-i18n="pular">Pular</button>
       <div class="onboarding-icon">👋</div>
-      <h3>Bem-vindo ao Pulso!</h3>
-      <p class="onboarding-subtitle">Vamos personalizar suas categorias. Escolha o modelo que melhor se encaixa no seu perfil:</p>
+      <h3 data-i18n="bemVindoPulso">Bem-vindo ao Pulso!</h3>
+      <p class="onboarding-subtitle" data-i18n="vamosPersonalizar">Vamos personalizar suas categorias. Escolha o modelo que melhor se encaixa no seu perfil:</p>
       
       <div class="template-grid">
         <button type="button" class="template-card" onclick="selectTemplate('simples')">
           <div class="template-icon">🏠</div>
-          <h4>Simples</h4>
-          <p>Essenciais vs Pessoais. Ideal para quem quer o básico organizado.</p>
+          <h4 data-i18n="simples">Simples</h4>
+          <p data-i18n="essenciaisPessoais">Essenciais vs Pessoais. Ideal para quem quer o básico organizado.</p>
           <div class="template-tags">
-            <span>Alimentação</span><span>Transporte</span><span>Lazer</span><span>Saúde</span>
+            <span data-i18n="catAlimentacao">Alimentação</span><span data-i18n="catTransporte">Transporte</span><span data-i18n="catLazer">Lazer</span><span data-i18n="catSaude">Saúde</span>
           </div>
         </button>
         
         <button type="button" class="template-card" onclick="selectTemplate('detalhado')">
           <div class="template-icon">📊</div>
-          <h4>Detalhado</h4>
-          <p>Categorias por área da vida. Para quem quer controle completo.</p>
+          <h4 data-i18n="detalhado">Detalhado</h4>
+          <p data-i18n="categoriasPorArea">Categorias por área da vida. Para quem quer controle completo.</p>
           <div class="template-tags">
-            <span>Moradia</span><span>Mercado</span><span>Lazer</span><span>Investimentos</span><span>Educação</span>
+            <span data-i18n="catMoradia">Moradia</span><span data-i18n="catMercado">Mercado</span><span data-i18n="catLazer">Lazer</span><span data-i18n="catInvestimentos">Investimentos</span><span data-i18n="catEducacao">Educação</span>
           </div>
         </button>
         
         <button type="button" class="template-card" onclick="selectTemplate('investidor')">
           <div class="template-icon">📈</div>
-          <h4>Investidor</h4>
-          <p>Foco em investimentos e metas financeiras. Para quem pensa a longo prazo.</p>
+          <h4 data-i18n="investidor">Investidor</h4>
+          <p data-i18n="focoInvestimentos">Foco em investimentos e metas financeiras. Para quem pensa a longo prazo.</p>
           <div class="template-tags">
-            <span>Renda Fixa</span><span>Ações</span><span>FIIs</span><span>ETFs</span><span>Cripto</span>
+            <span data-i18n="catRendaFixa">Renda Fixa</span><span data-i18n="catAcoes">Ações</span><span data-i18n="catFIIs">FIIs</span><span data-i18n="catETFs">ETFs</span><span data-i18n="catCripto">Cripto</span>
           </div>
         </button>
       </div>
