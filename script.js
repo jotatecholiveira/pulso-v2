@@ -764,7 +764,7 @@ function checkRateLimit() {
 function resetRateLimit() { authRateLimit.attempts = 0; authRateLimit.lockedUntil = 0; }
 
 // SESSION TIMEOUT — auto-logout após 60min de inatividade
-const SESSION_TIMEOUT_MS = 60 * 60 * 1000;
+const SESSION_TIMEOUT_MS = 30 * 24 * 60 * 60 * 1000;
 let sessionTimer = null;
 function resetSessionTimer() {
   if (sessionTimer) clearTimeout(sessionTimer);
@@ -893,7 +893,7 @@ if (auth) {
           if (!currentUser && !authInitialized && !authResolved) {
             window.location.href = 'login.html';
           }
-        }, 15000);
+        }, 30000);
         return;
       }
       window.location.href = 'login.html';
