@@ -100,7 +100,7 @@
               </div>
               <div class="brand-text">
                 <span class="brand-name">Pulso</span>
-                <p class="eyebrow">Finanças</p>
+                <p class="eyebrow" data-i18n="financas">Finanças</p>
               </div>
             </div>
           </div>
@@ -108,27 +108,27 @@
           <nav class="nav-menu">
             <button type="button" class="nav-link active" onclick="switchTab('dashboard')" data-tab="dashboard">
               <i class="fa-solid fa-gauge-high"></i>
-              <span class="nav-label">Dashboard</span>
+              <span class="nav-label" data-i18n="navDashboard">Dashboard</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('entrada')" data-tab="entrada">
               <i class="fa-solid fa-receipt"></i>
-              <span class="nav-label">Lançamentos</span>
+              <span class="nav-label" data-i18n="navExtract">Lançamentos</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('investimentos')" data-tab="investimentos">
               <i class="fa-solid fa-chart-line"></i>
-              <span class="nav-label">Investimentos</span>
+              <span class="nav-label" data-i18n="navInvestments">Investimentos</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('historico')" data-tab="historico">
               <i class="fa-solid fa-clock-rotate-left"></i>
-              <span class="nav-label">Histórico</span>
+              <span class="nav-label" data-i18n="navHistory">Histórico</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('banco')" data-tab="banco">
               <i class="fa-solid fa-building-columns"></i>
-              <span class="nav-label">Banco</span>
+              <span class="nav-label" data-i18n="navBank">Banco</span>
             </button>
             <button type="button" class="nav-link" onclick="openShareModal()" data-tab="share">
               <i class="fa-solid fa-user-group"></i>
-              <span class="nav-label">Compartilhar</span>
+              <span class="nav-label" data-i18n="navShare">Compartilhar</span>
               <span class="nav-badge">beta</span>
             </button>
           </nav>
@@ -138,9 +138,6 @@
           <button type="button" class="feedback-btn" onclick="openFeedbackModal()" title="Enviar feedback">
             <i class="fa-solid fa-comment-dots"></i> Deixe seu feedback
           </button>
-          <a href="https://ko-fi.com/" target="_blank" rel="noopener" class="kofi-btn" id="kofiBtn" title="Apoie o Pulso no Ko-fi">
-            <i class="fa-solid fa-mug-hot"></i> <span class="kofi-label">Apoie o Pulso</span>
-          </a>
           <div class="sdg-block" aria-label="Objetivos de desenvolvimento sustentável">
             <span class="sdg-label">SDG</span>
             <span class="sdg-icons" aria-hidden="true">🌍 🤝 💙</span>
@@ -220,9 +217,9 @@
               <h2>Extrato Bancário</h2>
             </div>
             <div class="lanc-view-toggle">
-              <button type="button" class="lanc-view-btn active" data-lanc-view="monthly" onclick="setLancView('monthly')">Mensal</button>
-              <button type="button" class="lanc-view-btn" data-lanc-view="annual" onclick="setLancView('annual')">Anual</button>
-              <button type="button" class="lanc-view-btn" data-lanc-view="cartoes" onclick="setLancView('cartoes')"><i class="fa-solid fa-credit-card"></i> Cartões</button>
+              <button type="button" class="lanc-view-btn active" data-lanc-view="monthly" onclick="setLancView('monthly')" data-i18n="mensal">Mensal</button>
+              <button type="button" class="lanc-view-btn" data-lanc-view="annual" onclick="setLancView('annual')" data-i18n="anual">Anual</button>
+              <button type="button" class="lanc-view-btn" data-lanc-view="cartoes" onclick="setLancView('cartoes')" data-i18n="cartoes"><i class="fa-solid fa-credit-card"></i> Cartões</button>
             </div>
             <div class="lanc-month-nav" id="lanc-month-nav">
               <button type="button" class="lanc-nav-btn" onclick="changeLancMonth(-1)" aria-label="Mês anterior">
@@ -298,8 +295,8 @@
             <div class="panel chart-panel">
               <div class="panel-header">
                 <div>
-                  <p class="eyebrow">Categorias</p>
-                  <h3>Gastos por categoria</h3>
+                  <p class="eyebrow" data-i18n="categoriasLabel">Categorias</p>
+                  <h3 data-i18n="gastosPorCategoria">Gastos por categoria</h3>
                 </div>
               </div>
               <div id="category-bars" class="category-bars-collapsed"></div>
@@ -310,7 +307,7 @@
             </div>
 
             <div class="card collapsible-card" data-collapsible>
-              <h2 class="card-title" onclick="toggleCollapsible(this.parentElement)">
+              <h2 class="card-title" onclick="toggleCollapsible(this.parentElement)" data-i18n="ultimasMovimentacoes">
                 Últimas Movimentações
                 <i class="fa-solid fa-chevron-up collapsible-icon"></i>
               </h2>
@@ -322,7 +319,7 @@
 
           <div class="dash-two-col">
             <div class="card panel-top">
-              <h2 class="card-title">Divisão de Gastos</h2>
+              <h2 class="card-title" data-i18n="divisaoGastos">Divisão de Gastos</h2>
               <div class="donut-split-layout">
                 <div class="donut-split-chart">
                   <canvas id="divisao-chart"></canvas>
@@ -336,7 +333,7 @@
             </div>
 
             <div class="card panel-top">
-              <h2 class="card-title">Receitas por Categoria</h2>
+              <h2 class="card-title" data-i18n="receitasPorCategoria">Receitas por Categoria</h2>
               <div class="receitas-chart-wrap">
                 <canvas id="receitas-chart"></canvas>
               </div>
@@ -347,10 +344,10 @@
           <div class="panel panel-top">
             <div class="panel-header">
               <div>
-                <p class="eyebrow">Orçamento</p>
-                <h3>Limites de gastos por categoria</h3>
+                <p class="eyebrow" data-i18n="orcamento">Orçamento</p>
+                <h3 data-i18n="limitesGastos">Limites de gastos por categoria</h3>
               </div>
-              <button type="button" class="btn-submit btn-sm" id="saveLimitesBtn" onclick="salvarLimitesGastos()">
+              <button type="button" class="btn-submit btn-sm" id="saveLimitesBtn" onclick="salvarLimitesGastos()" data-i18n="salvar">
                 <i class="fa-regular fa-floppy-disk"></i> Salvar
               </button>
             </div>
@@ -362,14 +359,14 @@
           <div class="panel panel-top">
             <div class="panel-header">
               <div>
-                <p class="eyebrow">Personalizar</p>
+                <p class="eyebrow" data-i18n="personalizar">Personalizar</p>
                 <h3>Categorias</h3>
               </div>
               <div style="display:flex;gap:8px;">
-                <button type="button" class="btn-secondary" style="width:auto;padding:6px 14px;font-size:0.8rem;" onclick="showOnboarding()">
+                <button type="button" class="btn-secondary" style="width:auto;padding:6px 14px;font-size:0.8rem;" onclick="showOnboarding()" data-i18n="trocarTemplate">
                   <i class="fa-solid fa-palette"></i> Trocar template
                 </button>
-                <button type="button" class="btn-submit btn-sm" onclick="openCategoriesModal()">
+                <button type="button" class="btn-submit btn-sm" onclick="openCategoriesModal()" data-i18n="gerenciar">
                   <i class="fa-solid fa-sliders"></i> Gerenciar
                 </button>
               </div>
@@ -381,11 +378,11 @@
           <div class="lanc-quick-actions">
             <button type="button" class="lanc-quick-btn lanc-quick-despesa" onclick="openModal('saida')">
               <i class="fa-solid fa-minus-circle"></i>
-              <span>Nova Despesa</span>
+              <span data-i18n="newExpense">Nova Despesa</span>
             </button>
             <button type="button" class="lanc-quick-btn lanc-quick-receita" onclick="openModal('entrada')">
               <i class="fa-solid fa-plus-circle"></i>
-              <span>Nova Receita</span>
+              <span data-i18n="newIncome">Nova Receita</span>
             </button>
           </div>
         </section>
@@ -895,22 +892,22 @@
   <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
     <button type="button" class="mbn-item active" onclick="switchTab('dashboard')" data-tab="dashboard">
       <i class="fa-solid fa-house"></i>
-      <span>Início</span>
+      <span data-i18n="inicio">Início</span>
     </button>
     <button type="button" class="mbn-item" onclick="switchTab('entrada')" data-tab="entrada">
       <i class="fa-solid fa-arrow-right-arrow-left"></i>
-      <span>Lançar</span>
+      <span data-i18n="lancar">Lançar</span>
     </button>
     <button type="button" class="mbn-item mbn-fab" onclick="openModal('saida')" title="Nova transação">
       <div class="mbn-fab-icon"><i class="fa-solid fa-plus"></i></div>
     </button>
     <button type="button" class="mbn-item" onclick="switchTab('investimentos')" data-tab="investimentos">
       <i class="fa-solid fa-chart-pie"></i>
-      <span>Investir</span>
+      <span data-i18n="investir">Investir</span>
     </button>
     <button type="button" class="mbn-item" onclick="switchTab('historico')" data-tab="historico">
       <i class="fa-solid fa-clock-rotate-left"></i>
-      <span>Histórico</span>
+      <span data-i18n="navHistory">Histórico</span>
     </button>
   </nav>
 
