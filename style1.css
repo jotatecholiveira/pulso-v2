@@ -7324,8 +7324,17 @@ body.dark-mode .delete-confirm-actions .btn-cancel:hover {
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+  flex-shrink: 0;
+}
+.lanc-item-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
   margin-left: 8px;
   flex-shrink: 0;
+}
+.lanc-item-actions .lanc-pay-btn {
+  margin-left: 0;
 }
 .lanc-pay-btn:hover {
   background: #1fb37a;

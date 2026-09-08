@@ -913,6 +913,7 @@ if (auth) {
       loadContas();
       loadCartoes();
       loadContasPagar();
+      fixContasPagarCartaoNome();
       loadContasReceber();
       if (db) {
         try { migrateLegacyToRtdb(user.uid); } catch (e) {}
@@ -2725,6 +2726,37 @@ function saveCartoes() {
   }
 }
 
+function fixContasPagarCartaoNome() {
+  loadCartoes();
+  loadContasPagar();
+  let changed = false;
+  contasPagar.forEach(cp => {
+    if (cp.origem !== 'cartao') return;
+    const exactMatch = cartoes.find(c => c.nome === cp.cartaoNome);
+    if (exactMatch) return;
+    for (const c of cartoes) {
+      if (cp.descricao && cp.descricao.includes('Fatura ' + c.nome)) {
+        cp.cartaoNome = c.nome;
+        changed = true;
+        break;
+      }
+    }
+  });
+  if (changed) saveContasPagar();
+}
+
+function matchCpToCartao(cp, c) {
+  if ((cp.cartaoNome || '') === (c.nome || '')) return true;
+  if (cp.descricao && cp.descricao.includes('Fatura ' + c.nome)) return true;
+  return false;
+}
+
+function matchCpToCartaoName(cp, cartaoNome) {
+  if ((cp.cartaoNome || '') === (cartaoNome || '')) return true;
+  if (cp.descricao && cp.descricao.includes('Fatura ' + cartaoNome)) return true;
+  return false;
+}
+
 const BANK_ICONS = {
   'Nubank': { icon: 'fa-solid fa-building-columns', color: '#820ad1' },
   'Inter': { icon: 'fa-solid fa-building-columns', color: '#ff7a00' },
@@ -2771,7 +2803,7 @@ function renderDashCartoes() {
   const now = new Date();
   container.innerHTML = cartoes.map(c => {
     const faturaAtual = contasPagar
-      .filter(cp => !cp.pago && cp.origem === 'cartao' && (cp.cartaoNome || '') === (c.nome || ''))
+      .filter(cp => !cp.pago && cp.origem === 'cartao' && matchCpToCartao(cp, c))
       .filter(cp => {
         const d = new Date(cp.vencimento);
         return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
@@ -5015,7 +5047,10 @@ function renderLancamentos() {
       html += '</div>';
       html += '<div class="lanc-item-amount ' + typeClass + '">' + sign + ' ' + formatCurrency(t.val) + '</div>';
       if (t._cp && t._pago === false) {
-        html += '<button type="button" class="lanc-pay-btn" onclick="editLancFromCp(\'' + escapeHTML(t.desc) + '\', ' + t.val + ', \'' + escapeHTML(t._cartaoNome || '') + '\')" title="Editar lançamento"><i class="fa-solid fa-pen"></i> Editar</button>';
+        html += '<div class="lanc-item-actions">';
+        html += '<button type="button" class="lanc-pay-btn" onclick="payCpItem(\'' + escapeHTML(t.desc) + '\', ' + t.val + ', \'' + escapeHTML(t._cartaoNome || '') + '\')" title="Pagar esta fatura"><i class="fa-solid fa-dollar-sign"></i></button>';
+        html += '<button type="button" class="lanc-pay-btn" onclick="editLancFromCp(\'' + escapeHTML(t.desc) + '\', ' + t.val + ', \'' + escapeHTML(t._cartaoNome || '') + '\')" title="Editar lançamentos"><i class="fa-solid fa-pen"></i></button>';
+        html += '</div>';
       }
       if (t._cp && t._pago === true) {
         html += '<button type="button" class="lanc-pay-btn lanc-edit-paid" onclick="editLancFromCp(\'' + escapeHTML(t.desc) + '\', ' + t.val + ', \'' + escapeHTML(t._cartaoNome || '') + '\')" title="Ver lançamento"><i class="fa-solid fa-eye"></i></button>';
@@ -5084,7 +5119,7 @@ function renderLancCartoes() {
   cartoes.forEach((c, ci) => {
     const bank = getBankIcon(c.nome);
     const diaVencimento = clampDueDay(c.diaVencimento || 10);
-    const faturas = contasPagar.filter(cp => cp.origem === 'cartao' && (cp.cartaoNome || '') === (c.nome || ''));
+    const faturas = contasPagar.filter(cp => cp.origem === 'cartao' && matchCpToCartao(cp, c));
     const faturasMes = faturas.filter(cp => {
       const d = new Date(cp.vencimento);
       return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
@@ -5118,7 +5153,7 @@ function renderLancCartoes() {
         html += '</div>';
         html += '<span class="lanc-cartao-item-valor">' + formatCurrency(cp.valor) + '</span>';
         if (!cp.pago) {
-          html += '<button type="button" class="lanc-pay-btn" onclick="payCpItem(\'' + escapeHTML(cp.descricao) + '\', ' + cp.valor + ', \'' + escapeHTML(cp.cartaoNome || '') + '\')" title="Pagar esta fatura"><i class="fa-solid fa-dollar-sign"></i></button>';
+          html += '<button type="button" class="lanc-pay-btn" onclick="payCpItem(\'' + escapeHTML(cp.descricao) + '\', ' + cp.valor + ', \'' + escapeHTML(c.nome) + '\')" title="Pagar esta fatura"><i class="fa-solid fa-dollar-sign"></i></button>';
         }
         html += '<button type="button" class="lanc-cartao-item-action' + (cp.pago ? ' paid' : '') + '" onclick="toggleCpPago(' + ci + ', \'' + escapeHTML(cp.descricao) + '\', ' + cp.valor + ')" title="' + (cp.pago ? 'Marcar como não pago' : 'Marcar como pago') + '">';
         html += '<i class="fa-solid ' + (cp.pago ? 'fa-rotate-left' : 'fa-check') + '"></i>';
@@ -5139,7 +5174,7 @@ function toggleCpPago(cartaoIndex, descricao, valor) {
   if (!c) return;
   const cp = contasPagar.find(item =>
     item.origem === 'cartao' &&
-    (item.cartaoNome || '') === (c.nome || '') &&
+    matchCpToCartao(item, c) &&
     item.descricao === descricao &&
     Math.abs((parseFloat(item.valor) || 0) - valor) < 0.01
   );
@@ -5156,7 +5191,7 @@ function editFatura(cartaoIndex) {
   const now = new Date();
   const faturasMes = contasPagar.filter(cp =>
     cp.origem === 'cartao' &&
-    (cp.cartaoNome || '') === (c.nome || '') &&
+    matchCpToCartao(cp, c) &&
     new Date(cp.vencimento).getMonth() === now.getMonth() &&
     new Date(cp.vencimento).getFullYear() === now.getFullYear()
   );
@@ -5202,7 +5237,7 @@ function saveFaturaEdit(cartaoIndex, btn) {
     const idx = parseInt(input.dataset.idx, 10);
     const faturasMes = contasPagar.filter(cp =>
       cp.origem === 'cartao' &&
-      (cp.cartaoNome || '') === (c.nome || '') &&
+      matchCpToCartao(cp, c) &&
       new Date(cp.vencimento).getMonth() === now.getMonth() &&
       new Date(cp.vencimento).getFullYear() === now.getFullYear()
     );
@@ -5224,7 +5259,7 @@ function deleteFaturaItem(cartaoIndex, itemIdx) {
   const now = new Date();
   const faturasMes = contasPagar.filter(cp =>
     cp.origem === 'cartao' &&
-    (cp.cartaoNome || '') === (c.nome || '') &&
+    matchCpToCartao(cp, c) &&
     new Date(cp.vencimento).getMonth() === now.getMonth() &&
     new Date(cp.vencimento).getFullYear() === now.getFullYear()
   );
@@ -5313,7 +5348,7 @@ function editLancFromCp(descricao, valor, cartaoNome) {
   const anoAtual = now.getFullYear();
 
   const items = contasPagar.filter(item =>
-    (item.cartaoNome || '') === (cartaoNome || '') &&
+    matchCpToCartaoName(item, cartaoNome) &&
     ((new Date(item.vencimento).getFullYear() > anoAtual) ||
      (new Date(item.vencimento).getFullYear() === anoAtual && new Date(item.vencimento).getMonth() >= mesAtual))
   ).sort((a, b) => new Date(a.vencimento) - new Date(b.vencimento));
@@ -5371,7 +5406,7 @@ function payCpItem(descricao, valor, cartaoNome) {
   const cp = contasPagar.find(item =>
     item.descricao === descricao &&
     Math.abs((parseFloat(item.valor) || 0) - valor) < 0.01 &&
-    (item.cartaoNome || '') === (cartaoNome || '')
+    matchCpToCartaoName(item, cartaoNome)
   );
   if (!cp) { showToast('Item não encontrado.', 'error'); return; }
   if (cp.pago) { showToast('Este item já foi pago.', 'warning'); return; }
@@ -5450,7 +5485,7 @@ function confirmPayCp(descricao, valor, cartaoNome) {
   const cp = contasPagar.find(item =>
     item.descricao === descricao &&
     Math.abs((parseFloat(item.valor) || 0) - valor) < 0.01 &&
-    (item.cartaoNome || '') === (cartaoNome || '')
+    matchCpToCartaoName(item, cartaoNome)
   );
   if (!cp) { showToast('Item não encontrado.', 'error'); return; }
 
@@ -5475,7 +5510,7 @@ function confirmPayCp(descricao, valor, cartaoNome) {
     const futureCps = contasPagar.filter(item =>
       item !== cp &&
       item.origem === 'cartao' &&
-      item.cartaoNome === cartaoNome &&
+      matchCpToCartaoName(item, cartaoNome) &&
       item.descricao.includes(baseDesc) &&
       new Date(item.vencimento) > new Date(cp.vencimento) &&
       !item.pago
