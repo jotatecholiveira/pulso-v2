@@ -99,7 +99,7 @@
                 <i class="fa-solid fa-user" id="sidebar-avatar-icon"></i>
               </div>
               <div class="brand-text">
-                <span class="brand-name">Pulso</span>
+                <span class="brand-name" data-i18n="appName">Pulso</span>
                 <p class="eyebrow" data-i18n="financas">Finanças</p>
               </div>
             </div>
@@ -199,7 +199,7 @@
         <i class="fa-solid fa-user-pen"></i> Minha Conta
       </button>
       <button type="button" class="dropdown-item" onclick="openShareModal()">
-        <i class="fa-solid fa-user-group"></i> Compartilhar
+        <i class="fa-solid fa-user-group"></i> <span data-i18n="navShare">Compartilhar</span>
       </button>
       <button type="button" class="dropdown-item danger" onclick="logout()">
         <i class="fa-solid fa-right-from-bracket"></i> Sair
@@ -243,15 +243,15 @@
 
           <div class="lanc-summary">
             <div class="lanc-stat lanc-stat-income">
-              <span class="lanc-stat-label">Total Entradas</span>
+              <span class="lanc-stat-label" data-i18n="totalEntradas">Total Entradas</span>
               <span class="lanc-stat-value" id="lanc-total-entradas">R$ 0,00</span>
             </div>
             <div class="lanc-stat lanc-stat-expense">
-              <span class="lanc-stat-label">Total Saídas</span>
+              <span class="lanc-stat-label" data-i18n="totalSaidas">Total Saídas</span>
               <span class="lanc-stat-value" id="lanc-total-saidas">R$ 0,00</span>
             </div>
             <div class="lanc-stat lanc-stat-balance">
-              <span class="lanc-stat-label">Saldo do Período</span>
+              <span class="lanc-stat-label" data-i18n="saldoPeriodo">Saldo do Período</span>
               <span class="lanc-stat-value" id="lanc-saldo-periodo">R$ 0,00</span>
             </div>
           </div>
@@ -262,18 +262,18 @@
               <input type="text" id="lanc-search-input" placeholder="Buscar por descrição..." oninput="onLancSearch(this.value)">
             </div>
             <div class="lanc-chips">
-              <button type="button" class="lanc-chip active" data-filter="all" onclick="setLancFilter('all')">Todos</button>
-              <button type="button" class="lanc-chip" data-filter="entrada" onclick="setLancFilter('entrada')">Entradas</button>
-              <button type="button" class="lanc-chip" data-filter="saida" onclick="setLancFilter('saida')">Saídas</button>
+              <button type="button" class="lanc-chip active" data-filter="all" onclick="setLancFilter('all')" data-i18n="todos">Todos</button>
+              <button type="button" class="lanc-chip" data-filter="entrada" onclick="setLancFilter('entrada')" data-i18n="entradas">Entradas</button>
+              <button type="button" class="lanc-chip" data-filter="saida" onclick="setLancFilter('saida')" data-i18n="saidas">Saídas</button>
             </div>
             <div class="lanc-cat-filter">
               <select id="lanc-cat-select" class="lanc-cat-dropdown" onchange="setLancCatFilter(this.value)">
-                <option value="all">Todas as categorias</option>
+                <option value="all" data-i18n="todasCategorias">Todas as categorias</option>
               </select>
             </div>
             <div class="lanc-user-filter">
               <select id="lanc-user-select" class="lanc-cat-dropdown" onchange="setLancUserFilter(this.value)">
-                <option value="all">Todos os usuários</option>
+                <option value="all" data-i18n="todosUsuarios">Todos os usuários</option>
               </select>
             </div>
           </div>
@@ -282,11 +282,11 @@
 
           <!-- MAIORES GASTOS -->
           <div class="panel">
-            <h4 class="dash-section-title">Maiores gastos do mês atual</h4>
+            <h4 class="dash-section-title" data-i18n="maioresGastosMes">Maiores gastos do mês atual</h4>
             <div id="maiores-gastos-list" class="maiores-gastos-list">
               <div class="empty-state-small">
                 <i class="fa-solid fa-receipt"></i>
-                <p>Sem gastos no período</p>
+                <p data-i18n="semGastosPeriodo">Sem gastos no período</p>
               </div>
             </div>
           </div>
@@ -301,7 +301,7 @@
               </div>
               <div id="category-bars" class="category-bars-collapsed"></div>
               <button type="button" class="category-toggle-btn" id="categoryToggle" onclick="toggleCategoryBars()" style="display: none;">
-                <span id="category-toggle-text">Ver todas</span>
+                <span id="category-toggle-text" data-i18n="verTodas">Ver todas</span>
                 <i class="fa-solid fa-chevron-down" id="category-toggle-icon"></i>
               </button>
             </div>
@@ -324,7 +324,7 @@
                 <div class="donut-split-chart">
                   <canvas id="divisao-chart"></canvas>
                   <div class="donut-split-center">
-                    <span class="donut-split-total-label">Total</span>
+                    <span class="donut-split-total-label" data-i18n="total">Total</span>
                     <span class="donut-split-total-value" id="divisao-total">R$ 0,00</span>
                   </div>
                 </div>
@@ -392,7 +392,7 @@
         <!-- HERO SALDO (Nubank-style: balance-first hierarchy) -->
         <div class="hero-saldo-card" id="hero-saldo-card">
           <div class="hero-saldo-top">
-            <div class="hero-saldo-label">Saldo disponível</div>
+            <div class="hero-saldo-label" data-i18n="saldoDisponivel">Saldo disponível</div>
             <button type="button" class="global-eye-btn hero-eye" onclick="toggleAllValuesVisibility()" title="Mostrar/ocultar valores">
               <i class="fa-solid fa-eye" id="hero-eye-icon"></i>
             </button>
@@ -400,23 +400,23 @@
           <div class="hero-saldo-valor" id="hero-saldo-valor">R$ 0,00</div>
           <div id="hero-empty-cta" class="hero-empty-cta" style="display:none;">
             <div class="hero-empty-icon">🚀</div>
-            <div class="hero-empty-text">Comece registrando seu primeiro lançamento financeiro</div>
+            <div class="hero-empty-text" data-i18n="heroEmptyText">Comece registrando seu primeiro lançamento financeiro</div>
             <button type="button" class="hero-empty-btn" onclick="showAddTransactionModal()">
-              <i class="fa-solid fa-plus"></i> Adicionar lançamento
+              <i class="fa-solid fa-plus"></i> <span data-i18n="heroEmptyBtn">Adicionar lançamento</span>
             </button>
           </div>
           <div class="hero-saldo-meta">
             <div class="hero-meta-item hero-meta-income">
               <i class="fa-solid fa-arrow-trend-up"></i>
               <span id="hero-receitas">R$ 0,00</span>
-              <span class="hero-meta-label">Receitas</span>
+              <span class="hero-meta-label" data-i18n="receitasLabel">Receitas</span>
               <svg class="hero-sparkline hero-spark-income" id="hero-spark-income" viewBox="0 0 80 24" fill="none" style="display:none;"><polyline stroke="var(--accent-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </div>
             <div class="hero-meta-divider"></div>
             <div class="hero-meta-item hero-meta-expense">
               <i class="fa-solid fa-arrow-trend-down"></i>
               <span id="hero-despesas">R$ 0,00</span>
-              <span class="hero-meta-label">Despesas</span>
+              <span class="hero-meta-label" data-i18n="despesasLabel">Despesas</span>
               <svg class="hero-sparkline hero-spark-expense" id="hero-spark-expense" viewBox="0 0 80 24" fill="none" style="display:none;"><polyline stroke="var(--accent-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </div>
           </div>
@@ -437,26 +437,26 @@
         <div class="panel comparativo-panel" id="comparativo-panel">
           <div class="panel-header">
             <div>
-              <p class="eyebrow">Comparativo</p>
-              <h3>Referência mensal</h3>
+              <p class="eyebrow" data-i18n="comparativoLabel">Comparativo</p>
+              <h3 data-i18n="referenciaMensal">Referência mensal</h3>
             </div>
           </div>
 
           <div class="comparativo-controls">
             <div class="comparativo-selects">
               <label class="comparativo-select">
-                <span>Referência</span>
+                <span data-i18n="referencia">Referência</span>
                 <select id="comp-reference-month" aria-label="Mês de referência"></select>
               </label>
               <label class="comparativo-select">
-                <span>Atual</span>
+                <span data-i18n="atual">Atual</span>
                 <select id="comp-current-month" aria-label="Mês atual"></select>
               </label>
             </div>
             <div class="comparativo-view-switch" aria-label="Visão temporal">
-              <button type="button" class="view-btn" data-view="quarter">Trimestral</button>
-              <button type="button" class="view-btn" data-view="half">Semestral</button>
-              <button type="button" class="view-btn active" data-view="year">Anual</button>
+              <button type="button" class="view-btn" data-view="quarter" data-i18n="trimestral">Trimestral</button>
+              <button type="button" class="view-btn" data-view="half" data-i18n="semestral">Semestral</button>
+              <button type="button" class="view-btn active" data-view="year" data-i18n="anual">Anual</button>
             </div>
           </div>
 
@@ -464,19 +464,19 @@
             <div class="comp-card" id="comp-card-prev">
               <div class="comp-status-bar" id="comp-status-prev"></div>
               <div class="comp-card-header">
-                <span class="comp-label" id="comp-prev-label">Mês anterior</span>
+                <span class="comp-label" id="comp-prev-label" data-i18n="mesAnterior">Mês anterior</span>
                 <i class="fa-regular fa-calendar"></i>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label">Receitas</span>
+                <span class="comp-row-label" data-i18n="receitas">Receitas</span>
                 <span class="comp-row-value positive" id="comp-prev-income">R$ 0,00</span>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label">Despesas</span>
+                <span class="comp-row-label" data-i18n="despesas">Despesas</span>
                 <span class="comp-row-value negative" id="comp-prev-expense">R$ 0,00</span>
               </div>
               <div class="comp-row comp-row-total">
-                <span class="comp-row-label">Saldo</span>
+                <span class="comp-row-label" data-i18n="saldo">Saldo</span>
                 <span class="comp-row-value" id="comp-prev-balance">R$ 0,00</span>
               </div>
             </div>
@@ -484,19 +484,19 @@
             <div class="comp-card comp-card-variation" id="comp-card-variation">
               <div class="comp-status-bar" id="comp-status-variation"></div>
               <div class="comp-card-header">
-                <span class="comp-label">Variação</span>
+                <span class="comp-label" data-i18n="variacao">Variação</span>
                 <i class="fa-solid fa-chart-line"></i>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label">Receitas</span>
+                <span class="comp-row-label" data-i18n="receitas">Receitas</span>
                 <span class="comp-row-delta" id="comp-delta-income">—</span>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label">Despesas</span>
+                <span class="comp-row-label" data-i18n="despesas">Despesas</span>
                 <span class="comp-row-delta" id="comp-delta-expense">—</span>
               </div>
               <div class="comp-row comp-row-total">
-                <span class="comp-row-label">Saldo</span>
+                <span class="comp-row-label" data-i18n="saldo">Saldo</span>
                 <span class="comp-row-delta" id="comp-delta-balance">—</span>
               </div>
             </div>
@@ -504,19 +504,19 @@
             <div class="comp-card" id="comp-card-cur">
               <div class="comp-status-bar" id="comp-status-cur"></div>
               <div class="comp-card-header">
-                <span class="comp-label" id="comp-cur-label">Este mês</span>
+                <span class="comp-label" id="comp-cur-label" data-i18n="esteMes">Este mês</span>
                 <i class="fa-solid fa-calendar-check"></i>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label">Receitas</span>
+                <span class="comp-row-label" data-i18n="receitas">Receitas</span>
                 <span class="comp-row-value positive" id="comp-cur-income">R$ 0,00</span>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label">Despesas</span>
+                <span class="comp-row-label" data-i18n="despesas">Despesas</span>
                 <span class="comp-row-value negative" id="comp-cur-expense">R$ 0,00</span>
               </div>
               <div class="comp-row comp-row-total">
-                <span class="comp-row-label">Saldo</span>
+                <span class="comp-row-label" data-i18n="saldo">Saldo</span>
                 <span class="comp-row-value" id="comp-cur-balance">R$ 0,00</span>
               </div>
             </div>
@@ -524,15 +524,15 @@
 
           <div class="comparison-summary">
             <div class="summary-pill">
-              <span class="summary-label">Saldo anterior</span>
+              <span class="summary-label" data-i18n="saldoAnterior">Saldo anterior</span>
               <strong id="comp-opening-balance">R$ 0,00</strong>
             </div>
             <div class="summary-pill accent">
-              <span class="summary-label">Saldo atual</span>
+              <span class="summary-label" data-i18n="saldoAtual">Saldo atual</span>
               <strong id="comp-closing-balance">R$ 0,00</strong>
             </div>
             <div class="summary-pill">
-              <span class="summary-label">Projeção 3M</span>
+              <span class="summary-label" data-i18n="projecao3M">Projeção 3M</span>
               <strong id="comp-projection-balance">R$ 0,00</strong>
             </div>
           </div>
@@ -543,8 +543,8 @@
             </div>
             <div class="annual-chart" id="annual-chart"></div>
             <div class="annual-legend">
-              <span class="annual-legend-item"><span class="annual-dot income"></span> Receitas</span>
-              <span class="annual-legend-item"><span class="annual-dot expense"></span> Despesas</span>
+              <span class="annual-legend-item"><span class="annual-dot income"></span> <span data-i18n="receitas">Receitas</span></span>
+              <span class="annual-legend-item"><span class="annual-dot expense"></span> <span data-i18n="despesas">Despesas</span></span>
             </div>
           </div>
         </div>
@@ -713,11 +713,11 @@
 
     <!-- METAS -->
     <div class="invest-grid">
-      <h4 class="invest-grid-title">🎯 Metas Financeiras</h4>
+      <h4 class="invest-grid-title" data-i18n="metasFinanceiras">🎯 Metas Financeiras</h4>
 
       <!-- CURTO PRAZO -->
       <div class="card">
-        <div class="card-title">Curto Prazo (6 meses)</div>
+        <div class="card-title" data-i18n="curtoPrazo">Curto Prazo (6 meses)</div>
         <div class="card-value card-value-sm" id="meta-curto-value">R$ 0,00 / R$ ?</div>
         <div class="progress-container">
           <div class="progress-bar-bg">
@@ -728,12 +728,12 @@
             <span id="meta-curto-falta">Falta: R$ 0,00</span>
           </div>
         </div>
-        <p class="card-hint">📌 Reserva de emergência (6 meses de gastos)</p>
+        <p class="card-hint" data-i18n="reservaEmergencia">📌 Reserva de emergência (6 meses de gastos)</p>
       </div>
 
       <!-- MÉDIO PRAZO -->
       <div class="card">
-        <div class="card-title">Médio Prazo (1 ano)</div>
+        <div class="card-title" data-i18n="medioPrazo">Médio Prazo (1 ano)</div>
         <div class="card-value card-value-sm" id="meta-medio-value">R$ 0,00 / R$ ?</div>
         <div class="progress-container">
           <div class="progress-bar-bg">
@@ -744,12 +744,12 @@
             <span id="meta-medio-falta">Falta: R$ 0,00</span>
           </div>
         </div>
-        <p class="card-hint">📌 Casa, carro ou educação</p>
+        <p class="card-hint" data-i18n="casaCarroEducacao">📌 Casa, carro ou educação</p>
       </div>
 
       <!-- LONGO PRAZO -->
       <div class="card">
-        <div class="card-title">Longo Prazo (3+ anos)</div>
+        <div class="card-title" data-i18n="longoPrazo">Longo Prazo (3+ anos)</div>
         <div class="card-value card-value-sm" id="meta-longo-value">R$ 0,00 / R$ ?</div>
         <div class="progress-container">
           <div class="progress-bar-bg">
@@ -760,7 +760,7 @@
             <span id="meta-longo-falta">Falta: R$ 0,00</span>
           </div>
         </div>
-        <p class="card-hint">📌 Aposentadoria, liberdade financeira</p>
+        <p class="card-hint" data-i18n="aposentadoriaLiberdade">📌 Aposentadoria, liberdade financeira</p>
       </div>
     </div>
 
@@ -768,27 +768,27 @@
     <div class="panel panel-top">
       <div class="panel-header">
         <div>
-          <p class="eyebrow">Configurar</p>
-          <h3>Editar suas metas</h3>
+          <p class="eyebrow" data-i18n="configurarLabel">Configurar</p>
+          <h3 data-i18n="editarMetas">Editar suas metas</h3>
         </div>
       </div>
       
       <form id="metasForm" class="form-stack">
         <div class="metas-form-grid">
           <div class="form-group">
-            <label for="meta-curto-val">Curto (6 meses) - R$</label>
+            <label for="meta-curto-val" data-i18n="curto6Meses">Curto (6 meses) - R$</label>
             <input type="number" id="meta-curto-val" class="form-control" step="100" min="0" placeholder="0">
           </div>
           <div class="form-group">
-            <label for="meta-medio-val">Médio (1 ano) - R$</label>
+            <label for="meta-medio-val" data-i18n="medio1Ano">Médio (1 ano) - R$</label>
             <input type="number" id="meta-medio-val" class="form-control" step="100" min="0" placeholder="0">
           </div>
           <div class="form-group">
-            <label for="meta-longo-val">Longo (3+ anos) - R$</label>
+            <label for="meta-longo-val" data-i18n="longo3Anos">Longo (3+ anos) - R$</label>
             <input type="number" id="meta-longo-val" class="form-control" step="100" min="0" placeholder="0">
           </div>
         </div>
-        <button type="submit" class="btn-submit">💾 Salvar Metas</button>
+        <button type="submit" class="btn-submit" data-i18n="salvarMetas">💾 Salvar Metas</button>
       </form>
     </div>
   </div>
@@ -951,15 +951,15 @@
 
         <div class="modal-row">
           <div class="modal-field">
-            <label for="m-cat">Categoria</label>
+            <label for="m-cat" data-i18n="categoriaLabel">Categoria</label>
           <select class="modal-input" id="m-cat" required>
-            <optgroup label="Entradas">
+            <optgroup label="Entradas" data-i18n="entradasOptgroup">
               <option value="Salário">Salário</option>
               <option value="Dividendos">Dividendos</option>
               <option value="Renda Extra">Renda Extra</option>
               <option value="Outros Ganhos">Outros Ganhos</option>
             </optgroup>
-            <optgroup label="Saídas">
+            <optgroup label="Saídas" data-i18n="saidasOptgroup">
               <option value="Gastos Essenciais">Gastos Essenciais</option>
               <option value="Pessoais">Gastos Pessoais</option>
               <option value="Investimento">Investimentos</option>
@@ -967,7 +967,7 @@
           </select>
           </div>
           <div class="modal-field" id="pagamento-group">
-            <label for="m-pagamento">Forma</label>
+            <label for="m-pagamento" data-i18n="formaLabel">Forma</label>
             <select class="modal-input" id="m-pagamento">
               <option value="dinheiro">Dinheiro (à vista)</option>
               <option value="debito">Débito (usa saldo)</option>

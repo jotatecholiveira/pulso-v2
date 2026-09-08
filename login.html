@@ -565,8 +565,8 @@
   <!-- SPLASH -->
   <div class="splash-screen" id="splashScreen">
     <div class="splash-logo">P</div>
-    <div class="splash-title">Pulso</div>
-    <div class="splash-subtitle">Seu dinheiro, seu controle.</div>
+    <div class="splash-title" data-i18n="appName">Pulso</div>
+    <div class="splash-subtitle" data-i18n="splashSubtitle">Seu dinheiro, seu controle.</div>
     <div class="splash-dots">
       <div class="splash-dot"></div>
       <div class="splash-dot"></div>
@@ -578,7 +578,7 @@
     <!-- LEFT — FORM -->
     <div class="login-left">
       <div class="login-toolbar">
-        <select id="languageSelect" class="language-select" aria-label="Idioma">
+        <select id="languageSelect" class="language-select" aria-label="Idioma" data-i18n-aria="languageLabel">
           <option value="pt">PT</option>
           <option value="en">EN</option>
           <option value="es">ES</option>
@@ -612,21 +612,21 @@
         <div class="register-fields" id="registerFields">
           <div class="input-group-new">
             <input type="text" id="fullName" placeholder=" " autocomplete="name">
-            <label for="fullName">Nome completo</label>
+            <label for="fullName" data-i18n="fullNameLabel">Nome completo</label>
           </div>
         </div>
 
         <div class="input-group-new">
           <input type="email" id="email" placeholder=" " required autocomplete="email" oninput="checkGmailHint()">
-          <label for="email">E-mail</label>
+          <label for="email" data-i18n="emailLabel">E-mail</label>
         </div>
 
         <div id="gmailHint" style="display:none"></div>
 
         <div class="input-group-new" id="passwordGroup">
           <input type="password" id="password" placeholder=" " required minlength="6" autocomplete="current-password">
-          <label for="password">Senha</label>
-          <button type="button" class="toggle-pass" onclick="togglePass()" aria-label="Mostrar senha">
+          <label for="password" data-i18n="passwordLabel">Senha</label>
+          <button type="button" class="toggle-pass" onclick="togglePass()" aria-label="Mostrar senha" data-i18n-aria="showPassword">
             <i class="fa-solid fa-eye" id="passIcon"></i>
           </button>
         </div>
@@ -634,31 +634,31 @@
         <div class="auth-options" id="loginOptions">
           <label class="remember-check">
             <input type="checkbox" id="rememberMe">
-            Lembrar-me
+            <span data-i18n="rememberMe">Lembrar-me</span>
           </label>
-          <a href="#" class="forgot-link" onclick="handleForgot(); return false;">Esqueci minha senha</a>
+          <a href="#" class="forgot-link" onclick="handleForgot(); return false;" data-i18n="forgotPassword">Esqueci minha senha</a>
         </div>
 
         <button type="button" class="btn-primary-new" id="submitBtn">
-          <span id="submitText">Entrar</span>
+          <span id="submitText" data-i18n="enter">Entrar</span>
         </button>
       </form>
 
       <div class="login-bottom">
-        <span id="bottomText">Não tem conta? <strong onclick="switchAuthTab('register')">Criar agora</strong></span>
+        <span id="bottomText" data-i18n="noAccount">Não tem conta? <strong onclick="switchAuthTab('register')">Criar agora</strong></span>
       </div>
 
       <div class="trust-row">
         <span class="trust-item"><i class="fa-solid fa-shield-halved"></i> HTTPS</span>
-        <span class="trust-item"><i class="fa-solid fa-lock"></i> Criptografado</span>
-        <span class="trust-item"><i class="fa-solid fa-user-shield"></i> Privacidade</span>
+        <span class="trust-item"><i class="fa-solid fa-lock"></i> <span data-i18n="encrypted">Criptografado</span></span>
+        <span class="trust-item"><i class="fa-solid fa-user-shield"></i> <span data-i18n="privacy">Privacidade</span></span>
       </div>
     </div>
 
     <!-- RIGHT — LANDSCAPE -->
     <div class="login-right">
       <!-- Theme Pill -->
-      <button class="landscape-pill" id="themePill" data-theme="dark" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro" tabindex="0">
+      <button class="landscape-pill" id="themePill" data-theme="dark" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro" data-i18n-aria="toggleTheme" tabindex="0">
         <div class="lp-bg" aria-hidden="true">
           <div class="lp-stars"></div>
           <div class="lp-clouds">
