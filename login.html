@@ -612,20 +612,20 @@
         <div class="register-fields" id="registerFields">
           <div class="input-group-new">
             <input type="text" id="fullName" placeholder=" " autocomplete="name">
-            <label for="fullName">Nome completo</label>
+            <label for="fullName" data-i18n="fullName">Nome completo</label>
           </div>
         </div>
 
         <div class="input-group-new">
           <input type="email" id="email" placeholder=" " required autocomplete="email" oninput="checkGmailHint()">
-          <label for="email">E-mail</label>
+          <label for="email" data-i18n="email">E-mail</label>
         </div>
 
         <div id="gmailHint" style="display:none"></div>
 
         <div class="input-group-new" id="passwordGroup">
           <input type="password" id="password" placeholder=" " required minlength="6" autocomplete="current-password">
-          <label for="password">Senha</label>
+          <label for="password" data-i18n="password">Senha</label>
           <button type="button" class="toggle-pass" onclick="togglePass()" aria-label="Mostrar senha">
             <i class="fa-solid fa-eye" id="passIcon"></i>
           </button>
@@ -634,24 +634,24 @@
         <div class="auth-options" id="loginOptions">
           <label class="remember-check">
             <input type="checkbox" id="rememberMe">
-            Lembrar-me
+            <span data-i18n="remember">Lembrar-me</span>
           </label>
-          <a href="#" class="forgot-link" onclick="handleForgot(); return false;">Esqueci minha senha</a>
+          <a href="#" class="forgot-link" onclick="handleForgot(); return false;" data-i18n="forgot">Esqueci minha senha</a>
         </div>
 
         <button type="button" class="btn-primary-new" id="submitBtn">
-          <span id="submitText">Entrar</span>
+          <span id="submitText" data-i18n="enter">Entrar</span>
         </button>
       </form>
 
       <div class="login-bottom">
-        <span id="bottomText">Não tem conta? <strong onclick="switchAuthTab('register')">Criar agora</strong></span>
+        <span id="bottomText"><span data-i18n="noAccount">Não tem conta?</span> <strong onclick="switchAuthTab('register')" data-i18n="createNow">Criar agora</strong></span>
       </div>
 
       <div class="trust-row">
         <span class="trust-item"><i class="fa-solid fa-shield-halved"></i> HTTPS</span>
-        <span class="trust-item"><i class="fa-solid fa-lock"></i> Criptografado</span>
-        <span class="trust-item"><i class="fa-solid fa-user-shield"></i> Privacidade</span>
+        <span class="trust-item"><i class="fa-solid fa-lock"></i> <span data-i18n="encrypted">Criptografado</span></span>
+        <span class="trust-item"><i class="fa-solid fa-user-shield"></i> <span data-i18n="privacy">Privacidade</span></span>
       </div>
     </div>
 
