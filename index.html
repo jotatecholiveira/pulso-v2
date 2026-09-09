@@ -59,7 +59,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.14/dist/purify.min.js" integrity="sha384-46dPGH1XlTmj7bc50bqLjTdORXs/3EP2QpA/6EWbelYWOY9VGp+87RT61S3Mcslb" crossorigin="anonymous" defer></script>
-  <script src="script.js?v=3.1.11" defer></script>
+  <script src="script.js?v=3.1.12" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/regular.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 
@@ -99,8 +99,8 @@
                 <i class="fa-solid fa-user" id="sidebar-avatar-icon"></i>
               </div>
               <div class="brand-text">
-                <span class="brand-name" data-i18n="appName">Pulso</span>
-                <p class="eyebrow" data-i18n="financas">Finanças</p>
+                <span class="brand-name">Pulso</span>
+                <p class="eyebrow">Finanças</p>
               </div>
             </div>
           </div>
@@ -108,27 +108,27 @@
           <nav class="nav-menu">
             <button type="button" class="nav-link active" onclick="switchTab('dashboard')" data-tab="dashboard">
               <i class="fa-solid fa-gauge-high"></i>
-              <span class="nav-label" data-i18n="navDashboard">Dashboard</span>
+              <span class="nav-label">Dashboard</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('entrada')" data-tab="entrada">
               <i class="fa-solid fa-receipt"></i>
-              <span class="nav-label" data-i18n="navExtract">Lançamentos</span>
+              <span class="nav-label">Lançamentos</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('investimentos')" data-tab="investimentos">
               <i class="fa-solid fa-chart-line"></i>
-              <span class="nav-label" data-i18n="navInvestments">Investimentos</span>
+              <span class="nav-label">Investimentos</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('historico')" data-tab="historico">
               <i class="fa-solid fa-clock-rotate-left"></i>
-              <span class="nav-label" data-i18n="navHistory">Histórico</span>
+              <span class="nav-label">Histórico</span>
             </button>
             <button type="button" class="nav-link" onclick="switchTab('banco')" data-tab="banco">
               <i class="fa-solid fa-building-columns"></i>
-              <span class="nav-label" data-i18n="navBank">Banco</span>
+              <span class="nav-label">Banco</span>
             </button>
             <button type="button" class="nav-link" onclick="openShareModal()" data-tab="share">
               <i class="fa-solid fa-user-group"></i>
-              <span class="nav-label" data-i18n="navShare">Compartilhar</span>
+              <span class="nav-label">Compartilhar</span>
               <span class="nav-badge">beta</span>
             </button>
           </nav>
@@ -138,6 +138,9 @@
           <button type="button" class="feedback-btn" onclick="openFeedbackModal()" title="Enviar feedback">
             <i class="fa-solid fa-comment-dots"></i> Deixe seu feedback
           </button>
+          <a href="https://ko-fi.com/" target="_blank" rel="noopener" class="kofi-btn" id="kofiBtn" title="Apoie o Pulso no Ko-fi">
+            <i class="fa-solid fa-mug-hot"></i> <span class="kofi-label">Apoie o Pulso</span>
+          </a>
           <div class="sdg-block" aria-label="Objetivos de desenvolvimento sustentável">
             <span class="sdg-label">SDG</span>
             <span class="sdg-icons" aria-hidden="true">🌍 🤝 💙</span>
@@ -199,7 +202,7 @@
         <i class="fa-solid fa-user-pen"></i> Minha Conta
       </button>
       <button type="button" class="dropdown-item" onclick="openShareModal()">
-        <i class="fa-solid fa-user-group"></i> <span data-i18n="navShare">Compartilhar</span>
+        <i class="fa-solid fa-user-group"></i> Compartilhar
       </button>
       <button type="button" class="dropdown-item danger" onclick="logout()">
         <i class="fa-solid fa-right-from-bracket"></i> Sair
@@ -217,9 +220,9 @@
               <h2>Extrato Bancário</h2>
             </div>
             <div class="lanc-view-toggle">
-              <button type="button" class="lanc-view-btn active" data-lanc-view="monthly" onclick="setLancView('monthly')" data-i18n="mensal">Mensal</button>
-              <button type="button" class="lanc-view-btn" data-lanc-view="annual" onclick="setLancView('annual')" data-i18n="anual">Anual</button>
-              <button type="button" class="lanc-view-btn" data-lanc-view="cartoes" onclick="setLancView('cartoes')" data-i18n="cartoes"><i class="fa-solid fa-credit-card"></i> Cartões</button>
+              <button type="button" class="lanc-view-btn active" data-lanc-view="monthly" onclick="setLancView('monthly')">Mensal</button>
+              <button type="button" class="lanc-view-btn" data-lanc-view="annual" onclick="setLancView('annual')">Anual</button>
+              <button type="button" class="lanc-view-btn" data-lanc-view="cartoes" onclick="setLancView('cartoes')"><i class="fa-solid fa-credit-card"></i> Cartões</button>
             </div>
             <div class="lanc-month-nav" id="lanc-month-nav">
               <button type="button" class="lanc-nav-btn" onclick="changeLancMonth(-1)" aria-label="Mês anterior">
@@ -243,15 +246,15 @@
 
           <div class="lanc-summary">
             <div class="lanc-stat lanc-stat-income">
-              <span class="lanc-stat-label" data-i18n="totalEntradas">Total Entradas</span>
+              <span class="lanc-stat-label">Total Entradas</span>
               <span class="lanc-stat-value" id="lanc-total-entradas">R$ 0,00</span>
             </div>
             <div class="lanc-stat lanc-stat-expense">
-              <span class="lanc-stat-label" data-i18n="totalSaidas">Total Saídas</span>
+              <span class="lanc-stat-label">Total Saídas</span>
               <span class="lanc-stat-value" id="lanc-total-saidas">R$ 0,00</span>
             </div>
             <div class="lanc-stat lanc-stat-balance">
-              <span class="lanc-stat-label" data-i18n="saldoPeriodo">Saldo do Período</span>
+              <span class="lanc-stat-label">Saldo do Período</span>
               <span class="lanc-stat-value" id="lanc-saldo-periodo">R$ 0,00</span>
             </div>
           </div>
@@ -262,18 +265,18 @@
               <input type="text" id="lanc-search-input" placeholder="Buscar por descrição..." oninput="onLancSearch(this.value)">
             </div>
             <div class="lanc-chips">
-              <button type="button" class="lanc-chip active" data-filter="all" onclick="setLancFilter('all')" data-i18n="todos">Todos</button>
-              <button type="button" class="lanc-chip" data-filter="entrada" onclick="setLancFilter('entrada')" data-i18n="entradas">Entradas</button>
-              <button type="button" class="lanc-chip" data-filter="saida" onclick="setLancFilter('saida')" data-i18n="saidas">Saídas</button>
+              <button type="button" class="lanc-chip active" data-filter="all" onclick="setLancFilter('all')">Todos</button>
+              <button type="button" class="lanc-chip" data-filter="entrada" onclick="setLancFilter('entrada')">Entradas</button>
+              <button type="button" class="lanc-chip" data-filter="saida" onclick="setLancFilter('saida')">Saídas</button>
             </div>
             <div class="lanc-cat-filter">
               <select id="lanc-cat-select" class="lanc-cat-dropdown" onchange="setLancCatFilter(this.value)">
-                <option value="all" data-i18n="todasCategorias">Todas as categorias</option>
+                <option value="all">Todas as categorias</option>
               </select>
             </div>
             <div class="lanc-user-filter">
               <select id="lanc-user-select" class="lanc-cat-dropdown" onchange="setLancUserFilter(this.value)">
-                <option value="all" data-i18n="todosUsuarios">Todos os usuários</option>
+                <option value="all">Todos os usuários</option>
               </select>
             </div>
           </div>
@@ -282,11 +285,11 @@
 
           <!-- MAIORES GASTOS -->
           <div class="panel">
-            <h4 class="dash-section-title" data-i18n="maioresGastosMes">Maiores gastos do mês atual</h4>
+            <h4 class="dash-section-title">Maiores gastos do mês atual</h4>
             <div id="maiores-gastos-list" class="maiores-gastos-list">
               <div class="empty-state-small">
                 <i class="fa-solid fa-receipt"></i>
-                <p data-i18n="semGastosPeriodo">Sem gastos no período</p>
+                <p>Sem gastos no período</p>
               </div>
             </div>
           </div>
@@ -295,19 +298,19 @@
             <div class="panel chart-panel">
               <div class="panel-header">
                 <div>
-                  <p class="eyebrow" data-i18n="categoriasLabel">Categorias</p>
-                  <h3 data-i18n="gastosPorCategoria">Gastos por categoria</h3>
+                  <p class="eyebrow">Categorias</p>
+                  <h3>Gastos por categoria</h3>
                 </div>
               </div>
               <div id="category-bars" class="category-bars-collapsed"></div>
               <button type="button" class="category-toggle-btn" id="categoryToggle" onclick="toggleCategoryBars()" style="display: none;">
-                <span id="category-toggle-text" data-i18n="verTodas">Ver todas</span>
+                <span id="category-toggle-text">Ver todas</span>
                 <i class="fa-solid fa-chevron-down" id="category-toggle-icon"></i>
               </button>
             </div>
 
             <div class="card collapsible-card" data-collapsible>
-              <h2 class="card-title" onclick="toggleCollapsible(this.parentElement)" data-i18n="ultimasMovimentacoes">
+              <h2 class="card-title" onclick="toggleCollapsible(this.parentElement)">
                 Últimas Movimentações
                 <i class="fa-solid fa-chevron-up collapsible-icon"></i>
               </h2>
@@ -319,12 +322,12 @@
 
           <div class="dash-two-col">
             <div class="card panel-top">
-              <h2 class="card-title" data-i18n="divisaoGastos">Divisão de Gastos</h2>
+              <h2 class="card-title">Divisão de Gastos</h2>
               <div class="donut-split-layout">
                 <div class="donut-split-chart">
                   <canvas id="divisao-chart"></canvas>
                   <div class="donut-split-center">
-                    <span class="donut-split-total-label" data-i18n="total">Total</span>
+                    <span class="donut-split-total-label">Total</span>
                     <span class="donut-split-total-value" id="divisao-total">R$ 0,00</span>
                   </div>
                 </div>
@@ -333,7 +336,7 @@
             </div>
 
             <div class="card panel-top">
-              <h2 class="card-title" data-i18n="receitasPorCategoria">Receitas por Categoria</h2>
+              <h2 class="card-title">Receitas por Categoria</h2>
               <div class="receitas-chart-wrap">
                 <canvas id="receitas-chart"></canvas>
               </div>
@@ -344,10 +347,10 @@
           <div class="panel panel-top">
             <div class="panel-header">
               <div>
-                <p class="eyebrow" data-i18n="orcamento">Orçamento</p>
-                <h3 data-i18n="limitesGastos">Limites de gastos por categoria</h3>
+                <p class="eyebrow">Orçamento</p>
+                <h3>Limites de gastos por categoria</h3>
               </div>
-              <button type="button" class="btn-submit btn-sm" id="saveLimitesBtn" onclick="salvarLimitesGastos()" data-i18n="salvar">
+              <button type="button" class="btn-submit btn-sm" id="saveLimitesBtn" onclick="salvarLimitesGastos()">
                 <i class="fa-regular fa-floppy-disk"></i> Salvar
               </button>
             </div>
@@ -359,14 +362,14 @@
           <div class="panel panel-top">
             <div class="panel-header">
               <div>
-                <p class="eyebrow" data-i18n="personalizar">Personalizar</p>
+                <p class="eyebrow">Personalizar</p>
                 <h3>Categorias</h3>
               </div>
               <div style="display:flex;gap:8px;">
-                <button type="button" class="btn-secondary" style="width:auto;padding:6px 14px;font-size:0.8rem;" onclick="showOnboarding()" data-i18n="trocarTemplate">
+                <button type="button" class="btn-secondary" style="width:auto;padding:6px 14px;font-size:0.8rem;" onclick="showOnboarding()">
                   <i class="fa-solid fa-palette"></i> Trocar template
                 </button>
-                <button type="button" class="btn-submit btn-sm" onclick="openCategoriesModal()" data-i18n="gerenciar">
+                <button type="button" class="btn-submit btn-sm" onclick="openCategoriesModal()">
                   <i class="fa-solid fa-sliders"></i> Gerenciar
                 </button>
               </div>
@@ -378,11 +381,11 @@
           <div class="lanc-quick-actions">
             <button type="button" class="lanc-quick-btn lanc-quick-despesa" onclick="openModal('saida')">
               <i class="fa-solid fa-minus-circle"></i>
-              <span data-i18n="newExpense">Nova Despesa</span>
+              <span>Nova Despesa</span>
             </button>
             <button type="button" class="lanc-quick-btn lanc-quick-receita" onclick="openModal('entrada')">
               <i class="fa-solid fa-plus-circle"></i>
-              <span data-i18n="newIncome">Nova Receita</span>
+              <span>Nova Receita</span>
             </button>
           </div>
         </section>
@@ -392,7 +395,7 @@
         <!-- HERO SALDO (Nubank-style: balance-first hierarchy) -->
         <div class="hero-saldo-card" id="hero-saldo-card">
           <div class="hero-saldo-top">
-            <div class="hero-saldo-label" data-i18n="saldoDisponivel">Saldo disponível</div>
+            <div class="hero-saldo-label">Saldo disponível</div>
             <button type="button" class="global-eye-btn hero-eye" onclick="toggleAllValuesVisibility()" title="Mostrar/ocultar valores">
               <i class="fa-solid fa-eye" id="hero-eye-icon"></i>
             </button>
@@ -400,23 +403,23 @@
           <div class="hero-saldo-valor" id="hero-saldo-valor">R$ 0,00</div>
           <div id="hero-empty-cta" class="hero-empty-cta" style="display:none;">
             <div class="hero-empty-icon">🚀</div>
-            <div class="hero-empty-text" data-i18n="heroEmptyText">Comece registrando seu primeiro lançamento financeiro</div>
+            <div class="hero-empty-text">Comece registrando seu primeiro lançamento financeiro</div>
             <button type="button" class="hero-empty-btn" onclick="showAddTransactionModal()">
-              <i class="fa-solid fa-plus"></i> <span data-i18n="heroEmptyBtn">Adicionar lançamento</span>
+              <i class="fa-solid fa-plus"></i> Adicionar lançamento
             </button>
           </div>
           <div class="hero-saldo-meta">
             <div class="hero-meta-item hero-meta-income">
               <i class="fa-solid fa-arrow-trend-up"></i>
               <span id="hero-receitas">R$ 0,00</span>
-              <span class="hero-meta-label" data-i18n="receitasLabel">Receitas</span>
+              <span class="hero-meta-label">Receitas</span>
               <svg class="hero-sparkline hero-spark-income" id="hero-spark-income" viewBox="0 0 80 24" fill="none" style="display:none;"><polyline stroke="var(--accent-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </div>
             <div class="hero-meta-divider"></div>
             <div class="hero-meta-item hero-meta-expense">
               <i class="fa-solid fa-arrow-trend-down"></i>
               <span id="hero-despesas">R$ 0,00</span>
-              <span class="hero-meta-label" data-i18n="despesasLabel">Despesas</span>
+              <span class="hero-meta-label">Despesas</span>
               <svg class="hero-sparkline hero-spark-expense" id="hero-spark-expense" viewBox="0 0 80 24" fill="none" style="display:none;"><polyline stroke="var(--accent-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </div>
           </div>
@@ -437,26 +440,26 @@
         <div class="panel comparativo-panel" id="comparativo-panel">
           <div class="panel-header">
             <div>
-              <p class="eyebrow" data-i18n="comparativoLabel">Comparativo</p>
-              <h3 data-i18n="referenciaMensal">Referência mensal</h3>
+              <p class="eyebrow">Comparativo</p>
+              <h3>Referência mensal</h3>
             </div>
           </div>
 
           <div class="comparativo-controls">
             <div class="comparativo-selects">
               <label class="comparativo-select">
-                <span data-i18n="referencia">Referência</span>
+                <span>Referência</span>
                 <select id="comp-reference-month" aria-label="Mês de referência"></select>
               </label>
               <label class="comparativo-select">
-                <span data-i18n="atual">Atual</span>
+                <span>Atual</span>
                 <select id="comp-current-month" aria-label="Mês atual"></select>
               </label>
             </div>
             <div class="comparativo-view-switch" aria-label="Visão temporal">
-              <button type="button" class="view-btn" data-view="quarter" data-i18n="trimestral">Trimestral</button>
-              <button type="button" class="view-btn" data-view="half" data-i18n="semestral">Semestral</button>
-              <button type="button" class="view-btn active" data-view="year" data-i18n="anual">Anual</button>
+              <button type="button" class="view-btn" data-view="quarter">Trimestral</button>
+              <button type="button" class="view-btn" data-view="half">Semestral</button>
+              <button type="button" class="view-btn active" data-view="year">Anual</button>
             </div>
           </div>
 
@@ -464,19 +467,19 @@
             <div class="comp-card" id="comp-card-prev">
               <div class="comp-status-bar" id="comp-status-prev"></div>
               <div class="comp-card-header">
-                <span class="comp-label" id="comp-prev-label" data-i18n="mesAnterior">Mês anterior</span>
+                <span class="comp-label" id="comp-prev-label">Mês anterior</span>
                 <i class="fa-regular fa-calendar"></i>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label" data-i18n="receitas">Receitas</span>
+                <span class="comp-row-label">Receitas</span>
                 <span class="comp-row-value positive" id="comp-prev-income">R$ 0,00</span>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label" data-i18n="despesas">Despesas</span>
+                <span class="comp-row-label">Despesas</span>
                 <span class="comp-row-value negative" id="comp-prev-expense">R$ 0,00</span>
               </div>
               <div class="comp-row comp-row-total">
-                <span class="comp-row-label" data-i18n="saldo">Saldo</span>
+                <span class="comp-row-label">Saldo</span>
                 <span class="comp-row-value" id="comp-prev-balance">R$ 0,00</span>
               </div>
             </div>
@@ -484,19 +487,19 @@
             <div class="comp-card comp-card-variation" id="comp-card-variation">
               <div class="comp-status-bar" id="comp-status-variation"></div>
               <div class="comp-card-header">
-                <span class="comp-label" data-i18n="variacao">Variação</span>
+                <span class="comp-label">Variação</span>
                 <i class="fa-solid fa-chart-line"></i>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label" data-i18n="receitas">Receitas</span>
+                <span class="comp-row-label">Receitas</span>
                 <span class="comp-row-delta" id="comp-delta-income">—</span>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label" data-i18n="despesas">Despesas</span>
+                <span class="comp-row-label">Despesas</span>
                 <span class="comp-row-delta" id="comp-delta-expense">—</span>
               </div>
               <div class="comp-row comp-row-total">
-                <span class="comp-row-label" data-i18n="saldo">Saldo</span>
+                <span class="comp-row-label">Saldo</span>
                 <span class="comp-row-delta" id="comp-delta-balance">—</span>
               </div>
             </div>
@@ -504,19 +507,19 @@
             <div class="comp-card" id="comp-card-cur">
               <div class="comp-status-bar" id="comp-status-cur"></div>
               <div class="comp-card-header">
-                <span class="comp-label" id="comp-cur-label" data-i18n="esteMes">Este mês</span>
+                <span class="comp-label" id="comp-cur-label">Este mês</span>
                 <i class="fa-solid fa-calendar-check"></i>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label" data-i18n="receitas">Receitas</span>
+                <span class="comp-row-label">Receitas</span>
                 <span class="comp-row-value positive" id="comp-cur-income">R$ 0,00</span>
               </div>
               <div class="comp-row">
-                <span class="comp-row-label" data-i18n="despesas">Despesas</span>
+                <span class="comp-row-label">Despesas</span>
                 <span class="comp-row-value negative" id="comp-cur-expense">R$ 0,00</span>
               </div>
               <div class="comp-row comp-row-total">
-                <span class="comp-row-label" data-i18n="saldo">Saldo</span>
+                <span class="comp-row-label">Saldo</span>
                 <span class="comp-row-value" id="comp-cur-balance">R$ 0,00</span>
               </div>
             </div>
@@ -524,15 +527,15 @@
 
           <div class="comparison-summary">
             <div class="summary-pill">
-              <span class="summary-label" data-i18n="saldoAnterior">Saldo anterior</span>
+              <span class="summary-label">Saldo anterior</span>
               <strong id="comp-opening-balance">R$ 0,00</strong>
             </div>
             <div class="summary-pill accent">
-              <span class="summary-label" data-i18n="saldoAtual">Saldo atual</span>
+              <span class="summary-label">Saldo atual</span>
               <strong id="comp-closing-balance">R$ 0,00</strong>
             </div>
             <div class="summary-pill">
-              <span class="summary-label" data-i18n="projecao3M">Projeção 3M</span>
+              <span class="summary-label">Projeção 3M</span>
               <strong id="comp-projection-balance">R$ 0,00</strong>
             </div>
           </div>
@@ -543,8 +546,8 @@
             </div>
             <div class="annual-chart" id="annual-chart"></div>
             <div class="annual-legend">
-              <span class="annual-legend-item"><span class="annual-dot income"></span> <span data-i18n="receitas">Receitas</span></span>
-              <span class="annual-legend-item"><span class="annual-dot expense"></span> <span data-i18n="despesas">Despesas</span></span>
+              <span class="annual-legend-item"><span class="annual-dot income"></span> Receitas</span>
+              <span class="annual-legend-item"><span class="annual-dot expense"></span> Despesas</span>
             </div>
           </div>
         </div>
@@ -713,11 +716,11 @@
 
     <!-- METAS -->
     <div class="invest-grid">
-      <h4 class="invest-grid-title" data-i18n="metasFinanceiras">🎯 Metas Financeiras</h4>
+      <h4 class="invest-grid-title">🎯 Metas Financeiras</h4>
 
       <!-- CURTO PRAZO -->
       <div class="card">
-        <div class="card-title" data-i18n="curtoPrazo">Curto Prazo (6 meses)</div>
+        <div class="card-title">Curto Prazo (6 meses)</div>
         <div class="card-value card-value-sm" id="meta-curto-value">R$ 0,00 / R$ ?</div>
         <div class="progress-container">
           <div class="progress-bar-bg">
@@ -728,12 +731,12 @@
             <span id="meta-curto-falta">Falta: R$ 0,00</span>
           </div>
         </div>
-        <p class="card-hint" data-i18n="reservaEmergencia">📌 Reserva de emergência (6 meses de gastos)</p>
+        <p class="card-hint">📌 Reserva de emergência (6 meses de gastos)</p>
       </div>
 
       <!-- MÉDIO PRAZO -->
       <div class="card">
-        <div class="card-title" data-i18n="medioPrazo">Médio Prazo (1 ano)</div>
+        <div class="card-title">Médio Prazo (1 ano)</div>
         <div class="card-value card-value-sm" id="meta-medio-value">R$ 0,00 / R$ ?</div>
         <div class="progress-container">
           <div class="progress-bar-bg">
@@ -744,12 +747,12 @@
             <span id="meta-medio-falta">Falta: R$ 0,00</span>
           </div>
         </div>
-        <p class="card-hint" data-i18n="casaCarroEducacao">📌 Casa, carro ou educação</p>
+        <p class="card-hint">📌 Casa, carro ou educação</p>
       </div>
 
       <!-- LONGO PRAZO -->
       <div class="card">
-        <div class="card-title" data-i18n="longoPrazo">Longo Prazo (3+ anos)</div>
+        <div class="card-title">Longo Prazo (3+ anos)</div>
         <div class="card-value card-value-sm" id="meta-longo-value">R$ 0,00 / R$ ?</div>
         <div class="progress-container">
           <div class="progress-bar-bg">
@@ -760,7 +763,7 @@
             <span id="meta-longo-falta">Falta: R$ 0,00</span>
           </div>
         </div>
-        <p class="card-hint" data-i18n="aposentadoriaLiberdade">📌 Aposentadoria, liberdade financeira</p>
+        <p class="card-hint">📌 Aposentadoria, liberdade financeira</p>
       </div>
     </div>
 
@@ -768,27 +771,27 @@
     <div class="panel panel-top">
       <div class="panel-header">
         <div>
-          <p class="eyebrow" data-i18n="configurarLabel">Configurar</p>
-          <h3 data-i18n="editarMetas">Editar suas metas</h3>
+          <p class="eyebrow">Configurar</p>
+          <h3>Editar suas metas</h3>
         </div>
       </div>
       
       <form id="metasForm" class="form-stack">
         <div class="metas-form-grid">
           <div class="form-group">
-            <label for="meta-curto-val" data-i18n="curto6Meses">Curto (6 meses) - R$</label>
+            <label for="meta-curto-val">Curto (6 meses) - R$</label>
             <input type="number" id="meta-curto-val" class="form-control" step="100" min="0" placeholder="0">
           </div>
           <div class="form-group">
-            <label for="meta-medio-val" data-i18n="medio1Ano">Médio (1 ano) - R$</label>
+            <label for="meta-medio-val">Médio (1 ano) - R$</label>
             <input type="number" id="meta-medio-val" class="form-control" step="100" min="0" placeholder="0">
           </div>
           <div class="form-group">
-            <label for="meta-longo-val" data-i18n="longo3Anos">Longo (3+ anos) - R$</label>
+            <label for="meta-longo-val">Longo (3+ anos) - R$</label>
             <input type="number" id="meta-longo-val" class="form-control" step="100" min="0" placeholder="0">
           </div>
         </div>
-        <button type="submit" class="btn-submit" data-i18n="salvarMetas">💾 Salvar Metas</button>
+        <button type="submit" class="btn-submit">💾 Salvar Metas</button>
       </form>
     </div>
   </div>
@@ -892,22 +895,22 @@
   <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
     <button type="button" class="mbn-item active" onclick="switchTab('dashboard')" data-tab="dashboard">
       <i class="fa-solid fa-house"></i>
-      <span data-i18n="inicio">Início</span>
+      <span>Início</span>
     </button>
     <button type="button" class="mbn-item" onclick="switchTab('entrada')" data-tab="entrada">
       <i class="fa-solid fa-arrow-right-arrow-left"></i>
-      <span data-i18n="lancar">Lançar</span>
+      <span>Lançar</span>
     </button>
     <button type="button" class="mbn-item mbn-fab" onclick="openModal('saida')" title="Nova transação">
       <div class="mbn-fab-icon"><i class="fa-solid fa-plus"></i></div>
     </button>
     <button type="button" class="mbn-item" onclick="switchTab('investimentos')" data-tab="investimentos">
       <i class="fa-solid fa-chart-pie"></i>
-      <span data-i18n="investir">Investir</span>
+      <span>Investir</span>
     </button>
     <button type="button" class="mbn-item" onclick="switchTab('historico')" data-tab="historico">
       <i class="fa-solid fa-clock-rotate-left"></i>
-      <span data-i18n="navHistory">Histórico</span>
+      <span>Histórico</span>
     </button>
   </nav>
 
@@ -951,15 +954,15 @@
 
         <div class="modal-row">
           <div class="modal-field">
-            <label for="m-cat" data-i18n="categoriaLabel">Categoria</label>
+            <label for="m-cat">Categoria</label>
           <select class="modal-input" id="m-cat" required>
-            <optgroup label="Entradas" data-i18n="entradasOptgroup">
+            <optgroup label="Entradas">
               <option value="Salário">Salário</option>
               <option value="Dividendos">Dividendos</option>
               <option value="Renda Extra">Renda Extra</option>
               <option value="Outros Ganhos">Outros Ganhos</option>
             </optgroup>
-            <optgroup label="Saídas" data-i18n="saidasOptgroup">
+            <optgroup label="Saídas">
               <option value="Gastos Essenciais">Gastos Essenciais</option>
               <option value="Pessoais">Gastos Pessoais</option>
               <option value="Investimento">Investimentos</option>
@@ -967,7 +970,7 @@
           </select>
           </div>
           <div class="modal-field" id="pagamento-group">
-            <label for="m-pagamento" data-i18n="formaLabel">Forma</label>
+            <label for="m-pagamento">Forma</label>
             <select class="modal-input" id="m-pagamento">
               <option value="dinheiro">Dinheiro (à vista)</option>
               <option value="debito">Débito (usa saldo)</option>
@@ -1093,36 +1096,36 @@
 <div class="form-modal-overlay" id="onboarding-overlay">
   <div class="form-modal onboarding-modal" onclick="event.stopPropagation()">
     <div class="onboarding-step" id="onboarding-step-1">
-      <button type="button" class="onboarding-skip" onclick="closeOnboarding()" data-i18n="pular">Pular</button>
+      <button type="button" class="onboarding-skip" onclick="closeOnboarding()">Pular</button>
       <div class="onboarding-icon">👋</div>
-      <h3 data-i18n="bemVindoPulso">Bem-vindo ao Pulso!</h3>
-      <p class="onboarding-subtitle" data-i18n="vamosPersonalizar">Vamos personalizar suas categorias. Escolha o modelo que melhor se encaixa no seu perfil:</p>
+      <h3>Bem-vindo ao Pulso!</h3>
+      <p class="onboarding-subtitle">Vamos personalizar suas categorias. Escolha o modelo que melhor se encaixa no seu perfil:</p>
       
       <div class="template-grid">
         <button type="button" class="template-card" onclick="selectTemplate('simples')">
           <div class="template-icon">🏠</div>
-          <h4 data-i18n="simples">Simples</h4>
-          <p data-i18n="essenciaisPessoais">Essenciais vs Pessoais. Ideal para quem quer o básico organizado.</p>
+          <h4>Simples</h4>
+          <p>Essenciais vs Pessoais. Ideal para quem quer o básico organizado.</p>
           <div class="template-tags">
-            <span data-i18n="catAlimentacao">Alimentação</span><span data-i18n="catTransporte">Transporte</span><span data-i18n="catLazer">Lazer</span><span data-i18n="catSaude">Saúde</span>
+            <span>Alimentação</span><span>Transporte</span><span>Lazer</span><span>Saúde</span>
           </div>
         </button>
         
         <button type="button" class="template-card" onclick="selectTemplate('detalhado')">
           <div class="template-icon">📊</div>
-          <h4 data-i18n="detalhado">Detalhado</h4>
-          <p data-i18n="categoriasPorArea">Categorias por área da vida. Para quem quer controle completo.</p>
+          <h4>Detalhado</h4>
+          <p>Categorias por área da vida. Para quem quer controle completo.</p>
           <div class="template-tags">
-            <span data-i18n="catMoradia">Moradia</span><span data-i18n="catMercado">Mercado</span><span data-i18n="catLazer">Lazer</span><span data-i18n="catInvestimentos">Investimentos</span><span data-i18n="catEducacao">Educação</span>
+            <span>Moradia</span><span>Mercado</span><span>Lazer</span><span>Investimentos</span><span>Educação</span>
           </div>
         </button>
         
         <button type="button" class="template-card" onclick="selectTemplate('investidor')">
           <div class="template-icon">📈</div>
-          <h4 data-i18n="investidor">Investidor</h4>
-          <p data-i18n="focoInvestimentos">Foco em investimentos e metas financeiras. Para quem pensa a longo prazo.</p>
+          <h4>Investidor</h4>
+          <p>Foco em investimentos e metas financeiras. Para quem pensa a longo prazo.</p>
           <div class="template-tags">
-            <span data-i18n="catRendaFixa">Renda Fixa</span><span data-i18n="catAcoes">Ações</span><span data-i18n="catFIIs">FIIs</span><span data-i18n="catETFs">ETFs</span><span data-i18n="catCripto">Cripto</span>
+            <span>Renda Fixa</span><span>Ações</span><span>FIIs</span><span>ETFs</span><span>Cripto</span>
           </div>
         </button>
       </div>

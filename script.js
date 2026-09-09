@@ -81,272 +81,7 @@ const pulsoTranslations = {
     deleteConfirmDesc: 'Esta ação é irreversível. Todas as transações serão deletadas permanentemente.',
     deleteConfirmInputLabel: 'Digite DELETAR para confirmar',
     deleteConfirmButton: 'Apagar tudo',
-    deleteConfirmCancel: 'Cancelar',
-    navDashboard: 'Dashboard',
-    navExtract: 'Lançamentos',
-    navInvestments: 'Investimentos',
-    navHistory: 'Histórico',
-    navBank: 'Banco',
-    navShare: 'Compartilhar',
-    financas: 'Finanças',
-    mensal: 'Mensal',
-    anual: 'Anual',
-    cartoes: 'Cartões',
-    orcamento: 'Orçamento',
-    orcamentoFamiliar: 'Orçamento familiar',
-    visaoGeral: 'Visão geral',
-    lancamentos: 'Lançamentos',
-    investimentos: 'Investimentos',
-    historico: 'Histórico',
-    banco: 'Banco',
-    backup: 'Backup',
-    guardarDados: 'Guard seus dados',
-    exportarBackup: 'Exportar Backup (.json)',
-    zonaRisco: 'Zona de risco',
-    limparTudo: 'Limpar tudo',
-    importar: 'Importar',
-    planilhaExcel: 'Planilha Excel',
-    max1000: 'Máximo 1000 caracteres',
-    salvar: 'Salvar',
-    cancelar: 'Cancelar',
-    confirmar: 'Confirmar',
-    fechar: 'Fechar',
-    editar: 'Editar',
-    excluir: 'Excluir',
-    adicionar: 'Adicionar',
-    descricao: 'Descrição',
-    valor: 'Valor',
-    data: 'Data',
-    categoria: 'Categoria',
-    parcelas: 'Parcelas',
-    forma: 'Forma',
-    dinheiro: 'Dinheiro',
-    debito: 'Débito',
-    credito: 'Crédito',
-    cartao: 'Cartão',
-    pagar: 'Pagar',
-    receita: 'Receita',
-    despesa: 'Despesa',
-    entrada: 'Entrada',
-    saida: 'Saída',
-    pendente: 'Pendente',
-    pago: 'Pago',
-    total: 'Total',
-    verTodas: 'Ver todas',
-    gerenciar: 'Gerenciar',
-    novoCartao: 'Novo cartão',
-    novaConta: 'Nova conta',
-    nomeConta: 'Nome da conta',
-    saldoAtual: 'Saldo atual',
-    tipoConta: 'Tipo de conta',
-    contaCorrente: 'Conta corrente',
-    poupanca: 'Poupanca',
-    investimento: 'Investimento',
-    carteira: 'Carteira',
-    limiteTotal: 'Limite total',
-    bandeira: 'Bandeira',
-    diaVencimento: 'Dia de vencimento da fatura',
-    faturaAtual: 'Fatura atual',
-    semItensFatura: 'Sem itens na fatura deste mês',
-    itensPagos: 'itens pagos',
-    adicionarItem: 'Adicionar item manual',
-    editarFatura: 'Editar fatura',
-    marcarPago: 'Marcar como pago',
-    marcarNaoPago: 'Marcar como não pago',
-    pagarFatura: 'Pagar Fatura',
-    saldoInsuficiente: 'Saldo insuficiente!',
-    saldoAtualLabel: 'Saldo atual',
-    saldoApos: 'Saldo após pagamento',
-    formaPagamento: 'Forma de pagamento',
-    confirmarPagamento: 'Confirmar Pagamento',
-    novoLancamento: 'Novo lançamento',
-    lancamentoCredito: 'Lançamento no crédito salvo',
-    lancamentoSalvo: 'Lançamento salvo com sucesso!',
-    preenchaCampos: 'Preencha todos os campos obrigatórios.',
-    selecioneCartao: 'Selecione um cartão para lançamento no crédito.',
-    contaAdicionada: 'Conta adicionada!',
-    contaAtualizada: 'Conta atualizada!',
-    contaExcluida: 'Conta excluída.',
-    cartaoAdicionado: 'Cartão adicionado!',
-    cartaoAtualizado: 'Cartão atualizado!',
-    cartaoExcluido: 'Cartão excluído.',
-    contaPagarAdicionada: 'Conta a pagar adicionada!',
-    contaReceberAdicionada: 'Conta a receber adicionada!',
-    itemMarcadoPago: 'Item marcado como pago!',
-    itemMarcadoPendente: 'Item marcado como pendente!',
-    faturaAtualizada: 'Fatura atualizada!',
-    itemRemovido: 'Item removido.',
-    itemNaoEncontrado: 'Item não encontrado.',
-    itemAdicionadoFatura: 'Item adicionado à fatura!',
-    lancamentoExcluido: 'Lançamento excluído.',
-    faturaPaga: 'Fatura paga com sucesso!',
-    perfilAtualizado: 'Perfil atualizado!',
-    categoriasSalvas: 'Categorias salvas!',
-    categoriaExiste: 'Categoria já existe.',
-    patrimonioSalvo: 'Patrimônio salvo!',
-    ativoAdicionado: 'Ativo adicionado!',
-    investimentoAdicionado: 'Investimento adicionado!',
-    valorValido: 'Informe um valor válido.',
-    emailInvalido: 'E-mail inválido.',
-    arquivoGrande: 'Arquivo muito grande (max. 5MB)',
-    sessaoExpirada: 'Sessão expirada por inatividade.',
-    erroDesconhecido: 'Erro desconhecido. Tente novamente.',
-    semConexao: 'Sem conexão com a internet...',
-    carregando: 'Carregando dados...',
-    nenhumLancamento: 'Nenhum lançamento encontrado para este período.',
-    totalDia: 'Total do dia:',
-    nenhumaDespesa: 'Nenhuma despesa registrada.',
-    nenhumaMovimentacao: 'Nenhuma movimentação registrada.',
-    verTodasMovimentacoes: 'Ver todas as movimentações',
-    maioresGastos: 'Maiores gastos do mês atual',
-    semGastos: 'Sem gastos no período',
-    categoriasLabel: 'Categorias',
-    gastosPorCategoria: 'Gastos por categoria',
-    ultimasMovimentacoes: 'Últimas movimentações',
-    divisaoGastos: 'Divisão de Gastos',
-    receitasPorCategoria: 'Receitas por Categoria',
-    limitesGastos: 'Limites de gastos por categoria',
-    definaLimite: 'Defina um limite mensal para cada categoria...',
-    personalizar: 'Personalizar',
-    trocarTemplate: 'Trocar template',
-    adicioneEditeRemova: 'Adicione, edite ou remova categorias de receitas e despesas...',
-    receitasLabel: 'Receitas',
-    despesasLabel: 'Despesas',
-    comparativo: 'Comparativo',
-    referenciaMensal: 'Referência mensal',
-    referencia: 'Referência',
-    trimestral: 'Trimestral',
-    semestral: 'Semestral',
-    variacao: 'Variacao',
-    esteMes: 'Este mês',
-    saldoAnterior: 'Saldo anterior',
-    saldoAtualGeral: 'Saldo atual',
-    projecao: 'Projeção 3M',
-    visaoAnual: 'Visão anual',
-    saldoGeral: 'Saldo geral',
-    minhasContas: 'Minhas contas',
-    adicioneContas: 'Adicione suas contas bancárias...',
-    adicionarConta: '+ Adicionar conta',
-    gerenciarContas: 'Gerenciar contas',
-    faturasDe: 'Faturas de',
-    meusCartoes: 'Meus cartões',
-    registreCartoes: 'Registre seus cartões para acompanhar faturas e gastos.',
-    adicionarCartao: '+ Adicionar cartão',
-    gerenciarCartoes: 'Gerenciar cartões',
-    contasPagar: 'Contas a pagar',
-    nenhumaContaPagar: 'Nenhuma conta a pagar...',
-    contasReceber: 'Contas a receber',
-    nenhumaContaReceber: 'Nenhuma conta a receber...',
-    adicionarRecebimento: '+ Adicionar recebimento',
-    fundoEmergencia: 'Fundo de Emergência',
-    meta6meses: 'Meta: 6 meses de custos fixos',
-    carteiraInvestimentos: 'Carteira de Investimentos',
-    patrimonio: 'Patrimônio',
-    seusAtivosMetas: 'Seus ativos e metas',
-    patrimonioAtual: 'Patrimônio Atual',
-    adicioneAtivos: 'Adicione seus ativos para acompanhar o patrimônio',
-    adicionarAtivo: '+ Adicionar ativo',
-    meusInvestimentos: 'Meus Investimentos',
-    registreInvestimentos: 'Registre seus investimentos (poupança, CDB, ações, FIIs...)',
-    adicionarInvestimento: '+ Adicionar investimento',
-    resumoPatrimonio: 'Resumo do Patrimônio',
-    ativosLabel: 'Ativos',
-    investimentosLabel: 'Investimentos',
-    metasFinanceiras: 'Metas Financeiras',
-    curtoPrazo: 'Curto Prazo (6 meses)',
-    medioPrazo: 'Médio Prazo (1 ano)',
-    inicio: 'Início',
-    lancar: 'Lançar',
-    investir: 'Investir',
-    editPerfil: 'Editar perfil',
-    nome: 'Nome',
-    opcional: '(opcional)',
-    salvarAlteracoes: 'Salvar alterações',
-    excluirConta: 'Excluir minha conta',
-    meusFeedbacks: 'Meus Feedbacks',
-    nenhumFeedback: 'Nenhum feedback enviado ainda.',
-    gerenciarCategorias: 'Gerenciar categorias',
-    novaCategoriaReceita: 'Nova categoria de receita',
-    novaCategoriaDespesa: 'Nova categoria de despesa',
-    pular: 'Pular',
-    bemVindoPulso: 'Bem-vindo ao Pulso!',
-    vamosPersonalizar: 'Vamos personalizar suas categorias...',
-    simples: 'Simples',
-    essenciaisPessoais: 'Essenciais vs Pessoais...',
-    detalhado: 'Detalhado',
-    categoriasPorArea: 'Categorias por área da vida...',
-    investidor: 'Investidor',
-    focoInvestimentos: 'Foco em investimentos e metas financeiras...',
-    catAlimentacao: 'Alimentação', catTransporte: 'Transporte', catLazer: 'Lazer', catSaude: 'Saúde',
-    catMoradia: 'Moradia', catMercado: 'Mercado', catInvestimentos: 'Investimentos', catEducacao: 'Educação',
-    catRendaFixa: 'Renda Fixa', catAcoes: 'Ações', catFIIs: 'FIIs', catETFs: 'ETFs', catCripto: 'Cripto',
-    compartilharOrcamento: 'Compartilhar orçamento',
-    convideAlguem: 'Convide alguém para visualizar e registrar lançamentos no mesmo orçamento.',
-    convidar: 'Convidar',
-    editor: 'Editor',
-    podeAdicionarEditar: 'Pode adicionar e editar lançamentos',
-    visualizador: 'Visualizador',
-    podeVisualizar: 'Pode apenas visualizar os dados',
-    membrosAtuais: 'Membros atuais',
-    nenhumMembro: 'Nenhum membro compartilhado ainda.',
-    enviarFeedback: 'Enviar feedback',
-    deixeFeedback: 'Deixe seu feedback',
-    seuFeedback: 'Seu feedback',
-    conteAchou: 'Conte o que achou...',
-    enviar: 'Enviar',
-    privacidadeAnuncios: 'Privacidade e Anúncios',
-    utilzamosCookies: 'Utilizamos cookies e tecnologias de anúncios personalizados...',
-    gerenciarPreferencias: 'Gerenciar',
-    recusar: 'Recusar',
-    aceitarTudo: 'Aceitar tudo',
-    preferenciasPrivacidade: 'Preferências de Privacidade',
-    escolhaDados: 'Escolha como deseja que seus dados sejam utilizados:',
-    anunciosPersonalizados: 'Anúncios Personalizados',
-    permiteAnuncios: 'Permite exibir anúncios relevantes baseados no seu uso do site.',
-    salvarSemAnuncios: 'Salvar sem anúncios',
-    salvarComAnuncios: 'Salvar com anúncios',
-    saldoDisponivel: 'Saldo disponível',
-    heroEmptyText: 'Comece registrando seu primeiro lançamento financeiro',
-    heroEmptyBtn: 'Adicionar lançamento',
-    totalEntradas: 'Total Entradas',
-    totalSaidas: 'Total Saídas',
-    saldoPeriodo: 'Saldo do Período',
-    todos: 'Todos',
-    entradas: 'Entradas',
-    saidas: 'Saídas',
-    todasCategorias: 'Todas as categorias',
-    todosUsuarios: 'Todos os usuários',
-    maioresGastosMes: 'Maiores gastos do mês atual',
-    semGastosPeriodo: 'Sem gastos no período',
-    comparativoLabel: 'Comparativo',
-    atual: 'Atual',
-    mesAnterior: 'Mês anterior',
-    receitas: 'Receitas',
-    despesas: 'Despesas',
-    saldo: 'Saldo',
-    reservaEmergencia: 'Reserva de emergência para imprevistos',
-    casaCarroEducacao: 'Casa, carro ou educação',
-    longoPrazo: 'Longo Prazo (3+ anos)',
-    aposentadoriaLiberdade: 'Aposentadoria, liberdade financeira',
-    configurarLabel: 'Configurar',
-    editarMetas: 'Editar suas metas',
-    curto6Meses: 'Curto (6 meses)',
-    medio1Ano: 'Médio (1 ano)',
-    longo3Anos: 'Longo (3+ anos)',
-    salvarMetas: 'Salvar Metas',
-    entradasOptgroup: 'Entradas',
-    saidasOptgroup: 'Saídas',
-    splashSubtitle: 'Financeiro pessoal, simples e privado',
-    fullNameLabel: 'Nome completo',
-    emailLabel: 'E-mail',
-    passwordLabel: 'Senha',
-    showPassword: 'Mostrar senha',
-    rememberMe: 'Lembrar-me',
-    forgotPassword: 'Esqueceu a senha?',
-    toggleTheme: 'Alternar tema',
-    atualLabel: 'Atual',
-    referenciaLabel: 'Referência',
-    gerenciarLabel: 'Gerenciar'
+    deleteConfirmCancel: 'Cancelar'
   },
   en: {
     appName: 'Pulso',
@@ -409,272 +144,7 @@ const pulsoTranslations = {
     deleteConfirmDesc: 'This action is irreversible. All transactions will be permanently deleted.',
     deleteConfirmInputLabel: 'Type DELETE to confirm',
     deleteConfirmButton: 'Delete all',
-    deleteConfirmCancel: 'Cancel',
-    navDashboard: 'Dashboard',
-    navExtract: 'Transactions',
-    navInvestments: 'Investments',
-    navHistory: 'History',
-    navBank: 'Bank',
-    navShare: 'Share',
-    financas: 'Finance',
-    mensal: 'Monthly',
-    anual: 'Annual',
-    cartoes: 'Cards',
-    orcamento: 'Budget',
-    orcamentoFamiliar: 'Family Budget',
-    visaoGeral: 'Overview',
-    lancamentos: 'Transactions',
-    investimentos: 'Investments',
-    historico: 'History',
-    banco: 'Bank',
-    backup: 'Backup',
-    guardarDados: 'Save your data',
-    exportarBackup: 'Export Backup (.json)',
-    zonaRisco: 'Danger zone',
-    limparTudo: 'Clear all',
-    importar: 'Import',
-    planilhaExcel: 'Excel Spreadsheet',
-    max1000: 'Maximum 1000 characters',
-    salvar: 'Save',
-    cancelar: 'Cancel',
-    confirmar: 'Confirm',
-    fechar: 'Close',
-    editar: 'Edit',
-    excluir: 'Delete',
-    adicionar: 'Add',
-    descricao: 'Description',
-    valor: 'Amount',
-    data: 'Date',
-    categoria: 'Category',
-    parcelas: 'Installments',
-    forma: 'Method',
-    dinheiro: 'Cash',
-    debito: 'Debit',
-    credito: 'Credit',
-    cartao: 'Card',
-    pagar: 'Pay',
-    receita: 'Income',
-    despesa: 'Expense',
-    entrada: 'Income',
-    saida: 'Expense',
-    pendente: 'Pending',
-    pago: 'Paid',
-    total: 'Total',
-    verTodas: 'View all',
-    gerenciar: 'Manage',
-    novoCartao: 'New card',
-    novaConta: 'New account',
-    nomeConta: 'Account name',
-    saldoAtual: 'Current balance',
-    tipoConta: 'Account type',
-    contaCorrente: 'Checking account',
-    poupanca: 'Savings',
-    investimento: 'Investment',
-    carteira: 'Wallet',
-    limiteTotal: 'Total limit',
-    bandeira: 'Brand',
-    diaVencimento: 'Invoice due day',
-    faturaAtual: 'Current invoice',
-    semItensFatura: 'No items in this month\'s invoice',
-    itensPagos: 'items paid',
-    adicionarItem: 'Add item manually',
-    editarFatura: 'Edit invoice',
-    marcarPago: 'Mark as paid',
-    marcarNaoPago: 'Mark as unpaid',
-    pagarFatura: 'Pay Invoice',
-    saldoInsuficiente: 'Insufficient balance!',
-    saldoAtualLabel: 'Current balance',
-    saldoApos: 'Balance after payment',
-    formaPagamento: 'Payment method',
-    confirmarPagamento: 'Confirm Payment',
-    novoLancamento: 'New transaction',
-    lancamentoCredito: 'Credit transaction saved',
-    lancamentoSalvo: 'Transaction saved successfully!',
-    preenchaCampos: 'Please fill in all required fields.',
-    selecioneCartao: 'Select a card for credit transaction.',
-    contaAdicionada: 'Account added!',
-    contaAtualizada: 'Account updated!',
-    contaExcluida: 'Account deleted.',
-    cartaoAdicionado: 'Card added!',
-    cartaoAtualizado: 'Card updated!',
-    cartaoExcluido: 'Card deleted.',
-    contaPagarAdicionada: 'Bill to pay added!',
-    contaReceberAdicionada: 'Bill to receive added!',
-    itemMarcadoPago: 'Item marked as paid!',
-    itemMarcadoPendente: 'Item marked as pending!',
-    faturaAtualizada: 'Invoice updated!',
-    itemRemovido: 'Item removed.',
-    itemNaoEncontrado: 'Item not found.',
-    itemAdicionadoFatura: 'Item added to invoice!',
-    lancamentoExcluido: 'Transaction deleted.',
-    faturaPaga: 'Invoice paid successfully!',
-    perfilAtualizado: 'Profile updated!',
-    categoriasSalvas: 'Categories saved!',
-    categoriaExiste: 'Category already exists.',
-    patrimonioSalvo: 'Net worth saved!',
-    ativoAdicionado: 'Asset added!',
-    investimentoAdicionado: 'Investment added!',
-    valorValido: 'Please enter a valid amount.',
-    emailInvalido: 'Invalid email.',
-    arquivoGrande: 'File too large (max. 5MB)',
-    sessaoExpirada: 'Session expired due to inactivity.',
-    erroDesconhecido: 'Unknown error. Please try again.',
-    semConexao: 'No internet connection...',
-    carregando: 'Loading data...',
-    nenhumLancamento: 'No transactions found for this period.',
-    totalDia: 'Day total:',
-    nenhumaDespesa: 'No expenses recorded.',
-    nenhumaMovimentacao: 'No transactions recorded.',
-    verTodasMovimentacoes: 'View all transactions',
-    maioresGastos: 'Top expenses this month',
-    semGastos: 'No expenses in this period',
-    categoriasLabel: 'Categories',
-    gastosPorCategoria: 'Expenses by category',
-    ultimasMovimentacoes: 'Recent Transactions',
-    divisaoGastos: 'Expense Split',
-    receitasPorCategoria: 'Income by Category',
-    limitesGastos: 'Spending limits by category',
-    definaLimite: 'Set a monthly limit for each category...',
-    personalizar: 'Customize',
-    trocarTemplate: 'Switch template',
-    adicioneEditeRemova: 'Add, edit or remove income and expense categories...',
-    receitasLabel: 'Income',
-    despesasLabel: 'Expenses',
-    comparativo: 'Comparative',
-    referenciaMensal: 'Monthly reference',
-    referencia: 'Reference',
-    trimestral: 'Quarterly',
-    semestral: 'Semi-annual',
-    variacao: 'Change',
-    esteMes: 'This month',
-    saldoAnterior: 'Previous balance',
-    saldoAtualGeral: 'Current balance',
-    projecao: '3M Projection',
-    visaoAnual: 'Annual view',
-    saldoGeral: 'Overall balance',
-    minhasContas: 'My accounts',
-    adicioneContas: 'Add your bank accounts...',
-    adicionarConta: '+ Add account',
-    gerenciarContas: 'Manage accounts',
-    faturasDe: 'Invoices for',
-    meusCartoes: 'My cards',
-    registreCartoes: 'Register your cards to track invoices and expenses.',
-    adicionarCartao: '+ Add card',
-    gerenciarCartoes: 'Manage cards',
-    contasPagar: 'Bills to pay',
-    nenhumaContaPagar: 'No bills to pay...',
-    contasReceber: 'Bills to receive',
-    nenhumaContaReceber: 'No bills to receive...',
-    adicionarRecebimento: '+ Add receivable',
-    fundoEmergencia: 'Emergency Fund',
-    meta6meses: 'Goal: 6 months of fixed costs',
-    carteiraInvestimentos: 'Investment Portfolio',
-    patrimonio: 'Net Worth',
-    seusAtivosMetas: 'Your assets and goals',
-    patrimonioAtual: 'Current Net Worth',
-    adicioneAtivos: 'Add your assets to track net worth',
-    adicionarAtivo: '+ Add asset',
-    meusInvestimentos: 'My Investments',
-    registreInvestimentos: 'Register your investments (savings, CD, stocks, REITs...)',
-    adicionarInvestimento: '+ Add investment',
-    resumoPatrimonio: 'Net Worth Summary',
-    ativosLabel: 'Assets',
-    investimentosLabel: 'Investments',
-    metasFinanceiras: 'Financial Goals',
-    curtoPrazo: 'Short Term (6 months)',
-    medioPrazo: 'Medium Term (1 year)',
-    inicio: 'Home',
-    lancar: 'Add',
-    investir: 'Invest',
-    editPerfil: 'Edit profile',
-    nome: 'Name',
-    opcional: '(optional)',
-    salvarAlteracoes: 'Save changes',
-    excluirConta: 'Delete my account',
-    meusFeedbacks: 'My Feedback',
-    nenhumFeedback: 'No feedback submitted yet.',
-    gerenciarCategorias: 'Manage categories',
-    novaCategoriaReceita: 'New income category',
-    novaCategoriaDespesa: 'New expense category',
-    pular: 'Skip',
-    bemVindoPulso: 'Welcome to Pulso!',
-    vamosPersonalizar: 'Let\'s customize your categories...',
-    simples: 'Simple',
-    essenciaisPessoais: 'Essentials vs Personal...',
-    detalhado: 'Detailed',
-    categoriasPorArea: 'Categories by life area...',
-    investidor: 'Investor',
-    focoInvestimentos: 'Focus on investments and financial goals...',
-    catAlimentacao: 'Food', catTransporte: 'Transport', catLazer: 'Leisure', catSaude: 'Health',
-    catMoradia: 'Housing', catMercado: 'Groceries', catInvestimentos: 'Investments', catEducacao: 'Education',
-    catRendaFixa: 'Fixed Income', catAcoes: 'Stocks', catFIIs: 'REITs', catETFs: 'ETFs', catCripto: 'Crypto',
-    compartilharOrcamento: 'Share budget',
-    convideAlguem: 'Invite someone to view and record transactions in the same budget.',
-    convidar: 'Invite',
-    editor: 'Editor',
-    podeAdicionarEditar: 'Can add and edit transactions',
-    visualizador: 'Viewer',
-    podeVisualizar: 'Can only view data',
-    membrosAtuais: 'Current members',
-    nenhumMembro: 'No shared members yet.',
-    enviarFeedback: 'Send feedback',
-    deixeFeedback: 'Leave your feedback',
-    seuFeedback: 'Your feedback',
-    conteAchou: 'Tell us what you think...',
-    enviar: 'Send',
-    privacidadeAnuncios: 'Privacy & Ads',
-    utilzamosCookies: 'We use cookies and personalized advertising technologies...',
-    gerenciarPreferencias: 'Manage',
-    recusar: 'Reject',
-    aceitarTudo: 'Accept all',
-    preferenciasPrivacidade: 'Privacy Preferences',
-    escolhaDados: 'Choose how you want your data to be used:',
-    anunciosPersonalizados: 'Personalized Ads',
-    permiteAnuncios: 'Allows showing relevant ads based on your site usage.',
-    salvarSemAnuncios: 'Save without ads',
-    salvarComAnuncios: 'Save with ads',
-    saldoDisponivel: 'Available balance',
-    heroEmptyText: 'Start by recording your first financial transaction',
-    heroEmptyBtn: 'Add transaction',
-    totalEntradas: 'Total Income',
-    totalSaidas: 'Total Expenses',
-    saldoPeriodo: 'Period Balance',
-    todos: 'All',
-    entradas: 'Income',
-    saidas: 'Expenses',
-    todasCategorias: 'All categories',
-    todosUsuarios: 'All users',
-    maioresGastosMes: 'Top expenses this month',
-    semGastosPeriodo: 'No expenses in period',
-    comparativoLabel: 'Comparison',
-    atual: 'Current',
-    mesAnterior: 'Previous month',
-    receitas: 'Income',
-    despesas: 'Expenses',
-    saldo: 'Balance',
-    reservaEmergencia: 'Emergency fund for unexpected events',
-    casaCarroEducacao: 'House, car or education',
-    longoPrazo: 'Long Term (3+ years)',
-    aposentadoriaLiberdade: 'Retirement, financial freedom',
-    configurarLabel: 'Configure',
-    editarMetas: 'Edit your goals',
-    curto6Meses: 'Short (6 months)',
-    medio1Ano: 'Medium (1 year)',
-    longo3Anos: 'Long (3+ years)',
-    salvarMetas: 'Save Goals',
-    entradasOptgroup: 'Income',
-    saidasOptgroup: 'Expenses',
-    splashSubtitle: 'Personal finance, simple and private',
-    fullNameLabel: 'Full name',
-    emailLabel: 'Email',
-    passwordLabel: 'Password',
-    showPassword: 'Show password',
-    rememberMe: 'Remember me',
-    forgotPassword: 'Forgot password?',
-    toggleTheme: 'Toggle theme',
-    atualLabel: 'Current',
-    referenciaLabel: 'Reference',
-    gerenciarLabel: 'Manage'
+    deleteConfirmCancel: 'Cancel'
   },
   es: {
     appName: 'Pulso',
@@ -737,272 +207,7 @@ const pulsoTranslations = {
     deleteConfirmDesc: 'Esta acción es irreversible. Todas las transacciones serán eliminadas permanentemente.',
     deleteConfirmInputLabel: 'Escribe ELIMINAR para confirmar',
     deleteConfirmButton: 'Eliminar todo',
-    deleteConfirmCancel: 'Cancelar',
-    navDashboard: 'Panel',
-    navExtract: 'Movimientos',
-    navInvestments: 'Inversiones',
-    navHistory: 'Historial',
-    navBank: 'Banco',
-    navShare: 'Compartir',
-    financas: 'Finanzas',
-    mensal: 'Mensual',
-    anual: 'Anual',
-    cartoes: 'Tarjetas',
-    orcamento: 'Presupuesto',
-    orcamentoFamiliar: 'Presupuesto familiar',
-    visaoGeral: 'Resumen',
-    lancamentos: 'Movimientos',
-    investimentos: 'Inversiones',
-    historico: 'Historial',
-    banco: 'Banco',
-    backup: 'Copia de seguridad',
-    guardarDados: 'Guardar tus datos',
-    exportarBackup: 'Exportar copia (.json)',
-    zonaRisco: 'Zona de peligro',
-    limparTudo: 'Borrar todo',
-    importar: 'Importar',
-    planilhaExcel: 'Hoja de cálculo Excel',
-    max1000: 'Máximo 1000 caracteres',
-    salvar: 'Guardar',
-    cancelar: 'Cancelar',
-    confirmar: 'Confirmar',
-    fechar: 'Cerrar',
-    editar: 'Editar',
-    excluir: 'Eliminar',
-    adicionar: 'Agregar',
-    descricao: 'Descripción',
-    valor: 'Monto',
-    data: 'Fecha',
-    categoria: 'Categoría',
-    parcelas: 'Cuotas',
-    forma: 'Método',
-    dinheiro: 'Efectivo',
-    debito: 'Débito',
-    credito: 'Crédito',
-    cartao: 'Tarjeta',
-    pagar: 'Pagar',
-    receita: 'Ingreso',
-    despesa: 'Gasto',
-    entrada: 'Ingreso',
-    saida: 'Gasto',
-    pendente: 'Pendiente',
-    pago: 'Pagado',
-    total: 'Total',
-    verTodas: 'Ver todas',
-    gerenciar: 'Gestionar',
-    novoCartao: 'Nueva tarjeta',
-    novaConta: 'Nueva cuenta',
-    nomeConta: 'Nombre de la cuenta',
-    saldoAtual: 'Saldo actual',
-    tipoConta: 'Tipo de cuenta',
-    contaCorrente: 'Cuenta corriente',
-    poupanca: 'Ahorro',
-    investimento: 'Inversión',
-    carteira: 'Billetera',
-    limiteTotal: 'Límite total',
-    bandeira: 'Bandeira',
-    diaVencimento: 'Día de vencimiento',
-    faturaAtual: 'Factura actual',
-    semItensFatura: 'Sin artículos en la factura de este mes',
-    itensPagos: 'artículos pagados',
-    adicionarItem: 'Agregar artículo manual',
-    editarFatura: 'Editar factura',
-    marcarPago: 'Marcar como pagado',
-    marcarNaoPago: 'Marcar como no pagado',
-    pagarFatura: 'Pagar Factura',
-    saldoInsuficiente: '¡Saldo insuficiente!',
-    saldoAtualLabel: 'Saldo actual',
-    saldoApos: 'Saldo después del pago',
-    formaPagamento: 'Forma de pago',
-    confirmarPagamento: 'Confirmar Pago',
-    novoLancamento: 'Nuevo movimiento',
-    lancamentoCredito: 'Movimiento de crédito guardado',
-    lancamentoSalvo: '¡Movimiento guardado con éxito!',
-    preenchaCampos: 'Completa todos los campos obligatorios.',
-    selecioneCartao: 'Selecciona una tarjeta para el crédito.',
-    contaAdicionada: '¡Cuenta agregada!',
-    contaAtualizada: '¡Cuenta actualizada!',
-    contaExcluida: 'Cuenta eliminada.',
-    cartaoAdicionado: '¡Tarjeta agregada!',
-    cartaoAtualizado: '¡Tarjeta actualizada!',
-    cartaoExcluido: 'Tarjeta eliminada.',
-    contaPagarAdicionada: '¡Cuenta por pagar agregada!',
-    contaReceberAdicionada: '¡Cuenta por cobrar agregada!',
-    itemMarcadoPago: '¡Artículo marcado como pagado!',
-    itemMarcadoPendente: '¡Artículo marcado como pendiente!',
-    faturaAtualizada: '¡Factura actualizada!',
-    itemRemovido: 'Artículo eliminado.',
-    itemNaoEncontrado: 'Artículo no encontrado.',
-    itemAdicionadoFatura: '¡Artículo agregado a la factura!',
-    lancamentoExcluido: 'Movimiento eliminado.',
-    faturaPaga: '¡Factura pagada con éxito!',
-    perfilAtualizado: '¡Perfil actualizado!',
-    categoriasSalvas: '¡Categorías guardadas!',
-    categoriaExiste: 'La categoría ya existe.',
-    patrimonioSalvo: '¡Patrimonio guardado!',
-    ativoAdicionado: '¡Activo agregado!',
-    investimentoAdicionado: '¡Inversión agregada!',
-    valorValido: 'Ingresa un monto válido.',
-    emailInvalido: 'Correo inválido.',
-    arquivoGrande: 'Archivo demasiado grande (máx. 5MB)',
-    sessaoExpirada: 'Sesión expirada por inactividad.',
-    erroDesconhecido: 'Error desconocido. Inténtalo de nuevo.',
-    semConexao: 'Sin conexión a internet...',
-    carregando: 'Cargando datos...',
-    nenhumLancamento: 'No se encontraron movimientos para este período.',
-    totalDia: 'Total del día:',
-    nenhumaDespesa: 'Ningún gasto registrado.',
-    nenhumaMovimentacao: 'Ningún movimiento registrado.',
-    verTodasMovimentacoes: 'Ver todos los movimientos',
-    maioresGastos: 'Mayores gastos del mes actual',
-    semGastos: 'Sin gastos en este período',
-    categoriasLabel: 'Categorías',
-    gastosPorCategoria: 'Gastos por categoría',
-    ultimasMovimentacoes: 'Últimos movimientos',
-    divisaoGastos: 'División de Gastos',
-    receitasPorCategoria: 'Ingresos por Categoría',
-    limitesGastos: 'Límites de gasto por categoría',
-    definaLimite: 'Define un límite mensual para cada categoría...',
-    personalizar: 'Personalizar',
-    trocarTemplate: 'Cambiar plantilla',
-    adicioneEditeRemova: 'Agrega, edita o elimina categorías de ingresos y gastos...',
-    receitasLabel: 'Ingresos',
-    despesasLabel: 'Gastos',
-    comparativo: 'Comparativo',
-    referenciaMensal: 'Referencia mensual',
-    referencia: 'Referencia',
-    trimestral: 'Trimestral',
-    semestral: 'Semestral',
-    variacao: 'Variación',
-    esteMes: 'Este mes',
-    saldoAnterior: 'Saldo anterior',
-    saldoAtualGeral: 'Saldo actual',
-    projecao: 'Proyección 3M',
-    visaoAnual: 'Vista anual',
-    saldoGeral: 'Saldo general',
-    minhasContas: 'Mis cuentas',
-    adicioneContas: 'Agrega tus cuentas bancarias...',
-    adicionarConta: '+ Agregar cuenta',
-    gerenciarContas: 'Gestionar cuentas',
-    faturasDe: 'Facturas de',
-    meusCartoes: 'Mis tarjetas',
-    registreCartoes: 'Registra tus tarjetas para seguir facturas y gastos.',
-    adicionarCartao: '+ Agregar tarjeta',
-    gerenciarCartoes: 'Gestionar tarjetas',
-    contasPagar: 'Cuentas por pagar',
-    nenhumaContaPagar: 'Ninguna cuenta por pagar...',
-    contasReceber: 'Cuentas por cobrar',
-    nenhumaContaReceber: 'Ninguna cuenta por cobrar...',
-    adicionarRecebimento: '+ Agregar cobro',
-    fundoEmergencia: 'Fondo de Emergencia',
-    meta6meses: 'Meta: 6 meses de costos fijos',
-    carteiraInvestimentos: 'Cartera de Inversiones',
-    patrimonio: 'Patrimonio',
-    seusAtivosMetas: 'Tus activos y metas',
-    patrimonioAtual: 'Patrimonio Actual',
-    adicioneAtivos: 'Agrega tus activos para seguir el patrimonio',
-    adicionarAtivo: '+ Agregar activo',
-    meusInvestimentos: 'Mis Inversiones',
-    registreInvestimentos: 'Registra tus inversiones (ahorro, CDT, acciones, FIIs...)',
-    adicionarInvestimento: '+ Agregar inversión',
-    resumoPatrimonio: 'Resumen del Patrimonio',
-    ativosLabel: 'Activos',
-    investimentosLabel: 'Inversiones',
-    metasFinanceiras: 'Metas Financieras',
-    curtoPrazo: 'Corto Plazo (6 meses)',
-    medioPrazo: 'Mediano Plazo (1 año)',
-    inicio: 'Inicio',
-    lancar: 'Agregar',
-    investir: 'Invertir',
-    editPerfil: 'Editar perfil',
-    nome: 'Nombre',
-    opcional: '(opcional)',
-    salvarAlteracoes: 'Guardar cambios',
-    excluirConta: 'Eliminar mi cuenta',
-    meusFeedbacks: 'Mis Comentarios',
-    nenhumFeedback: 'Ningún comentario enviado aún.',
-    gerenciarCategorias: 'Gestionar categorías',
-    novaCategoriaReceita: 'Nueva categoría de ingreso',
-    novaCategoriaDespesa: 'Nueva categoría de gasto',
-    pular: 'Omitir',
-    bemVindoPulso: '¡Bienvenido a Pulso!',
-    vamosPersonalizar: 'Vamos a personalizar tus categorías...',
-    simples: 'Simple',
-    essenciaisPessoais: 'Esenciales vs Personales...',
-    detalhado: 'Detallado',
-    categoriasPorArea: 'Categorías por área de vida...',
-    investidor: 'Inversor',
-    focoInvestimentos: 'Enfoque en inversiones y metas financieras...',
-    catAlimentacao: 'Alimentación', catTransporte: 'Transporte', catLazer: 'Ocio', catSaude: 'Salud',
-    catMoradia: 'Vivienda', catMercado: 'Supermercado', catInvestimentos: 'Inversiones', catEducacao: 'Educación',
-    catRendaFixa: 'Renta Fija', catAcoes: 'Acciones', catFIIs: 'FIIs', catETFs: 'ETFs', catCripto: 'Cripto',
-    compartilharOrcamento: 'Compartir presupuesto',
-    convideAlguem: 'Invita a alguien a ver y registrar movimientos en el mismo presupuesto.',
-    convidar: 'Invitar',
-    editor: 'Editor',
-    podeAdicionarEditar: 'Puede agregar y editar movimientos',
-    visualizador: 'Visualizador',
-    podeVisualizar: 'Solo puede ver los datos',
-    membrosAtuais: 'Miembros actuales',
-    nenhumMembro: 'Ningún miembro compartido aún.',
-    enviarFeedback: 'Enviar comentario',
-    deixeFeedback: 'Deja tu comentario',
-    seuFeedback: 'Tu comentario',
-    conteAchou: 'Cuéntanos qué opinas...',
-    enviar: 'Enviar',
-    privacidadeAnuncios: 'Privacidad y Anuncios',
-    utilzamosCookies: 'Usamos cookies y tecnologías de publicidad personalizada...',
-    gerenciarPreferencias: 'Gestionar',
-    recusar: 'Rechazar',
-    aceitarTudo: 'Aceptar todo',
-    preferenciasPrivacidade: 'Preferencias de Privacidad',
-    escolhaDados: 'Elige cómo quieres que se usen tus datos:',
-    anunciosPersonalizados: 'Anuncios Personalizados',
-    permiteAnuncios: 'Permite mostrar anuncios relevantes según tu uso del sitio.',
-    salvarSemAnuncios: 'Guardar sin anuncios',
-    salvarComAnuncios: 'Guardar con anuncios',
-    saldoDisponivel: 'Saldo disponible',
-    heroEmptyText: 'Comienza registrando tu primera transacción financiera',
-    heroEmptyBtn: 'Agregar movimiento',
-    totalEntradas: 'Total Ingresos',
-    totalSaidas: 'Total Gastos',
-    saldoPeriodo: 'Saldo del Período',
-    todos: 'Todos',
-    entradas: 'Ingresos',
-    saidas: 'Gastos',
-    todasCategorias: 'Todas las categorías',
-    todosUsuarios: 'Todos los usuarios',
-    maioresGastosMes: 'Mayores gastos del mes actual',
-    semGastosPeriodo: 'Sin gastos en el período',
-    comparativoLabel: 'Comparativo',
-    atual: 'Actual',
-    mesAnterior: 'Mes anterior',
-    receitas: 'Ingresos',
-    despesas: 'Gastos',
-    saldo: 'Saldo',
-    reservaEmergencia: 'Fondo de emergencia para imprevistos',
-    casaCarroEducacao: 'Casa, auto o educación',
-    longoPrazo: 'Largo Plazo (3+ años)',
-    aposentadoriaLiberdade: 'Jubilación, libertad financiera',
-    configurarLabel: 'Configurar',
-    editarMetas: 'Editar tus metas',
-    curto6Meses: 'Corto (6 meses)',
-    medio1Ano: 'Medio (1 año)',
-    longo3Anos: 'Largo (3+ años)',
-    salvarMetas: 'Guardar Metas',
-    entradasOptgroup: 'Ingresos',
-    saidasOptgroup: 'Gastos',
-    splashSubtitle: 'Finanzas personales, simples y privadas',
-    fullNameLabel: 'Nombre completo',
-    emailLabel: 'Correo electrónico',
-    passwordLabel: 'Contraseña',
-    showPassword: 'Mostrar contraseña',
-    rememberMe: 'Recordarme',
-    forgotPassword: '¿Olvidaste tu contraseña?',
-    toggleTheme: 'Cambiar tema',
-    atualLabel: 'Actual',
-    referenciaLabel: 'Referencia',
-    gerenciarLabel: 'Administrar'
+    deleteConfirmCancel: 'Cancelar'
   }
 };
 
@@ -1066,32 +271,8 @@ window.PulsoI18n = {
     updateLanguageSwitchButton();
   }
 };
-
-const CURRENCY_CONFIG = {
-  pt: { symbol: 'R$', locale: 'pt-BR', code: 'BRL' },
-  en: { symbol: '$', locale: 'en-US', code: 'USD' },
-  es: { symbol: '€', locale: 'es-ES', code: 'EUR' }
-};
-
-function getCurrencyConfig() {
-  const lang = window.PulsoI18n ? window.PulsoI18n.locale : 'pt';
-  return CURRENCY_CONFIG[lang] || CURRENCY_CONFIG.pt;
-}
-
-function formatCurrency(v) {
-  const cfg = getCurrencyConfig();
-  const num = parseFloat(v) || 0;
-  return cfg.symbol + ' ' + num.toLocaleString(cfg.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-function formatCurrencyShort(v) {
-  return formatCurrency(v);
-}
-
-function getCurrencyPrefix() {
-  return getCurrencyConfig().symbol;
-}
 window.PulsoI18n.locale = window.PulsoI18n.getPreferredLanguage();
+updateKofiVisibility();
 
 const languageCycleOrder = ['pt', 'en', 'es'];
 
@@ -1115,6 +296,13 @@ function updateLanguageSwitchButton() {
   button.setAttribute('title', `Idioma atual: ${label}`);
 }
 
+function updateKofiVisibility() {
+  const kofiBtn = document.getElementById('kofiBtn');
+  if (!kofiBtn) return;
+  const locale = window.PulsoI18n && window.PulsoI18n.locale ? window.PulsoI18n.locale : 'pt';
+  kofiBtn.style.display = locale === 'pt' ? 'none' : '';
+}
+
 function cycleLanguage() {
   const locale = window.PulsoI18n && window.PulsoI18n.locale ? window.PulsoI18n.locale : 'pt';
   const currentIndex = languageCycleOrder.indexOf(locale);
@@ -1123,6 +311,7 @@ function cycleLanguage() {
     window.PulsoI18n.setLanguage(nextLocale);
   }
   updateLanguageSwitchButton();
+  updateKofiVisibility();
 }
 
 const languageSwitchBtn = document.getElementById('languageSwitchBtn');
@@ -2166,13 +1355,12 @@ function deleteAccount() {
 function updateHeroContent(tabId) {
   const topbarTitle = document.querySelector('.topbar h1');
   const topbarEyebrow = document.querySelector('.topbar .eyebrow');
-  const t = window.PulsoI18n && window.PulsoI18n.t ? window.PulsoI18n.t.bind(window.PulsoI18n) : (k, f) => f || k;
   const contentMap = {
-    dashboard: { eyebrow: t('orcamentoFamiliar', 'Orçamento familiar'), title: t('visaoGeral', 'Visão geral') },
-    entrada: { eyebrow: t('lancamentos', 'Lançamentos'), title: t('bankExtract', 'Extrato Bancário') },
-    investimentos: { eyebrow: t('investimentos', 'Investimentos'), title: t('patrimonio', 'Patrimônio e Metas') },
-    historico: { eyebrow: t('historico', 'Histórico'), title: t('navHistory', 'Últimos lançamentos') },
-    banco: { eyebrow: t('banco', 'Banco'), title: t('backup', 'Backup e Importação') }
+    dashboard: { eyebrow: 'Orçamento familiar', title: 'Visão geral' },
+    entrada: { eyebrow: 'Lançamentos', title: 'Extrato Bancário' },
+    investimentos: { eyebrow: 'Investimentos', title: 'Patrimônio e Metas' },
+    historico: { eyebrow: 'Histórico', title: 'Últimos lançamentos' },
+    banco: { eyebrow: 'Banco', title: 'Backup e Importação' }
   };
   const selected = contentMap[tabId] || contentMap.dashboard;
   if (topbarEyebrow) topbarEyebrow.textContent = selected.eyebrow;
@@ -2393,7 +1581,7 @@ function updateParcelaInfo() {
       info.textContent = 'Débito: sem lançamentos futuros';
       return;
     }
-    info.textContent = 'de ' + getCurrencyPrefix() + ' ' + valorParcela.toLocaleString(getCurrencyConfig().locale, { minimumFractionDigits: 2 }) + ' · ' + futuros + ' lançamentos futuros';
+    info.textContent = 'de R$ ' + valorParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + ' · ' + futuros + ' lançamentos futuros';
   }
 }
 
@@ -2523,7 +1711,7 @@ function renderHistory() {
   }
 
   filtered.forEach(t => {
-    const dateFormatted = new Date(t.date).toLocaleDateString(getCurrencyConfig().locale);
+    const dateFormatted = new Date(t.date).toLocaleDateString('pt-BR');
     const isEntrada = t.type === 'entrada';
     const icon = isEntrada ? '📥' : '📤';
     const typeClass = isEntrada ? 'entrada' : 'saida';
@@ -2548,7 +1736,7 @@ function renderHistory() {
         '</div>' +
       '</div>' +
       '<div class="t-amount" style="color: ' + color + ';">' +
-        sign + ' ' + getCurrencyPrefix() + ' ' + t.val.toLocaleString(getCurrencyConfig().locale, { minimumFractionDigits: 2 }) +
+        sign + ' R$ ' + t.val.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) +
         deleteBtn +
       '</div>' +
     '</div>';
@@ -2613,7 +1801,7 @@ function updateUI() {
     }
   });
 
-
+  const formatCurrency = value => 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
   // Última entrada
   const lastIncomeVal = document.getElementById('last-income');
@@ -2623,7 +1811,7 @@ function updateUI() {
       lastIncomeVal.textContent = formatCurrency(lastIncome.val);
       lastIncomeUser.textContent = lastIncome.desc + ' por ' + lastIncome.user;
     } else {
-      lastIncomeVal.textContent = formatCurrency(0);
+      lastIncomeVal.textContent = 'R$ 0,00';
       lastIncomeUser.textContent = 'Nenhum registro';
     }
   }
@@ -2636,7 +1824,7 @@ function updateUI() {
       lastExpenseVal.textContent = formatCurrency(lastExpense.val);
       lastExpenseUser.textContent = lastExpense.desc + ' por ' + lastExpense.user;
     } else {
-      lastExpenseVal.textContent = formatCurrency(0);
+      lastExpenseVal.textContent = 'R$ 0,00';
       lastExpenseUser.textContent = 'Nenhum registro';
     }
   }
@@ -2719,7 +1907,7 @@ function updateUI() {
   if (emergenciaAtualEl) emergenciaAtualEl.textContent = formatCurrency(emergenciaAtual);
   if (emergenciaPctEl) emergenciaPctEl.textContent = emergenciaPct.toFixed(0) + '%';
   if (emergenciaBar) emergenciaBar.style.width = emergenciaPct + '%';
-  if (emergenciaMetaEl) emergenciaMetaEl.textContent = emergenciaMeta.toLocaleString(getCurrencyConfig().locale, { minimumFractionDigits: 2 });
+  if (emergenciaMetaEl) emergenciaMetaEl.textContent = emergenciaMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
   // Total investimentos
   const investTotalEl = document.getElementById('invest-total');
@@ -2753,7 +1941,7 @@ function updateUI() {
     donutSegment.style.strokeDashoffset = dashoffset;
   }
   if (donutValor) donutValor.textContent = formatCurrency(monthlyExpense);
-  if (donutMetaEl) donutMetaEl.textContent = donutMeta.toLocaleString(getCurrencyConfig().locale, { minimumFractionDigits: 2 });
+  if (donutMetaEl) donutMetaEl.textContent = donutMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
   // Últimas movimentações
   const movimentacoesList = document.getElementById('movimentacoes-list');
@@ -2766,7 +1954,7 @@ function updateUI() {
       movimentacoesList.innerHTML = '<div class="empty-state-small"><i class="fa-solid fa-receipt"></i><p>Nenhuma movimentação registrada.</p></div>';
     } else {
       let html = recent.map(t => {
-        const dateFormatted = new Date(t.date).toLocaleDateString(getCurrencyConfig().locale, { day: '2-digit', month: '2-digit' });
+        const dateFormatted = new Date(t.date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
         const isEntrada = t.type === 'entrada';
         const sign = isEntrada ? '+' : '-';
         const color = isEntrada ? 'var(--accent-success)' : 'var(--accent-warning)';
@@ -2836,7 +2024,7 @@ function renderResumoMensal(totalIncome, totalExpense, balance) {
   if (!container) return;
 
   const now = new Date();
-  const mesAtual = now.toLocaleDateString(getCurrencyConfig().locale, { month: 'long', year: 'numeric' });
+  const mesAtual = now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
   const saidasMes = transactions.filter(t => {
     const d = new Date(t.date);
@@ -2857,6 +2045,7 @@ function renderResumoMensal(totalIncome, totalExpense, balance) {
     }
   });
 
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   const pct = (parte, total) => total > 0 ? ((parte / total) * 100).toFixed(1) + '%' : '0%';
 
   let categoriasHTML = '';
@@ -2980,6 +2169,7 @@ function renderComparativo() {
 
   const prev = monthTotals(refMonth, curYear);
   const cur = monthTotals(curMonth, curYear);
+  const formatCurrency = v => 'R$ ' + Math.abs(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
   const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
   const monthFull = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -3002,7 +2192,7 @@ function renderComparativo() {
   if (prevIncome) prevIncome.textContent = formatCurrency(prev.income);
   if (prevExpense) prevExpense.textContent = formatCurrency(prev.expense);
   if (prevBalance) {
-    prevBalance.textContent = (prev.balance < 0 ? '- ' : '') + formatCurrency(Math.abs(prev.balance));
+    prevBalance.textContent = (prev.balance < 0 ? '- ' : '') + formatCurrency(prev.balance);
     prevBalance.className = 'comp-row-value ' + (prev.balance >= 0 ? 'positive' : 'negative');
   }
 
@@ -3017,7 +2207,7 @@ function renderComparativo() {
   if (curIncome) curIncome.textContent = formatCurrency(cur.income);
   if (curExpense) curExpense.textContent = formatCurrency(cur.expense);
   if (curBalance) {
-    curBalance.textContent = (cur.balance < 0 ? '- ' : '') + formatCurrency(Math.abs(cur.balance));
+    curBalance.textContent = (cur.balance < 0 ? '- ' : '') + formatCurrency(cur.balance);
     curBalance.className = 'comp-row-value ' + (cur.balance >= 0 ? 'positive' : 'negative');
   }
 
@@ -3029,9 +2219,9 @@ function renderComparativo() {
   const openingBalanceEl = document.getElementById('comp-opening-balance');
   const closingBalanceEl = document.getElementById('comp-closing-balance');
   const projectionBalanceEl = document.getElementById('comp-projection-balance');
-  if (openingBalanceEl) openingBalanceEl.textContent = (refCarry.openingBalance < 0 ? '- ' : '') + formatCurrency(Math.abs(refCarry.openingBalance));
-  if (closingBalanceEl) closingBalanceEl.textContent = (currentCarry.closingBalance < 0 ? '- ' : '') + formatCurrency(Math.abs(currentCarry.closingBalance));
-  if (projectionBalanceEl) projectionBalanceEl.textContent = (projectedBalance < 0 ? '- ' : '') + formatCurrency(Math.abs(projectedBalance));
+  if (openingBalanceEl) openingBalanceEl.textContent = (refCarry.openingBalance < 0 ? '- ' : '') + formatCurrency(refCarry.openingBalance);
+  if (closingBalanceEl) closingBalanceEl.textContent = (currentCarry.closingBalance < 0 ? '- ' : '') + formatCurrency(currentCarry.closingBalance);
+  if (projectionBalanceEl) projectionBalanceEl.textContent = (projectedBalance < 0 ? '- ' : '') + formatCurrency(projectedBalance);
 
   function renderDelta(elId, prevVal, curVal, invert) {
     const el = document.getElementById(elId);
@@ -3042,7 +2232,7 @@ function renderComparativo() {
       return;
     }
     if (prevVal === 0) {
-      el.textContent = (curVal > 0 ? '+' : '') + formatCurrency(Math.abs(curVal));
+      el.textContent = (curVal > 0 ? '+' : '') + formatCurrency(curVal);
       const isUp = curVal > prevVal;
       el.className = 'comp-row-delta ' + (invert ? (isUp ? 'down' : 'up') : (isUp ? 'up' : 'down'));
       return;
@@ -3130,6 +2320,7 @@ function renderDashGreeting() {
 function renderDashMonthSummary(monthlyExpense) {
   const receitasEl = document.getElementById('dash-receitas-mes');
   const despesasEl = document.getElementById('dash-despesas-mes');
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
   const now = new Date();
   let monthlyIncome = 0;
@@ -3168,7 +2359,7 @@ function renderDashSaldoGeral(balance, investimentoTotal) {
   const saldoEl = document.getElementById('dash-saldo-geral');
   const heroSaldoEl = document.getElementById('hero-saldo-valor');
   const total = balance + investimentoTotal;
-  const formatted = formatCurrency(total);
+  const formatted = 'R$ ' + (total || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   if (saldoEl) {
     saldoEl.textContent = formatted;
     saldoEl.style.color = total >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)';
@@ -3269,6 +2460,7 @@ function renderDashContas() {
     return;
   }
 
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   container.innerHTML = contas.map((c, i) =>
     '<div class="conta-item">' +
       '<div class="conta-info">' +
@@ -3299,7 +2491,7 @@ function showFormModal({ title, fields, onSubmit }) {
       return '<div class="form-modal-field">' +
         '<label for="' + escapeHTML(f.id) + '">' + escapeHTML(f.label) + '</label>' +
         '<div class="currency-input-wrap">' +
-          '<span class="currency-prefix">' + getCurrencyPrefix() + '</span>' +
+          '<span class="currency-prefix">R$</span>' +
           '<input type="text" inputmode="decimal" id="' + escapeHTML(f.id) + '" placeholder="0,00"' +
           (f.min !== undefined ? ' data-min="' + escapeHTML(String(f.min)) + '"' : '') + '>' +
         '</div></div>';
@@ -3348,7 +2540,7 @@ function showFormModal({ title, fields, onSubmit }) {
       const raw = input.value.replace(/\D/g, '');
       if (raw) {
         const num = parseInt(raw, 10) / 100;
-        input.value = num.toLocaleString(getCurrencyConfig().locale, { minimumFractionDigits: 2 });
+        input.value = num.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
       }
     });
   });
@@ -3391,7 +2583,7 @@ function openContaModal(options = {}) {
       title: 'Editar conta bancária',
       fields: [
         { id: 'fc-nome', label: 'Nome da conta', type: 'text', placeholder: 'Ex: Nubank, Itaú' },
-        { id: 'fc-saldo', label: 'Saldo atual (' + getCurrencyPrefix() + ')', type: 'number', placeholder: '0,00', step: '0.01' },
+        { id: 'fc-saldo', label: 'Saldo atual (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
         { id: 'fc-tipo', label: 'Tipo', type: 'select', options: ['Conta corrente', 'Poupança', 'Investimento', 'Carteira'] }
       ],
       onSubmit(values) {
@@ -3479,7 +2671,7 @@ function openContaModal(options = {}) {
         title: 'Nova conta bancária',
         fields: [
           { id: 'fc-nome', label: 'Nome da conta', type: 'text', placeholder: 'Ex: Nubank, Itaú' },
-          { id: 'fc-saldo', label: 'Saldo atual (' + getCurrencyPrefix() + ')', type: 'number', placeholder: '0,00', step: '0.01' },
+          { id: 'fc-saldo', label: 'Saldo atual (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
           { id: 'fc-tipo', label: 'Tipo', type: 'select', options: ['Conta corrente', 'Poupança', 'Investimento', 'Carteira'] }
         ],
         onSubmit(values) {
@@ -3501,7 +2693,7 @@ function openContaModal(options = {}) {
     title: 'Nova conta bancária',
     fields: [
       { id: 'fc-nome', label: 'Nome da conta', type: 'text', placeholder: 'Ex: Nubank, Itaú' },
-      { id: 'fc-saldo', label: 'Saldo atual (' + getCurrencyPrefix() + ')', type: 'number', placeholder: '0,00', step: '0.01' },
+      { id: 'fc-saldo', label: 'Saldo atual (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
       { id: 'fc-tipo', label: 'Tipo', type: 'select', options: ['Conta corrente', 'Poupança', 'Investimento', 'Carteira'] }
     ],
     onSubmit(values) {
@@ -3599,7 +2791,7 @@ function renderDashCartoes() {
 
   const mesAtual = document.getElementById('faturas-mes-atual');
   if (mesAtual) {
-    mesAtual.textContent = new Date().toLocaleDateString(getCurrencyConfig().locale, { month: 'long' });
+    mesAtual.textContent = new Date().toLocaleDateString('pt-BR', { month: 'long' });
   }
 
   if (cartoes.length === 0) {
@@ -3607,6 +2799,7 @@ function renderDashCartoes() {
     return;
   }
 
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   const now = new Date();
   container.innerHTML = cartoes.map(c => {
     const faturaAtual = contasPagar
@@ -3656,7 +2849,7 @@ function openCartaoModal(options = {}) {
       title: 'Editar cartão de crédito',
       fields: [
         { id: 'fc-nome', label: 'Nome do cartão', type: 'text', placeholder: 'Ex: Nubank, Inter' },
-        { id: 'fc-limite', label: 'Limite total (' + getCurrencyPrefix() + ')', type: 'currency' },
+        { id: 'fc-limite', label: 'Limite total (R$)', type: 'currency' },
         { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] },
         { id: 'fc-vencimento', label: 'Dia de vencimento da fatura', type: 'number', placeholder: '10', min: '1' }
       ],
@@ -3679,7 +2872,7 @@ function openCartaoModal(options = {}) {
       const bandeiraEl = document.getElementById('fc-bandeira');
       const vencimentoEl = document.getElementById('fc-vencimento');
       if (nomeEl) nomeEl.value = cartao.nome || '';
-      if (limiteEl) limiteEl.value = (cartao.limite || 0).toLocaleString(getCurrencyConfig().locale, { minimumFractionDigits: 2 });
+      if (limiteEl) limiteEl.value = (cartao.limite || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
       if (bandeiraEl) bandeiraEl.value = cartao.bandeira || 'Outro';
       if (vencimentoEl) vencimentoEl.value = String(clampDueDay(cartao.diaVencimento || 10));
     }, 20);
@@ -3748,7 +2941,7 @@ function openCartaoModal(options = {}) {
         title: 'Novo cartão de crédito',
         fields: [
           { id: 'fc-nome', label: 'Nome do cartão', type: 'text', placeholder: 'Ex: Nubank, Inter' },
-          { id: 'fc-limite', label: 'Limite total (' + getCurrencyPrefix() + ')', type: 'currency' },
+          { id: 'fc-limite', label: 'Limite total (R$)', type: 'currency' },
           { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] },
           { id: 'fc-vencimento', label: 'Dia de vencimento da fatura', type: 'number', placeholder: '10', min: '1' }
         ],
@@ -3772,7 +2965,7 @@ function openCartaoModal(options = {}) {
     title: 'Novo cartão de crédito',
     fields: [
       { id: 'fc-nome', label: 'Nome do cartão', type: 'text', placeholder: 'Ex: Nubank, Inter' },
-      { id: 'fc-limite', label: 'Limite total (' + getCurrencyPrefix() + ')', type: 'currency' },
+      { id: 'fc-limite', label: 'Limite total (R$)', type: 'currency' },
       { id: 'fc-bandeira', label: 'Bandeira', type: 'select', options: ['Visa', 'Mastercard', 'Elo', 'Amex', 'Outro'] },
       { id: 'fc-vencimento', label: 'Dia de vencimento da fatura', type: 'number', placeholder: '10', min: '1' }
     ],
@@ -3817,11 +3010,12 @@ function renderDashContasPagar() {
     return;
   }
 
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   const now = new Date();
 
   container.innerHTML = contasPagar.filter(c => !c.pago).map(c => {
     const venc = new Date(c.vencimento);
-    const diaVenc = venc.toLocaleDateString(getCurrencyConfig().locale, { day: '2-digit', month: 'short' });
+    const diaVenc = venc.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
     const isAtrasado = venc < now;
     const badgeRec = c.recorrencia === 'fixo'
       ? '<span class="bill-badge-rec" style="background: var(--accent-primary); color: #fff;">Fixo</span>'
@@ -3844,7 +3038,7 @@ function openContaPagarModal() {
     title: 'Nova conta a pagar',
     fields: [
       { id: 'fc-desc', label: 'Descrição', type: 'text', placeholder: 'Ex: Aluguel, Conta de luz' },
-      { id: 'fc-valor', label: 'Valor (' + getCurrencyPrefix() + ')', type: 'number', placeholder: '0,00', step: '0.01' },
+      { id: 'fc-valor', label: 'Valor (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
       { id: 'fc-venc', label: 'Data de vencimento', type: 'date' },
       { id: 'fc-recorrencia', label: 'Recorrência', type: 'select', options: ['Fixo todo mês', 'Evento único'] }
     ],
@@ -3891,9 +3085,11 @@ function renderDashContasReceber() {
     return;
   }
 
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+
   container.innerHTML = contasReceber.filter(c => !c.recebido).map(c => {
     const venc = new Date(c.vencimento);
-    const diaVenc = venc.toLocaleDateString(getCurrencyConfig().locale, { day: '2-digit', month: 'short' });
+    const diaVenc = venc.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
     const badgeRec = c.recorrencia === 'fixo'
       ? '<span class="bill-badge-rec" style="background: var(--accent-primary); color: #fff;">Fixo</span>'
       : '';
@@ -3912,7 +3108,7 @@ function openContaReceberModal() {
     title: 'Novo recebimento',
     fields: [
       { id: 'fc-desc', label: 'Descrição', type: 'text', placeholder: 'Ex: Salário, Freelance' },
-      { id: 'fc-valor', label: 'Valor (' + getCurrencyPrefix() + ')', type: 'number', placeholder: '0,00', step: '0.01' },
+      { id: 'fc-valor', label: 'Valor (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
       { id: 'fc-venc', label: 'Data de recebimento', type: 'date' },
       { id: 'fc-recorrencia', label: 'Recorrência', type: 'select', options: ['Fixo todo mês', 'Evento único'] }
     ],
@@ -3964,11 +3160,13 @@ function renderDashMaioresGastos(monthlyExpense) {
     return;
   }
 
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+
   container.innerHTML = topGastos.map((t, i) =>
     '<div class="gasto-item">' +
       '<div class="gasto-info">' +
         '<span class="gasto-rank">' + (i + 1) + '</span>' +
-        '<div><div class="conta-nome">' + escapeHTML(t.desc) + '</div><div class="conta-tipo">' + escapeHTML(tCategory(t.cat)) + ' • ' + escapeHTML(t.user) + '</div></div>' +
+        '<div><div class="conta-nome">' + escapeHTML(t.desc) + '</div><div class="conta-tipo">' + escapeHTML(t.cat) + ' • ' + escapeHTML(t.user) + '</div></div>' +
       '</div>' +
       '<span class="gasto-valor">- ' + formatCurrency(t.val) + '</span>' +
     '</div>'
@@ -4117,7 +3315,7 @@ function encontrarBlocos(linhas) {
 function importMeses(workbook, log) {
   const mesesParaSubstituir = new Set(workbook.SheetNames.map(parseSheetNameToDate).filter(Boolean));
   if (mesesParaSubstituir.size) {
-    const mesesNomes = [...mesesParaSubstituir].map(d => new Date(d).toLocaleDateString(getCurrencyConfig().locale, { month: 'long', year: 'numeric' })).join(', ');
+    const mesesNomes = [...mesesParaSubstituir].map(d => new Date(d).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })).join(', ');
     if (!confirm('As abas encontradas (' + mesesNomes + ') já existem e serão SUBSTITUÍDAS. Continuar?')) return;
   }
 
@@ -4256,11 +3454,12 @@ function importSimulador(workbook, log) {
   }
   renderPlano();
 
+  const fmt = v => 'R$ ' + (v ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   const pct = v => (v ? (v * 100).toFixed(2) + '%' : '—');
   log.textContent =
     '✅ Simulador importado e salvo no seu login.\n' +
-    'Valor inicial: ' + formatCurrency(plano.valorInicial) + '\n' +
-    'Aporte mensal: ' + formatCurrency(plano.aporteMensal) + '\n' +
+    'Valor inicial: ' + fmt(plano.valorInicial) + '\n' +
+    'Aporte mensal: ' + fmt(plano.aporteMensal) + '\n' +
     'CDI: ' + pct(plano.cdi) + ' | IPCA: ' + pct(plano.ipca) + '\n' +
     'Ativos: ' + (plano.ativos.length > 0 ? plano.ativos.map(a => a.ativo + ' (' + pct(a.taxa) + ')').join(', ') : 'nenhum preenchido');
 }
@@ -4272,6 +3471,7 @@ function renderPlano() {
 }
 
 function renderPlanoHTML(el, plano) {
+  const fmt = v => 'R$ ' + (v ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   const pct = v => (v ? (v * 100).toFixed(2) + '%' : '—');
   const ativos = Array.isArray(plano?.ativos) ? plano.ativos : [];
   if (!plano || (plano.valorInicial === 0 && plano.aporteMensal === 0 && ativos.length === 0)) {
@@ -4282,7 +3482,7 @@ function renderPlanoHTML(el, plano) {
     ? ativos.map(a => '<li>' + escapeHTML(a.ativo) + ' — ' + escapeHTML(a.indexador || '—') + ' · taxa ' + pct(a.taxa) + '</li>').join('')
     : '<li>Nenhum ativo preenchido.</li>';
   el.innerHTML =
-    '<p><strong>Valor inicial:</strong> ' + formatCurrency(plano.valorInicial) + ' · <strong>Aporte:</strong> ' + formatCurrency(plano.aporteMensal) + '/mês</p>' +
+    '<p><strong>Valor inicial:</strong> ' + fmt(plano.valorInicial) + ' · <strong>Aporte:</strong> ' + fmt(plano.aporteMensal) + '/mês</p>' +
     '<p><strong>CDI:</strong> ' + pct(plano.cdi) + ' · <strong>IPCA:</strong> ' + pct(plano.ipca) + '</p>' +
     '<ul style="margin-top:8px; padding-left:18px; line-height:1.7;">' + ativosHTML + '</ul>';
 }
@@ -4360,6 +3560,8 @@ function renderMetasUI() {
   const curtoBar = document.getElementById('meta-curto-bar');
   if (!curtoBar) return;
 
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+
   const pctCurto = metasPlano.curto.meta > 0
     ? Math.min((metasPlano.curto.atual / metasPlano.curto.meta) * 100, 100) : 0;
   const faltaCurto = Math.max(0, metasPlano.curto.meta - metasPlano.curto.atual);
@@ -4436,7 +3638,7 @@ if (patrimonioBtn) {
     }
     const patrimonioEl = document.getElementById('patrimonio-liquido');
     if (patrimonioEl) {
-      patrimonioEl.textContent = formatCurrency(valor);
+      patrimonioEl.textContent = 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
     }
     if (storageMode === 'rtdb' && db && currentUser) {
       db.ref('users/' + currentUser.uid + '/patrimonio').set({ valor, atualizadoEm: new Date().toISOString() });
@@ -4494,7 +3696,7 @@ function saveMeusInvestimentos() {
   }
 }
 
-
+const formatCurrencyShort = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
 function renderMeusAtivos() {
   loadMeusAtivos();
@@ -4572,7 +3774,7 @@ function openAddAtivoModal() {
     title: 'Adicionar ativo',
     fields: [
       { id: 'fc-nome', label: 'Nome', type: 'text', placeholder: 'Ex: Carro, Móvel, Celular' },
-      { id: 'fc-valor', label: 'Valor estimado (' + getCurrencyPrefix() + ')', type: 'number', placeholder: '0,00', step: '0.01' },
+      { id: 'fc-valor', label: 'Valor estimado (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
       { id: 'fc-tipo', label: 'Tipo', type: 'select', options: ['Veículo', 'Imóvel', 'Móvel', 'Eletrônico', 'Outro'] }
     ],
     onSubmit(values) {
@@ -4594,7 +3796,7 @@ function openAddInvestimentoModal() {
     title: 'Adicionar investimento',
     fields: [
       { id: 'fc-nome', label: 'Nome', type: 'text', placeholder: 'Ex: Poupança, CDB Itaú, Ações VALE' },
-      { id: 'fc-valor', label: 'Valor aplicado (' + getCurrencyPrefix() + ')', type: 'number', placeholder: '0,00', step: '0.01' },
+      { id: 'fc-valor', label: 'Valor aplicado (R$)', type: 'number', placeholder: '0,00', step: '0.01' },
       { id: 'fc-tipo', label: 'Tipo', type: 'select', options: ['Poupança', 'CDB', 'LCI/LCA', 'Ações', 'FIIs', 'ETFs', 'Tesouro Direto', 'Cripto', 'Outro'] }
     ],
     onSubmit(values) {
@@ -4666,7 +3868,7 @@ function renderizarAcoes(acoes) {
     tbody.innerHTML += '<tr>' +
       '<td class="td-codigo">' + escapeHTML(a.codigo) + '</td>' +
       '<td>' + escapeHTML(a.nome) + '</td>' +
-      '<td class="td-preco">' + getCurrencyPrefix() + ' ' + (a.preco != null ? Number(a.preco).toFixed(2) : '-') + '</td>' +
+      '<td class="td-preco">R$ ' + (a.preco != null ? Number(a.preco).toFixed(2) : '-') + '</td>' +
       '<td>' + (((a.dy || 0) * 100).toFixed(2)) + '%</td>' +
       '<td><span class="td-status ' + statusClass + '">' + escapeHTML(a.status) + '</span></td>' +
     '</tr>';
@@ -4708,7 +3910,7 @@ function renderizarETFs(etfs) {
     tbody.innerHTML += '<tr>' +
       '<td class="td-codigo">' + escapeHTML(e.codigo) + '</td>' +
       '<td>' + escapeHTML(e.indice || e.nome || '-') + '</td>' +
-      '<td class="td-preco">' + getCurrencyPrefix() + ' ' + (e.preco != null ? Number(e.preco).toFixed(2) : '-') + '</td>' +
+      '<td class="td-preco">R$ ' + (e.preco != null ? Number(e.preco).toFixed(2) : '-') + '</td>' +
       '<td>' + (((e.dy || 0) * 100).toFixed(2)) + '%</td>' +
       '<td><span class="td-status ' + statusClass + '">' + escapeHTML(e.status) + '</span></td>' +
     '</tr>';
@@ -4852,7 +4054,7 @@ function renderFeedbacksList(listEl, countBadge, items) {
   }
   if (countBadge) countBadge.textContent = items.length;
   listEl.innerHTML = items.map(fb => {
-    const date = fb.createdAt ? new Date(fb.createdAt).toLocaleDateString(getCurrencyConfig().locale, { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+    const date = fb.createdAt ? new Date(fb.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
     const statusClass = fb.status === 'unread' ? 'unread' : 'read';
     const statusLabel = fb.status === 'unread' ? 'Enviado' : 'Lido';
     return '<div class="fb-item ' + statusClass + '">' +
@@ -4956,7 +4158,7 @@ function renderizarLimites() {
     return `<div class="limite-item">
       <span class="limite-cat-name">${escapeHTML(cat)}</span>
       <div class="limite-input-wrap">
-        <span>${getCurrencyPrefix()}</span>
+        <span>R$</span>
         <input type="number" class="limite-input" data-cat="${escapeHTML(cat)}" value="${limite > 0 ? limite.toFixed(2) : ''}" placeholder="0,00" step="50" min="0">
       </div>
       ${limite > 0 ? `<span class="limite-pct ${pctClass}">${pct}%</span>` : ''}
@@ -5049,7 +4251,7 @@ function renderReceitasChart(incomeByCategory) {
           callbacks: {
             label: function(ctx) {
               const pct = total > 0 ? ((ctx.raw / total) * 100).toFixed(1) : 0;
-              return ctx.label + ': ' + getCurrencyPrefix() + ' ' + ctx.raw.toFixed(2) + ' (' + pct + '%)';
+              return ctx.label + ': R$ ' + ctx.raw.toFixed(2) + ' (' + pct + '%)';
             }
           }
         }
@@ -5099,7 +4301,7 @@ function renderDivisaoChart(categories, totalExpense) {
   if (catKeys.length === 0) {
     canvas.style.display = 'none';
     if (legend) legend.innerHTML = '<div class="donut-legend-empty">Nenhuma despesa registrada.</div>';
-    if (totalEl) totalEl.textContent = formatCurrency(0);
+    if (totalEl) totalEl.textContent = 'R$ 0,00';
     return;
   }
 
@@ -5139,7 +4341,7 @@ function renderDivisaoChart(categories, totalExpense) {
           callbacks: {
             label: function(ctx) {
               const pct = totalExpense > 0 ? ((ctx.raw / totalExpense) * 100).toFixed(1) : 0;
-              return ' ' + getCurrencyPrefix() + ' ' + ctx.raw.toLocaleString(getCurrencyConfig().locale, { minimumFractionDigits: 2 }) + ' (' + pct + '%)';
+              return ' R$ ' + ctx.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + ' (' + pct + '%)';
             }
           }
         }
@@ -5150,7 +4352,7 @@ function renderDivisaoChart(categories, totalExpense) {
 
   // Total no centro
   if (totalEl) {
-    totalEl.textContent = formatCurrency(totalExpense);
+    totalEl.textContent = 'R$ ' + totalExpense.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   }
 
   // Legenda customizada
@@ -5163,7 +4365,7 @@ function renderDivisaoChart(categories, totalExpense) {
         '<span class="donut-legend-color" style="background:' + color + ';"></span>' +
         '<div class="donut-legend-info">' +
           '<div class="donut-legend-name">' + escapeHTML(cat) + '</div>' +
-          '<div class="donut-legend-meta">' + getCurrencyPrefix() + ' ' + val.toLocaleString(getCurrencyConfig().locale, { minimumFractionDigits: 2 }) + '</div>' +
+          '<div class="donut-legend-meta">R$ ' + val.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + '</div>' +
         '</div>' +
         '<span class="donut-legend-pct">' + pct + '%</span>' +
       '</div>';
@@ -5384,72 +4586,6 @@ function removeSharedMember(idx) {
 }
 
 // ============================================================
-// CATEGORY TRANSLATIONS — translate stored category names for display
-// ============================================================
-const CATEGORY_LABELS = {
-  pt: {
-    'Salário': 'Salário', 'Dividendos': 'Dividendos', 'Renda Extra': 'Renda Extra',
-    'Outros Ganhos': 'Outros Ganhos', 'Gastos Essenciais': 'Gastos Essenciais',
-    'Pessoais': 'Pessoais', 'Investimento': 'Investimento',
-    'Freelance': 'Freelance', 'Moradia': 'Moradia', 'Alimentação': 'Alimentação',
-    'Transporte': 'Transporte', 'Saúde': 'Saúde', 'Lazer': 'Lazer', 'Pessoal': 'Pessoal',
-    'Outros': 'Outros', 'Aluguel': 'Aluguel', 'Condomínio': 'Condomínio',
-    'Contas (Luz/Água/Gás)': 'Contas (Luz/Água/Gás)', 'Internet/Telefone': 'Internet/Telefone',
-    'Mercado': 'Mercado', 'Restaurante': 'Restaurante', 'Combustível': 'Combustível',
-    'Educação': 'Educação', 'Vestuário': 'Vestuário', 'Compras': 'Compras',
-    'Assinaturas': 'Assinaturas', 'Seguros': 'Seguros', 'Impostos': 'Impostos',
-    'Presentes': 'Presentes', 'Doações': 'Doações', 'Viagens': 'Viagens',
-    'Manutenção': 'Manutenção', 'Pet': 'Pet',
-    'Aluguel Recebido': 'Aluguel Recebido', 'Rendimentos': 'Rendimentos',
-    'Juros': 'Juros', 'Renda Fixa': 'Renda Fixa', 'Ações': 'Ações',
-    'FIIs': 'FIIs', 'ETFs': 'ETFs', 'Criptomoedas': 'Criptomoedas',
-    'Poupança': 'Poupança', 'Reserva de Emergência': 'Reserva de Emergência'
-  },
-  en: {
-    'Salário': 'Salary', 'Dividendos': 'Dividends', 'Renda Extra': 'Extra Income',
-    'Outros Ganhos': 'Other Earnings', 'Gastos Essenciais': 'Essential Expenses',
-    'Pessoais': 'Personal', 'Investimento': 'Investment',
-    'Freelance': 'Freelance', 'Moradia': 'Housing', 'Alimentação': 'Food',
-    'Transporte': 'Transport', 'Saúde': 'Health', 'Lazer': 'Leisure', 'Pessoal': 'Personal',
-    'Outros': 'Others', 'Aluguel': 'Rent', 'Condomínio': 'Condo Fee',
-    'Contas (Luz/Água/Gás)': 'Utilities (Electric/Water/Gas)', 'Internet/Telefone': 'Internet/Phone',
-    'Mercado': 'Groceries', 'Restaurante': 'Restaurant', 'Combustível': 'Fuel',
-    'Educação': 'Education', 'Vestuário': 'Clothing', 'Compras': 'Shopping',
-    'Assinaturas': 'Subscriptions', 'Seguros': 'Insurance', 'Impostos': 'Taxes',
-    'Presentes': 'Gifts', 'Doações': 'Donations', 'Viagens': 'Travel',
-    'Manutenção': 'Maintenance', 'Pet': 'Pet',
-    'Aluguel Recebido': 'Rental Income', 'Rendimentos': 'Returns',
-    'Juros': 'Interest', 'Renda Fixa': 'Fixed Income', 'Ações': 'Stocks',
-    'FIIs': 'REITs', 'ETFs': 'ETFs', 'Criptomoedas': 'Crypto',
-    'Poupança': 'Savings', 'Reserva de Emergência': 'Emergency Fund'
-  },
-  es: {
-    'Salário': 'Salario', 'Dividendos': 'Dividendos', 'Renda Extra': 'Ingreso Extra',
-    'Outros Ganhos': 'Otros Ganancias', 'Gastos Essenciais': 'Gastos Esenciales',
-    'Pessoais': 'Personales', 'Investimento': 'Inversión',
-    'Freelance': 'Freelance', 'Moradia': 'Vivienda', 'Alimentação': 'Alimentación',
-    'Transporte': 'Transporte', 'Saúde': 'Salud', 'Lazer': 'Ocio', 'Pessoal': 'Personal',
-    'Outros': 'Otros', 'Aluguel': 'Alquiler', 'Condomínio': 'Condominio',
-    'Contas (Luz/Água/Gás)': 'Servicios (Luz/Agua/Gas)', 'Internet/Telefone': 'Internet/Teléfono',
-    'Mercado': 'Supermercado', 'Restaurante': 'Restaurante', 'Combustível': 'Combustible',
-    'Educação': 'Educación', 'Vestuário': 'Ropa', 'Compras': 'Compras',
-    'Assinaturas': 'Suscripciones', 'Seguros': 'Seguros', 'Impostos': 'Impuestos',
-    'Presentes': 'Regalos', 'Doações': 'Donaciones', 'Viagens': 'Viajes',
-    'Manutenção': 'Mantenimiento', 'Pet': 'Mascota',
-    'Aluguel Recebido': 'Alquiler Recibido', 'Rendimentos': 'Rendimientos',
-    'Juros': 'Intereses', 'Renda Fixa': 'Renta Fija', 'Ações': 'Acciones',
-    'FIIs': 'FIIs', 'ETFs': 'ETFs', 'Criptomoedas': 'Criptomonedas',
-    'Poupança': 'Ahorro', 'Reserva de Emergência': 'Fondo de Emergencia'
-  }
-};
-
-function tCategory(name) {
-  if (!name) return '';
-  const lang = (window.PulsoI18n && window.PulsoI18n.currentLang) || 'pt';
-  return (CATEGORY_LABELS[lang] && CATEGORY_LABELS[lang][name]) || name;
-}
-
-// ============================================================
 // CATEGORIAS CUSTOMIZÁVEIS
 // ============================================================
 const DEFAULT_CATEGORIES = {
@@ -5487,7 +4623,7 @@ function renderCategoriesSummary() {
   const container = document.getElementById('categories-summary');
   if (!container) return;
   const all = [...customCategories.income, ...customCategories.expense];
-  container.innerHTML = all.map(c => '<span class="cat-mini-tag">' + escapeHTML(tCategory(c)) + '</span>').join('');
+  container.innerHTML = all.map(c => '<span class="cat-mini-tag">' + escapeHTML(c) + '</span>').join('');
 }
 
 function updateTransactionModalCategories() {
@@ -5499,12 +4635,12 @@ function updateTransactionModalCategories() {
 
   if (incomeGroup) {
     incomeGroup.innerHTML = customCategories.income.map(c =>
-      '<option value="' + escapeHTML(c) + '">' + escapeHTML(tCategory(c)) + '</option>'
+      '<option value="' + escapeHTML(c) + '">' + escapeHTML(c) + '</option>'
     ).join('');
   }
   if (expenseGroup) {
     expenseGroup.innerHTML = customCategories.expense.map(c =>
-      '<option value="' + escapeHTML(c) + '">' + escapeHTML(tCategory(c)) + '</option>'
+      '<option value="' + escapeHTML(c) + '">' + escapeHTML(c) + '</option>'
     ).join('');
   }
 }
@@ -5531,7 +4667,7 @@ function renderCategoriesList(type) {
   container.innerHTML = cats.map(c => {
     const isDefault = defaults.includes(c);
     return '<span class="cat-tag ' + (isDefault ? 'default' : '') + '">' +
-      escapeHTML(tCategory(c)) +
+      escapeHTML(c) +
       (isDefault ? '' : '<button type="button" class="cat-remove" data-cat-type="' + escapeHTML(type) + '" data-cat-name="' + escapeHTML(c) + '"><i class="fa-solid fa-xmark"></i></button>') +
     '</span>';
   }).join('');
@@ -5650,24 +4786,6 @@ let lancCatFilter = 'all';
 let lancUserFilter = 'all';
 let lancView = 'monthly';
 
-function getMonthName(idx) {
-  const cfg = getCurrencyConfig();
-  const date = new Date(2024, idx, 1);
-  return date.toLocaleString(cfg.locale, { month: 'long' });
-}
-
-function getMonthNameShort(idx) {
-  const cfg = getCurrencyConfig();
-  const date = new Date(2024, idx, 1);
-  return date.toLocaleString(cfg.locale, { month: 'short' });
-}
-
-function getWeekdayName(idx) {
-  const cfg = getCurrencyConfig();
-  const date = new Date(2024, 0, idx + 1);
-  return date.toLocaleString(cfg.locale, { weekday: 'short' });
-}
-
 const MONTH_NAMES = [
   'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
@@ -5725,9 +4843,11 @@ function renderLancamentos() {
   const monthNameEl = document.getElementById('lanc-month-name');
   if (!listEl) return;
 
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+
   // Month name
   if (monthNameEl && lancView === 'monthly') {
-    monthNameEl.textContent = getMonthName(lancMonth).charAt(0).toUpperCase() + getMonthName(lancMonth).slice(1) + ' ' + lancYear;
+    monthNameEl.textContent = MONTH_NAMES[lancMonth] + ' ' + lancYear;
   }
 
   const yearNameEl = document.getElementById('lanc-year-name');
@@ -5892,9 +5012,8 @@ function renderLancamentos() {
   Object.keys(groups).sort((a, b) => new Date(b) - new Date(a)).forEach(dateKey => {
     const d = new Date(dateKey + 'T12:00:00');
     const dayNum = d.getDate();
-    const cfg = getCurrencyConfig();
-    const weekday = d.toLocaleString(cfg.locale, { weekday: 'short' });
-    const monthShort = d.toLocaleString(cfg.locale, { month: 'short' });
+    const weekday = WEEKDAY_NAMES[d.getDay()];
+    const monthShort = d.toLocaleDateString('pt-BR', { month: 'short' });
     const dateLabel = weekday + ', ' + dayNum + ' de ' + monthShort;
 
     html += '<div class="lanc-date-group">';
@@ -5921,7 +5040,7 @@ function renderLancamentos() {
       html += '<div class="lanc-item-info">';
       html += '<div class="lanc-item-desc">' + escapeHTML(t.desc) + parcelaTag + pagoTag + '</div>';
       html += '<div class="lanc-item-meta">';
-      html += '<span class="cat-badge" style="background:' + catColor.bg + ';color:' + catColor.fg + ';">' + escapeHTML(tCategory(t.cat)) + '</span>';
+      html += '<span class="cat-badge" style="background:' + catColor.bg + ';color:' + catColor.fg + ';">' + escapeHTML(t.cat) + '</span>';
       html += payMeta;
       html += '<span>' + escapeHTML(t.user) + '</span>';
       html += '</div>';
@@ -5988,6 +5107,7 @@ function renderLancCartoes() {
   if (!listEl) return;
   loadCartoes();
   loadContasPagar();
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   const now = new Date();
 
   if (cartoes.length === 0) {
@@ -6024,7 +5144,7 @@ function renderLancCartoes() {
       html += '<div class="lanc-cartao-items">';
       faturasMes.forEach(cp => {
         const venc = new Date(cp.vencimento);
-        const diaVenc = venc.toLocaleDateString(getCurrencyConfig().locale, { day: '2-digit', month: 'short' });
+        const diaVenc = venc.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
         const isAtrasado = venc < now && !cp.pago;
         html += '<div class="lanc-cartao-item' + (cp.pago ? ' paid' : '') + '">';
         html += '<div class="lanc-cartao-item-info">';
@@ -6081,7 +5201,7 @@ function editFatura(cartaoIndex) {
   overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
 
   let itemsHtml = faturasMes.map((cp, idx) => {
-    const venc = new Date(cp.vencimento).toLocaleDateString(getCurrencyConfig().locale, { day: '2-digit', month: 'short' });
+    const venc = new Date(cp.vencimento).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
     return '<div class="fatura-edit-item' + (cp.pago ? ' paid' : '') + '">' +
       '<div class="fatura-edit-item-info">' +
         '<span class="fatura-edit-item-desc">' + escapeHTML(cp.descricao) + '</span>' +
@@ -6175,8 +5295,8 @@ function addFaturaItem(cartaoIndex) {
           <input type="text" id="fatura-add-desc" class="modal-input" placeholder="Ex: Compra no mercado" maxlength="100">
         </div>
         <div class="modal-field">
-          <label>Valor (${getCurrencyPrefix()})</label>
-          <div class="currency-input-wrap"><span class="currency-prefix">${getCurrencyPrefix()}</span><input type="number" id="fatura-add-val" class="modal-input currency-input" min="0" step="0.01" placeholder="0,00"></div>
+          <label>Valor (R$)</label>
+          <div class="currency-input-wrap"><span class="currency-prefix">R$</span><input type="number" id="fatura-add-val" class="modal-input currency-input" min="0" step="0.01" placeholder="0,00"></div>
         </div>
       </div>
       <div class="delete-confirm-actions">
@@ -6222,6 +5342,7 @@ function confirmAddFaturaItem(cartaoIndex, btn) {
 }
 
 function editLancFromCp(descricao, valor, cartaoNome) {
+  const formatCurrency = v => 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   const now = new Date();
   const mesAtual = now.getMonth();
   const anoAtual = now.getFullYear();
@@ -6237,7 +5358,7 @@ function editLancFromCp(descricao, valor, cartaoNome) {
   overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
 
   let itemsHtml = items.map((item, idx) => {
-    const venc = new Date(item.vencimento).toLocaleDateString(getCurrencyConfig().locale, { day: '2-digit', month: 'short', year: 'numeric' });
+    const venc = new Date(item.vencimento).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
     const pagoClass = item.pago ? ' lanc-edit-item-pago' : '';
     const statusTag = item.pago
       ? '<span class="lanc-edit-tag lanc-edit-tag-pago"><i class="fa-solid fa-check"></i> Pago</span>'
@@ -6328,7 +5449,7 @@ function payCpItem(descricao, valor, cartaoNome) {
       <div class="pay-modal-body">
         <div class="pay-detail"><span>Descrição</span><strong>${escapeHTML(cp.descricao)}</strong></div>
         <div class="pay-detail"><span>Valor</span><strong class="pay-valor">${formatCurrency(payValue)}</strong></div>
-        <div class="pay-detail"><span>Vencimento</span><strong>${new Date(cp.vencimento).toLocaleDateString(getCurrencyConfig().locale)}</strong></div>
+        <div class="pay-detail"><span>Vencimento</span><strong>${new Date(cp.vencimento).toLocaleDateString('pt-BR')}</strong></div>
         <div class="pay-detail"><span>Saldo atual</span><strong>${formatCurrency(currentBalance)}</strong></div>
         <div class="pay-detail"><span>Saldo após pagamento</span><strong style="color:${futureBalance >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)'};">${formatCurrency(futureBalance)}</strong></div>
         ${warningHtml}
@@ -6510,13 +5631,13 @@ function toggleCollapsible(card) {
       if (existing) return;
       const banner = document.createElement('div');
       banner.id = 'adsense-support-banner';
-      const t = window.PulsoI18n && window.PulsoI18n.t ? window.PulsoI18n.t.bind(window.PulsoI18n) : (k, f) => f || k;
       banner.innerHTML =
         '<div class="adsense-banner-content">' +
           '<i class="fa-solid fa-hand-holding-heart"></i>' +
-          '<span>' + t('adsenseBlocked', 'Parece que seus bloqueadores de anúncios estão ativos. Se quiser apoiar o Pulso, considere desabilitar o bloqueio neste site.') +
-          ' <strong>' + t('obrigado', 'Obrigado!') + '</strong> 💜</span>' +
-          '<button type="button" class="adsense-banner-close" onclick="this.closest(\'#adsense-support-banner\').remove()" title="' + t('fechar', 'Fechar') + '">&times;</button>' +
+          '<span>Parece que seus bloqueadores de anúncios estão ativos. ' +
+          'Se quiser apoiar o Pulso, considere desabilitar o bloqueio neste site. ' +
+          '<strong>Obrigado!</strong> 💜</span>' +
+          '<button type="button" class="adsense-banner-close" onclick="this.closest(\'#adsense-support-banner\').remove()" title="Fechar">&times;</button>' +
         '</div>';
       document.body.appendChild(banner);
     }

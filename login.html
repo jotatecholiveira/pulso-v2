@@ -15,7 +15,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js" integrity="sha384-lI+CxEx/bCvWP1b0OK13j5HTrTZP7yf1xle8TVOFq2smz6KC1RChTarRV/RHP5PP" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js" integrity="sha384-M6AmjBRXEjkdGzRN1Y94xtkmblFbYBSLkqzyZ8rPvpRM2c48nhjIRFXVvUM/VATL" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.11/dist/purify.min.js" crossorigin="anonymous" defer></script>
-  <script src="script.js?v=3.1.11" defer></script>
+  <script src="script.js?v=3.1.12" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -565,8 +565,8 @@
   <!-- SPLASH -->
   <div class="splash-screen" id="splashScreen">
     <div class="splash-logo">P</div>
-    <div class="splash-title" data-i18n="appName">Pulso</div>
-    <div class="splash-subtitle" data-i18n="splashSubtitle">Seu dinheiro, seu controle.</div>
+    <div class="splash-title">Pulso</div>
+    <div class="splash-subtitle">Seu dinheiro, seu controle.</div>
     <div class="splash-dots">
       <div class="splash-dot"></div>
       <div class="splash-dot"></div>
@@ -578,7 +578,7 @@
     <!-- LEFT — FORM -->
     <div class="login-left">
       <div class="login-toolbar">
-        <select id="languageSelect" class="language-select" aria-label="Idioma" data-i18n-aria="languageLabel">
+        <select id="languageSelect" class="language-select" aria-label="Idioma">
           <option value="pt">PT</option>
           <option value="en">EN</option>
           <option value="es">ES</option>
@@ -612,21 +612,21 @@
         <div class="register-fields" id="registerFields">
           <div class="input-group-new">
             <input type="text" id="fullName" placeholder=" " autocomplete="name">
-            <label for="fullName" data-i18n="fullNameLabel">Nome completo</label>
+            <label for="fullName">Nome completo</label>
           </div>
         </div>
 
         <div class="input-group-new">
           <input type="email" id="email" placeholder=" " required autocomplete="email" oninput="checkGmailHint()">
-          <label for="email" data-i18n="emailLabel">E-mail</label>
+          <label for="email">E-mail</label>
         </div>
 
         <div id="gmailHint" style="display:none"></div>
 
         <div class="input-group-new" id="passwordGroup">
           <input type="password" id="password" placeholder=" " required minlength="6" autocomplete="current-password">
-          <label for="password" data-i18n="passwordLabel">Senha</label>
-          <button type="button" class="toggle-pass" onclick="togglePass()" aria-label="Mostrar senha" data-i18n-aria="showPassword">
+          <label for="password">Senha</label>
+          <button type="button" class="toggle-pass" onclick="togglePass()" aria-label="Mostrar senha">
             <i class="fa-solid fa-eye" id="passIcon"></i>
           </button>
         </div>
@@ -634,31 +634,31 @@
         <div class="auth-options" id="loginOptions">
           <label class="remember-check">
             <input type="checkbox" id="rememberMe">
-            <span data-i18n="rememberMe">Lembrar-me</span>
+            Lembrar-me
           </label>
-          <a href="#" class="forgot-link" onclick="handleForgot(); return false;" data-i18n="forgotPassword">Esqueci minha senha</a>
+          <a href="#" class="forgot-link" onclick="handleForgot(); return false;">Esqueci minha senha</a>
         </div>
 
         <button type="button" class="btn-primary-new" id="submitBtn">
-          <span id="submitText" data-i18n="enter">Entrar</span>
+          <span id="submitText">Entrar</span>
         </button>
       </form>
 
       <div class="login-bottom">
-        <span id="bottomText" data-i18n="noAccount">Não tem conta? <strong onclick="switchAuthTab('register')">Criar agora</strong></span>
+        <span id="bottomText">Não tem conta? <strong onclick="switchAuthTab('register')">Criar agora</strong></span>
       </div>
 
       <div class="trust-row">
         <span class="trust-item"><i class="fa-solid fa-shield-halved"></i> HTTPS</span>
-        <span class="trust-item"><i class="fa-solid fa-lock"></i> <span data-i18n="encrypted">Criptografado</span></span>
-        <span class="trust-item"><i class="fa-solid fa-user-shield"></i> <span data-i18n="privacy">Privacidade</span></span>
+        <span class="trust-item"><i class="fa-solid fa-lock"></i> Criptografado</span>
+        <span class="trust-item"><i class="fa-solid fa-user-shield"></i> Privacidade</span>
       </div>
     </div>
 
     <!-- RIGHT — LANDSCAPE -->
     <div class="login-right">
       <!-- Theme Pill -->
-      <button class="landscape-pill" id="themePill" data-theme="dark" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro" data-i18n-aria="toggleTheme" tabindex="0">
+      <button class="landscape-pill" id="themePill" data-theme="dark" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro" tabindex="0">
         <div class="lp-bg" aria-hidden="true">
           <div class="lp-stars"></div>
           <div class="lp-clouds">
