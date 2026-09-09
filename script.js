@@ -1092,7 +1092,6 @@ function getCurrencyPrefix() {
   return getCurrencyConfig().symbol;
 }
 window.PulsoI18n.locale = window.PulsoI18n.getPreferredLanguage();
-updateKofiVisibility();
 
 const languageCycleOrder = ['pt', 'en', 'es'];
 
